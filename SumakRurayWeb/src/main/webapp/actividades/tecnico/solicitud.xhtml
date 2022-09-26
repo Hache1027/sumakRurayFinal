@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>ACTIVIDADES</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form> 
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<div align="center">
+		<h:form id="lista1" styleClass="ListaDetalles2"
+			enctype="multipart/form-data" title="Llenar Solicitud">
+			<p:panel>
+				<p:panelGrid columns="2" style="width:860px">
+					<h:outputText value="Categoría:"
+						style="width:120px; font-size:20px; text-align: center" />
+					<p:selectOneMenu filterMatchMode="contains" filter="true"
+						value="#{beanRegSolicitud.idcategoriaSeleccionado}" effect="fold"
+						style="width:250px" required="true"
+						requiredMessage="Seleccione una CATEGORÍA">
+						<f:selectItem itemLabel="Seleccione una Categoría..."
+							noSelectionOption="true" />
+						<f:selectItems value="#{beanRegCategorias.listaCategorias}"
+							var="u" itemLabel="#{u.catNombre}" itemValue="#{u.catId}"></f:selectItems>
+						<p:ajax update="insumos"
+							listener="#{beanRegSolicitud.actionListenerSeleccionarCategoria()}"></p:ajax>
+					</p:selectOneMenu>
+					<h:outputText value="Insumo en el que se encuentra el problema:"
+						style="width:120px; font-size:20px; text-align: center" />
+
+					<p:selectOneMenu id="insumos" filterMatchMode="contains"
+						filter="true" value="#{beanRegSolicitud.idInsumoSeleccionado}"
+						style="width:400px" required="true"
+						requiredMessage="Seleccione un INSUMO">
+						<f:selectItem itemLabel="Seleccione un insumo..."
+							noSelectionOption="true" />
+						<f:selectItems value="#{beanRegSolicitud.listaInsumoCategoria}"
+							var="u" itemLabel=" #{u.insNombre}" itemValue="#{u.insId}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="Descripción del Problema: "
+						style="width:120px; font-size:20px; text-align: center" />
+					<p:inputTextarea
+						value="#{beanRegSolicitud.nuevaSolicitud.regDescripcion}"
+						required="true"
+						requiredMessage="Ingrese una descripción del problema"
+						maxlength="500" rows="7" cols="50" />
+					<h:outputText value="Solicitante:"
+						style="width:120px; font-size:20px; text-align: center" />
+					<p:selectOneMenu filterMatchMode="contains" filter="true"
+						value="#{beanRegSolicitud.idUsuarioSolicita}" effect="fold"
+						style="width:400px" required="true"
+						requiredMessage="Debe seleccionar un solicitante">
+						<f:selectItem itemLabel="Seleccione un usuario..."
+							noSelectionOption="true" />
+						<f:selectItems value="#{beanRegSolicitud.listaUsuarios}" var="u"
+							itemLabel="#{u.apellidos} #{u.nombres} (#{u.cedula})"
+							itemValue="#{u.idSegUsuario}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="Designar Técnico:"
+						style="width:120px; font-size:20px; text-align: center" />
+					<p:selectOneMenu filterMatchMode="contains" filter="true"
+						value="#{beanRegSolicitud.idTecnicoSeleccionado}" effect="fold"
+						style="width:330px" required="true"
+						requiredMessage="Debe seleccionar un técnico">
+						<f:selectItem itemLabel="Seleccione un Técnico..."
+							noSelectionOption="true" />
+						<f:selectItems value="#{beanRegSolicitud.listaTecnicos}" var="u"
+							itemLabel="#{u.apellidos} #{u.nombres}"
+							itemValue="#{u.idSegUsuario}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="Adjuntar Archivo:"
+						style="width:120px; font-size:20px; text-align: center" />
+					<p:fileUpload mode="simple" skinSimple="true" sizeLimit="10485760"
+						invalidSizeMessage="El archivo es demasiado grande. Max:10MB "
+						allowTypes="/(\.|\/)(jpe?g|png|pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|rar|7z|mp4|mp3)$/"
+						invalidFileMessage="Tipo de Archivo no permitido. Solo se permiten: jpg | jpeg | png | pdf | doc | docx | xls | xlsx | ppt 
+						| pptx | txt | csv | rar | 7z | mp4 | mp3 "
+						value="#{beanRegSolicitud.archivo}" />
+					<p:commandButton value="REGISTRAR" icon="pi pi-send"
+						styleClass="rounded-button ui-button-info" update="@form"
+						action="#{beanRegSolicitud.actionListenerInsertarNuevaSolicitudTecnicos()}" />
+				</p:panelGrid>
+			</p:panel>
+		</h:form>
+	</div>
+</body>
+</html>

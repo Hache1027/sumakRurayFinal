@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>ACTIVIDADES</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form> 
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<p:panelGrid columns="6">
+				<f:facet name="header">
+					<p:row>
+						<p:column colspan="7">RANGO DE FECHAS</p:column>
+					</p:row>
+				</f:facet>
+				<h:outputText value="Fecha inicio:" />
+				<p:datePicker value="#{beanReportes.fechaini}" required="true"
+					requiredMessage="Debe escoger una fecha INICIO" />
+				<h:outputText value="Fecha fin:" />
+				<p:datePicker value="#{beanReportes.fechafin}" required="true"
+					requiredMessage="Debe escoger una fecha FIN" />
+			</p:panelGrid>
+			<p:dataTable value="#{beanReportes.listaTecnicos}" var="usuario"
+				paginator="true" rows="5">
+				<p:column headerText="CÉDULA" filterBy="#{usuario.cedula}"
+					filterMatchMode="contains">
+					<h:outputText value="#{usuario.cedula}" />
+				</p:column>
+				<p:column headerText="NOMBRE" filterBy="#{usuario.apellidos} #{usuario.nombres}"
+					filterMatchMode="contains">
+					<h:outputText value="#{usuario.apellidos} #{usuario.nombres}" />
+				</p:column>
+				<p:column headerText="CORREO" filterBy="#{usuario.correo}"
+					filterMatchMode="contains">
+					<h:outputText value="#{usuario.correo}" />
+				</p:column>
+				<p:column headerText="TELEFONO" filterBy="#{usuario.telefono}"
+					filterMatchMode="contains"  width="100px">
+					<h:outputText value="#{usuario.telefono}" />
+				</p:column>
+				<p:column headerText="ESTADO" style="width:50px">
+					<h:outputText value="#{usuario.estado}" />
+				</p:column>
+				<p:column headerText="REPORTES" width="260px">
+					<p:commandButton
+						action="#{beanDetalleSolicitud.actionReporteResumido(usuario.idSegUsuario
+						,beanReportes.fechaini,beanReportes.fechafin)}"
+						styleClass="rounded-button ui-button-danger" ajax="false"
+						value="Resumido" icon="pi pi-print">
+					</p:commandButton>
+					<p:commandButton
+						action="#{beanDetalleSolicitud.actionReporteDetallado(usuario.idSegUsuario
+						,beanReportes.fechaini,beanReportes.fechafin)}"
+						styleClass="rounded-button ui-button-danger" ajax="false"
+						value="Detallado" icon="pi pi-print">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>REGISTRARSE</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/theme.css" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/components.css" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/primeicons.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="/login?faces-redirect=true">
+			</p:menuitem>
+		</p:menubar>
+	</h:form>
+	<h:form>
+		<p:panel>
+			<p:panelGrid columns="4" layout="grid"
+				columnClasses="ui-grid-col-3, ui-grid-col-7,ui-grid-col-3, ui-grid-col-7">
+				<h:outputText value="Cédula:" />
+				<p:inputText value="#{beanSegUsuarios.nuevoUsuario.cedula}"
+					style="width:90%" required="true"
+					validatorMessage="La CÉDULA solo debe contener NÚMEROS"
+					requiredMessage="Ingrese la cedula" maxlength="15">
+					<f:validateRegex pattern="[0-9]*" />
+				</p:inputText>
+				<h:outputText value="Dirección:" />
+				<p:inputText value="#{beanSegUsuarios.nuevoUsuario.direccion}"
+					style="width:90%" required="true" maxlength="100"
+					requiredMessage="Ingrese la dirección" />
+				<h:outputText value="Apellidos:" />
+				<p:inputText value="#{beanSegUsuarios.nuevoUsuario.apellidos}"
+					style="width:90%" required="true" maxlength="100"
+					requiredMessage="Ingrese los apellidos" />
+				<h:outputText value="Nombres:" />
+				<p:inputText value="#{beanSegUsuarios.nuevoUsuario.nombres}"
+					style="width:90%" required="true" maxlength="100"
+					requiredMessage="Ingrese los nombres" />
+				<h:outputText value="Telefono:" />
+				<p:inputText value="#{beanSegUsuarios.nuevoUsuario.telefono}"
+					style="width:90%" required="true" maxlength="20" 
+					validatorMessage="Nro. TELÉFONO solo debe contener NÚMEROS"
+					requiredMessage="Ingrese el telefono">
+					<f:validateRegex pattern="[0-9]*" />
+				</p:inputText>
+				<h:outputText value="Correo:" />
+				<p:inputText value="#{beanSegUsuarios.nuevoUsuario.correo}"
+					style="width:90%" required="true"
+					validatorMessage="El CORREO no es válido"
+					requiredMessage="Ingrese el correo" maxlength="100">
+					<f:validateRegex
+						pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+				</p:inputText>
+				<h:outputText value="Contraseña:" />
+				<p:password value="#{beanSegUsuarios.nuevoUsuario.contrasenia}"
+					style="width:70%" required="true" maxlength="60"
+					requiredMessage="Ingrese una contraseña" />
+				<h:outputText value="DEPENDENCIA" />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					style="width:90%"
+					value="#{beanSegUsuarios.idSegDependenciaSeleccionado}"
+					required="true" requiredMessage="Seleccione una Dependencia"
+					effect="fold">
+					<f:selectItem itemLabel="Seleccione una Dependencia..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanSegUsuarios.listaDependencias}" var="u"
+						itemLabel=" #{u.depDescripcion}" itemValue="#{u.idSegDependencia}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Confirmar Contraseña:" />
+				<p:password value="#{beanSegUsuarios.verificarContrasenia}"
+					style="width:70%" required="true" maxlength="60"
+					requiredMessage="Ingrese contraseña de confirmación" />
+				<p:commandButton value="REGISTRARSE" icon="pi pi-save"
+					update="@form" styleClass="rounded-button ui-button-success"
+					actionListener="#{beanSegUsuarios.actionListenerRegistrarseUsuario()}"></p:commandButton>
+				<p:outputLabel value=" "></p:outputLabel>
+			</p:panelGrid>
+		</p:panel>
+	</h:form>
+</body>
+</html>

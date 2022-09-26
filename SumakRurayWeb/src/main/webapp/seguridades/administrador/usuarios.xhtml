@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>USUARIOS</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form> 
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Nuevo usuario" icon="pi pi-user-plus"
+				action="#{beanSegUsuarios.actionMenuNuevoUsuario()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog"
+						action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form id="formDatos">
+			<p:dataTable value="#{beanSegUsuarios.listaUsuarios}" var="usuario"
+				paginator="true" rows="10">
+				<p:column headerText="CÉDULA" filterBy="#{usuario.cedula}"
+					sortBy="#{usuario.cedula}" width="110px" filterMatchMode="contains">
+					<h:outputText value="#{usuario.cedula}" />
+				</p:column>
+				<p:column headerText="NOMBRE"
+					filterBy="#{usuario.apellidos} #{usuario.nombres}"
+					filterMatchMode="contains"
+					sortBy="#{usuario.apellidos} #{usuario.nombres}" width="230px">
+					<h:outputText value="#{usuario.apellidos} #{usuario.nombres}" />
+				</p:column>
+				<p:column headerText="CORREO" filterBy="#{usuario.correo}"
+					filterMatchMode="contains" sortBy="#{usuario.correo}">
+					<h:outputText value="#{usuario.correo}" />
+				</p:column>
+				<p:column headerText="TELEFONO" filterMatchMode="contains" filterBy="#{usuario.telefono}"
+					width="80px" sortBy="#{usuario.telefono}">
+					<h:outputText value="#{usuario.telefono}" />
+				</p:column>
+				<p:column headerText="DIRECCIÓN" filterBy="#{usuario.direccion}"
+					filterMatchMode="contains" sortBy="#{usuario.direccion}">
+					<h:outputText value="#{usuario.direccion}" />
+				</p:column>
+				<p:column headerText="ROL" sortBy="#{usuario.segRol.rolDescripcion}"
+					filterBy="#{usuario.segRol.rolDescripcion}"
+					filterMatchMode="contains">
+					<h:outputText value="#{usuario.segRol.rolDescripcion}" />
+				</p:column>
+				<p:column headerText="Dependencia" sortBy="#{usuario.segDependencia.depDescripcion}"
+					filterBy="#{usuario.segDependencia.depDescripcion}"
+					filterMatchMode="contains">
+					<h:outputText value="#{usuario.segDependencia.depDescripcion}" />
+				</p:column>
+				<p:column headerText="ESTADO" style="width:50px" sortBy="#{usuario.estado}">
+					<h:outputText value="#{usuario.estado}" />
+				</p:column>
+
+				<p:column headerText="OPCIONES">
+					<p:commandButton icon="pi pi-check-circle"
+						title="activar/desactivar" styleClass="ui-button-warning"
+						update="@form"
+						actionListener="#{beanSegUsuarios.actionListenerActivarDesactivarUsuario(usuario.idSegUsuario)}" />
+					<p:commandButton icon="pi pi-pencil" title="editar"
+						action="#{beanSegUsuarios.actionSeleccionarEdicionUsuario(usuario)}"
+						oncomplete="PF('dialogoEdicion').show()" update=":formEdicion" />
+					<p:commandButton icon="pi pi-key" title="cambiar contraseña"
+						styleClass="ui-button-help"
+						action="#{beanSegUsuarios.actionMenuCambioContraseniaAdmin(usuario.idSegUsuario)}"
+						oncomplete="PF('dialogoContrasenia').show()" update=":formContrasenia" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:dialog header="Edición" widgetVar="dialogoEdicion" showEffect="fade"
+		hideEffect="fade" width="75%" modal="true" responsive="true">
+		<h:form id="formEdicion">
+			<p:panelGrid columns="4" layout="grid"
+				columnClasses="ui-grid-col-3, ui-grid-col-7,ui-grid-col-3, ui-grid-col-7">
+				<h:outputText value="Apellidos:" />
+				<p:inputText value="#{beanSegUsuarios.edicionUsuario.apellidos}"
+					required="true" requiredMessage="Ingrese los apellidos" />
+				<h:outputText value="Cédula:" />
+				<p:inputText value="#{beanSegUsuarios.edicionUsuario.cedula}"
+					required="true" requiredMessage="Ingrese los cédula" />
+				<h:outputText value="Nombres:" />
+				<p:inputText value="#{beanSegUsuarios.edicionUsuario.nombres}"
+					required="true" requiredMessage="Ingrese los nombres" />
+				<h:outputText value="Correo:" />
+				<p:inputText value="#{beanSegUsuarios.edicionUsuario.correo}"
+					required="true" requiredMessage="Ingrese el correo" />
+				<h:outputText value="Telefono:" />
+				<p:inputText value="#{beanSegUsuarios.edicionUsuario.telefono}"
+					required="true" requiredMessage="Ingrese los telefono" />
+				<h:outputText value="Dirección:" />
+				<p:inputText value="#{beanSegUsuarios.edicionUsuario.direccion}"
+					required="true" requiredMessage="Ingrese los Telefono" />
+				<h:outputText value="ROL:" />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanSegUsuarios.idSegRolSeleccionado}">
+					<f:selectItem itemLabel="Seleccione un rol..."
+						noSelectionOption="true" effect="fold" />
+					<f:selectItems value="#{beanSegUsuarios.listaRoles}" var="u"
+						itemLabel=" #{u.rolDescripcion}" itemValue="#{u.idSegRol}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="DEPENDENCIA:" />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanSegUsuarios.idSegDependenciaSeleccionado}">
+					<f:selectItem itemLabel="Seleccione una dependencia..."
+						noSelectionOption="true" effect="fold" />
+					<f:selectItems value="#{beanSegUsuarios.listaDependencias}" var="u"
+						itemLabel=" #{u.depDescripcion}" itemValue="#{u.idSegDependencia}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:commandButton value="Actualizar" icon="pi pi-save"
+					update="@form,:formDatos"
+					actionListener="#{beanSegUsuarios.actionListenerActualizarEdicionUsuario()}"
+					oncomplete="PF('dialogoEdicion').hide()"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	<p:dialog header="Cambiar Contraseña" widgetVar="dialogoContrasenia"
+		showEffect="fade" hideEffect="fade" width="50%" modal="true"
+		responsive="true">
+		<h:form id="formContrasenia">
+			<p:panelGrid columns="2" layout="grid"
+				columnClasses="ui-grid-col-4, ui-grid-col-6">
+				<p:outputLabel value="Usuario:" />
+				<p:outputLabel value="#{beanSegUsuarios.con_usu.apellidos} #{beanSegUsuarios.con_usu.nombres}" />
+				<p:outputLabel for="CN" value="Contraseña Nueva:" />
+				<p:password id="CN" maxlength="60"
+					value="#{beanSegUsuarios.cambioContrasenia.contraseniaNueva}"
+					style="width:300px" required="true"
+					requiredMessage="Ingrese la nueva contraseña" />
+				<p:outputLabel for="CCN" value="Confirmar contraseña Nueva:" />
+				<p:password id="CCN" value="#{beanSegUsuarios.verificarContrasenia}"
+					style="width:300px" required="true" maxlength="60"
+					requiredMessage="Debe confirmar la nueva contraseña" />
+				<p:outputLabel for="motivo" value="Motivo del cambio:" />
+				<p:inputTextarea id="motivo" required="true"
+					requiredMessage="Debe ingresar el motivo por el que 
+					cambia la contraseña" maxlength="300"
+					value="#{beanSegUsuarios.cambioContrasenia.motivo}" rows="6"
+					cols="45" />
+				<p:commandButton value="GUARDAR CAMBIOS" icon="pi pi-save"
+					update="@form" styleClass="rounded-button ui-button-warning"
+					actionListener="#{beanSegUsuarios.actionListenerCambiarContraseniaAdmin()}"
+					oncomplete="PF('dialogoContrasenia').hide()">
+					<p:confirm header="Confirmación"
+						message="¿Desea Guardar los cambios?" icon="pi pi-info-circle" />
+				</p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>

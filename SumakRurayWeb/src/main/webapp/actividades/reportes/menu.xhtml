@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>MENÚ REPORTES</title>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu?faces-redirect=true"/>
+			<p:menuitem value="SOLICITUDES" icon="pi pi-envelope"
+				action="#{beanReportes.actionMenuReporteSolicitudes()}" />
+			<p:menuitem value="ACTIVIDADES" icon="pi pi-check-square" 
+				action="#{beanReportes.actionMenuReporteActividades()}" />
+			<p:menuitem value="IMPRIMIR REPORTE DE TÉCNICO" icon="pi pi-file-pdf" 
+				action="#{beanReportes.actionMenuImprimirReporte()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+		<p:staticMessage severity="info" summary="Módulo de Reportes"></p:staticMessage>
+	</h:form>
+</body>
+</html>

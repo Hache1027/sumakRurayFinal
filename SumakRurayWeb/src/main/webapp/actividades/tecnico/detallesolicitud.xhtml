@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>DETALLES SOLICITUD</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="#{beanDetalleSolicitud.actionMenuSolicitudesRecibidas()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form id="datosSolicitud">
+			<p:panelGrid columns="6">
+				<f:facet name="header">
+					<h:outputText value="DATOS DE LA SOLICITUD" />
+				</f:facet>
+				<h:outputText value="CÓDIGO SOLICITUD: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regCodigo}"
+					required="true" readonly="true" />
+				<h:outputText value="SOLICITANTE: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.segUsuario.apellidos} #{beanDetalleSolicitud.solicitudSeleccionada.segUsuario.nombres}"
+					required="true" readonly="true" />
+				<h:outputText value="DEPENDENCIA: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regDependencia}"
+					required="true" readonly="true" />
+				<h:outputText value="INSUMO: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regInsumo.insNombre}"
+					required="true" readonly="true" />
+				<h:outputText value="FECHA SOLICITUD: " />
+				<p:datePicker showTime="true"
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regFechaCreacion}"
+					disabled="true">
+				</p:datePicker>
+				<h:outputText value="FECHA FINALIZACIÓN: " />
+				<p:datePicker showTime="true"
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regFechaFin}"
+					disabled="true">
+				</p:datePicker>
+				<h:outputText value="ESTADO: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regTipo.tipNombre}"
+					readonly="true" />
+				<h:outputText value="Descripción de Solicitud: " />
+				<p:inputTextarea
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regDescripcion}"
+					rows="6" cols="33" readonly="true" />
+
+				<p:commandButton value="DESCARGAR ADJUNTO" icon="pi pi-download"
+					styleClass="rounded-button ui-button-success" ajax="false"
+					disabled="#{beanDetalleSolicitud.solicitudSeleccionada.regAdjunto  == null}">
+					<p:fileDownload value="#{beanDetalleSolicitud.Descargar()}" />
+				</p:commandButton>
+
+				<p:commandButton value="TRASPASAR SOLICITUD" icon="pi pi-users"
+					oncomplete="PF('dialogotraspasar').show()" update="@form:,formDatos"
+					disabled="#{beanDetalleSolicitud.verificarTraspasar()}"
+					styleClass="rounded-button ui-button-warning" />
+				<p:commandButton value="SOLICITUD FINALIZADA"
+					icon="pi pi-exclamation-triangle" update="@form:,formDatos,:formEdicion"
+					styleClass="ui-button-raised ui-button-help"
+					disabled="#{beanDetalleSolicitud.verificarFinalizarSolicitud()}"
+					actionListener="#{beanDetalleSolicitud.actionListenerFinalizarSolicitud()}">
+					<p:confirm header="Confirmación"
+						message="Desea dar por finalizada la solicitud?"
+						icon="pi pi-info-circle" />
+				</p:commandButton>
+			</p:panelGrid>
+			<p:commandButton value="REGISTRAR ACTIVIDAD" update="formDatos"
+				styleClass="ui-button-raised ui-button-secondary"
+				disabled="#{beanDetalleSolicitud.verificarNuevaActividad()}"
+				oncomplete="PF('dialogoRegistrar').show()"
+				style="height:60px; width:127px">
+			</p:commandButton>
+		</h:form>
+		<p:dialog header="TRASPASO" widgetVar="dialogotraspasar"
+			showEffect="fade" modal="true" responsive="true">
+			<h:form>
+				<h:panelGrid columns="2">
+					<h:outputText value="Técnico: " />
+					<p:selectOneMenu filterMatchMode="contains" filter="true"
+						value="#{beanDetalleSolicitud.idTecnicoSeleccionado}"
+						effect="fold" style="width:250px">
+						<f:selectItem itemLabel="Seleccione un Técnico..."
+							noSelectionOption="true" />
+						<f:selectItems value="#{beanDetalleSolicitud.listaTecnicos}"
+							var="u" itemLabel="#{u.apellidos} #{u.nombres}"
+							itemValue="#{u.idSegUsuario}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="Motivo del traspaso: " />
+					<p:inputTextarea value="#{beanDetalleSolicitud.moticoTraspaso}"
+						maxlength="100" rows="6" cols="33" />
+					<p:commandButton value="Traspasar" icon="pi pi-arrow-circle-right"
+						update="@form,:formDatos,:datosSolicitud"
+						oncomplete="PF('dialogotraspasar').hide()"
+						actionListener="#{beanDetalleSolicitud.actionListenerTraspasar()}"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<h:form id="formDatos">
+			<p:dataTable value="#{beanDetalleSolicitud.listaDetallesSolicitud}"
+				var="p" reflow="true" emptyMessage="No hay registros aún.">
+				<p:column headerText="Motivo Traspaso" style="width:200px">
+					<h:outputText value="#{p.detMotTraspaso}" />
+				</p:column>
+				<p:column headerText="Actividad" width="300px">
+					<h:outputText value="#{p.regActividad.actDescripcion}" />
+				</p:column>
+				<p:column headerText="Observación" width="300px">
+					<h:outputText value="#{p.detObservacion}" />
+				</p:column>
+				<p:column headerText="FECHA INICIO" sortBy="#{b.detFechaIni}">
+					<h:outputText value="#{p.detFechaIni}" />
+				</p:column>
+				<p:column headerText="FECHA FIN" sortBy="#{b.detFechaFin}">
+					<h:outputText value="#{p.detFechaFin}" />
+				</p:column>
+				<p:column headerText="Estado Actividad">
+					<span
+						class="solicitud-badge badge-#{p.regTipo.tipCodigo.toLowerCase()}">
+						#{p.regTipo.tipNombre}</span>
+				</p:column>
+				<p:column headerText="OPCIONES" style="width:100px">
+					<p:commandButton icon="pi pi-pencil" title="EDITAR"
+						oncomplete="PF('dialogoEdicion').show()" update=":formEdicion"
+						actionListener="#{beanDetalleSolicitud.actionListenerCargarDetalle(p)}"
+						styleClass="rounded-button" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:dialog header="REGISTRAR NUEVA ACTIVIDAD" width="70%"
+		widgetVar="dialogoRegistrar" showEffect="fade" modal="true"
+		responsive="true">
+		<h:form>
+			<p:panelGrid columns="4">
+				<h:outputText value="Actividad realizada: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.actividadSeleccionada}" effect="fold"
+					style="width:350px">
+					<f:selectItem itemLabel="Seleccione una actividad..."
+						noSelectionOption="true" />
+					<f:selectItems
+						value="#{beanDetalleSolicitud.listaActividadesByInsumo}" var="u"
+						itemLabel="#{u.regActividad.actDescripcion}"
+						itemValue="#{u.regActividad.actId}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Observación: " />
+				<p:inputTextarea
+					value="#{beanDetalleSolicitud.nuevoDetalle.detObservacion}"
+					maxlength="500" rows="6" cols="33" />
+				<h:outputText value="Fecha Inicio: " />
+				<p:datePicker showTime="true" disabled="true"
+					value="#{beanDetalleSolicitud.fechaIni}"></p:datePicker>
+				<h:outputText value="Fecha Fin: " />
+				<p:datePicker showTime="true" disabled="true"
+					value="#{beanDetalleSolicitud.fechaFin}"></p:datePicker>
+				<h:outputText value="Estado de la Actividad: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.tipoSelected}" effect="fold"
+					style="width:250px">
+					<f:selectItem itemLabel="Seleccione un estado..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaTipo}" var="u"
+						itemLabel="#{u.tipNombre}" itemValue="#{u.tipId}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:commandButton value="Registrar" icon="pi pi-save"
+					update="@form:,formDatos,datosSolicitud"
+					oncomplete="PF('dialogoRegistrar').hide()"
+					actionListener="#{beanDetalleSolicitud.actionListenerRegistrarActividadSolicitud()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Edición" widgetVar="dialogoEdicion" showEffect="fade"
+		width="88%" modal="true" responsive="true">
+		<h:form id="formEdicion">
+			<p:panelGrid columns="4" layout="grid"
+				columnClasses="ui-grid-col-3, ui-grid-col-7,ui-grid-col-3, ui-grid-col-7">
+				<h:outputText value="CÓDIGO SOLICITUD:" />
+				<h:outputText
+					value="#{beanDetalleSolicitud.edicionDetalle.regSolicitud.regCodigo}" />
+				<h:outputText value="Actividad realizada: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.actividadSeleccionada}" effect="fold"
+					style="width:443px">
+					<f:selectItem itemLabel="Seleccione una actividad..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaActividades}"
+						var="u" itemLabel="#{u.actDescripcion}" itemValue="#{u.actId}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Observación:" />
+				<p:inputTextarea
+					value="#{beanDetalleSolicitud.edicionDetalle.detObservacion}"
+					required="true" requiredMessage="Ingrese una Observación"
+					maxlength="500" rows="6" cols="54" />
+				<h:outputText value="Estado de la Actividad: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.tipoSelected}" effect="fold"
+					style="width:250px">
+					<f:selectItem itemLabel="Seleccione un estado..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaTipo}" var="u"
+						itemLabel="#{u.tipNombre}" itemValue="#{u.tipId}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Fecha Inicio:" />
+				<p:datePicker value="#{beanDetalleSolicitud.fechaIni}"
+					showTime="true"
+					disabled="#{beanDetalleSolicitud.edicionDetalle.regSolicitud  != null}" />
+				<h:outputText value="Fecha Fin:" />
+				<p:datePicker value="#{beanDetalleSolicitud.fechaFin}"
+					showTime="true"
+					disabled="#{beanDetalleSolicitud.edicionDetalle.regSolicitud  != null}" />
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					update="@form,:formDatos,:datosSolicitud"
+					oncomplete="PF('dialogoEdicion').hide()"
+					actionListener="#{beanDetalleSolicitud.actionListenerActualizarEdicionDetalleSolicitud()}"
+					disabled="#{!beanDetalleSolicitud.edicionDetalle.estadoMostrar}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>ACTIVIDADES</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog"
+						action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<p:commandButton value="Nuevo" icon="pi pi-plus" id="cmdNuevo"></p:commandButton>
+		<p:overlayPanel for="cmdNuevo" showCloseIcon="true"
+			style="width:570px">
+			<h:form>
+				<p:panelGrid columns="2">
+					<h:outputText value="Descripción:" />
+					<p:inputTextarea
+						value="#{beanRegActividades.nuevaActividad.actDescripcion}"
+						required="true" requiredMessage="Ingrese la Descripción" rows="5"
+						cols="36" maxlength="500"/>
+					<p:commandButton value="Guardar" icon="pi pi-save"
+						update="@form:,formDatos"
+						actionListener="#{beanRegActividades.actionListenerInsertarNuevaActividad()}"></p:commandButton>
+				</p:panelGrid>
+			</h:form>
+		</p:overlayPanel>
+		<h:form id="formDatos" responsive="true" modal="true">
+			<br />
+			<p:dataTable value="#{beanRegActividades.listaActividades}" var="b"
+				reflow="true" emptyMessage="No hay registros aún." paginator="true"
+				rows="30" modal="true">
+				<p:column headerText="DESCRIPCION" sortBy="#{b.actDescripcion}"
+					filterBy="#{b.actDescripcion}" width="500px">
+					<h:outputText value="#{b.actDescripcion}" />
+				</p:column>
+				<p:column headerText="ESTADO" sortBy="#{b.actEstato}">
+					<h:outputText value="#{b.actEstato}" />
+				</p:column>
+				<p:column headerText="FECHA CREACION" sortBy="#{b.fechaCreacion}">
+					<h:outputText value="#{b.fechaCreacion}" />
+				</p:column>
+				<p:column headerText="USUARIO CREACION" filterBy="#{b.usuarioCrea}"
+					sortBy="#{b.usuarioCrea}" filterMatchMode="contains">
+					<h:outputText value="#{b.usuarioCrea}" />
+				</p:column>
+				<p:column headerText="FECHA MODIFICACION" sortBy="#{b.fechaModi}">
+					<h:outputText value="#{b.fechaModi}" />
+				</p:column>
+				<p:column headerText="OPCIONES" style="width:80px">
+					<p:commandButton icon="pi pi-pencil" title="editar"
+						actionListener="#{beanRegActividades.actionListenerCargarActividad(b)}"
+						oncomplete="PF('dialogoEdicion').show()" update=":formEdicion" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:dialog header="Edición" widgetVar="dialogoEdicion" showEffect="fade"
+		modal="true" responsive="true" width="52%">
+		<h:form id="formEdicion">
+			<p:panelGrid columns="2" layout="grid">
+				<h:outputText value="ID:" />
+				<h:outputText value="#{beanRegActividades.edicionActividad.actId}" />
+				<h:outputText value="Descripción de Actividad:" />
+				<p:inputTextarea
+					value="#{beanRegActividades.edicionActividad.actDescripcion}"
+					rows="5" cols="36" required="true" maxlength="500"
+					requiredMessage="Ingrese el nombre del perfil." />
+				<h:outputText value="Fecha Creacion:" />
+				<p:datePicker
+					value="#{beanRegActividades.edicionActividad.fechaCreacion}"
+					showTime="true" disabled="true" />
+				<h:outputText value="ESTADO:" />
+				<p:toggleSwitch
+					value="#{beanRegActividades.edicionActividad.actEstato}" />
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					update="@form,:formDatos"
+					actionListener="#{beanRegActividades.actionListenerActualizarEdicionActividad()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+</body>
+</html>

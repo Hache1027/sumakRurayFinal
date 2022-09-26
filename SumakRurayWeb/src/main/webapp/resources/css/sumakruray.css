@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+.top-aligned-columns td {
+	vertical-align: top;
+}
+
+button.ui-button {
+	margin-right: .5rem;
+}
+
+html {
+	background: linear-gradient(#140f07, #102e4b, #0a689f, #03adfb);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: 100% 100%;
+}
+
+.ui-filter-column .ui-column-customfilter .custom-filter {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.badge-pd {
+	background: #ffcdd2;
+	color: #c63737;
+}
+
+.badge-ec {
+	background-color: #b3e5fc;
+	color: #23547b;
+}
+
+.badge-ee {
+	background: #feedaf;
+	color: #8a5340;
+}
+
+.badge-fn {
+	background: #c8e6c9;
+	color: #256029;
+}
+
+.solicitud-badge {
+	border-radius: 2px;
+	padding: 0.25em 0.5rem;
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 12px;
+	letter-spacing: .3px;
+}
+
+.box {
+	height: 130px;
+	width: 145px;
+	background-color: white;
+}

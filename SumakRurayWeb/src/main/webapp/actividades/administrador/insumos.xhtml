@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>INSUMOS</title>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<p:menuitem value="INSUMOS-ACTIVIDADES" icon="pi pi-tags" 
+					action="insumo_act"/>
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form> 
+	<p:panel>
+		<p:commandButton value="Nuevo" icon="pi pi-plus" id="cmdNuevo"></p:commandButton>
+		<p:overlayPanel for="cmdNuevo" showCloseIcon="true">
+			<h:form>
+				<p:panelGrid columns="2">
+					<h:outputText value="Nombre Insumo: " />
+					<p:inputText value="#{beanRegInsumos.nuevaInsumo.insNombre}" style="width:100%"
+						required="true" requiredMessage="Ingrese el nombre del insumo" maxlength="100"/>
+					<h:outputText value="Descripción Insumo: " />
+					<p:inputTextarea value="#{beanRegInsumos.nuevaInsumo.insDescripcion}"
+							required="true" requiredMessage="Ingrese una breve descripción del insumo" maxlength="500" rows="6" cols="33"/> 
+					<p:commandButton value="Guardar" icon="pi pi-save" update="@form:,formDatos"
+						actionListener="#{beanRegInsumos.actionListenerInsertarNuevoInsumo()}"></p:commandButton>
+				</p:panelGrid>
+			</h:form>
+		</p:overlayPanel> 
+		<h:form id="formDatos">
+			<p:dataTable value="#{beanRegInsumos.listaInsumos}" var="b" reflow="true"
+				emptyMessage="No hay registros aún." paginator="true" rows="30">
+				<p:column headerText="NOMBRE" sortBy="#{b.insNombre}">
+					<h:outputText value="#{b.insNombre}" />
+				</p:column>
+				<p:column headerText="DESCRIPCIÓN" sortBy="#{b.insDescripcion}">
+					<h:outputText value="#{b.insDescripcion}" />
+				</p:column>
+				<p:column headerText="ESTADO" sortBy="#{b.insEstado}">
+					<h:outputText value="#{b.insEstado}" />
+				</p:column>
+				<p:column headerText="FECHA CREACION" sortBy="#{b.fechaCreacion}">
+					<h:outputText value="#{b.fechaCreacion}" />
+				</p:column>
+				<p:column headerText="USUARIO CREACION" filterBy="#{b.usuarioCrea}" sortBy="#{b.usuarioCrea}"
+					filterMatchMode="contains">
+					<h:outputText value="#{b.usuarioCrea}" />
+				</p:column>
+				<p:column headerText="FECHA MODIFICACION" sortBy="#{b.fechaModi}">
+					<h:outputText value="#{b.fechaModi}" />
+				</p:column>
+				<p:column headerText="OPCIONES" style="width:80px">
+					<p:commandButton icon="pi pi-pencil" title="editar"
+						actionListener="#{beanRegInsumos.actionListenerCargarInsumo(b)}"
+						oncomplete="PF('dialogoEdicion').show()" update=":formEdicion" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+		<p:dialog header="Edición" widgetVar="dialogoEdicion" showEffect="fade" modal="true" responsive="true"
+			width="70%">
+		<h:form id="formEdicion">
+			<p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-7,ui-grid-col-4, ui-grid-col-7">
+				<h:outputText value="ID:" />
+				<h:outputText value="#{beanRegInsumos.edicionInsumo.insId}" />
+				<h:outputText value="Nombre del Insumo:" />
+				<p:inputText value="#{beanRegInsumos.edicionInsumo.insNombre}" maxlength="100"
+				required="true" requiredMessage="Ingrese el nombre del insumo" style="width:100%;"/>
+				<h:outputText value="Descripción del Insumo:" />
+				<p:inputTextarea value="#{beanRegInsumos.edicionInsumo.insDescripcion}" 
+				required="true" requiredMessage="Ingrese una breve descripción del insumo" maxlength="500" rows="6" cols="33"/>
+				<h:outputText value="Fecha Creacion:" />
+				<p:datePicker value="#{beanRegInsumos.edicionInsumo.fechaCreacion}" 
+								showTime="true" disabled="true"/>
+				<h:outputText value="ESTADO:" />
+				<p:toggleSwitch value="#{beanRegInsumos.edicionInsumo.insEstado}" />
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					update="@form,:formDatos"
+					actionListener="#{beanRegInsumos.actionListenerActualizarEdicionInsumo()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+</body>
+</html>

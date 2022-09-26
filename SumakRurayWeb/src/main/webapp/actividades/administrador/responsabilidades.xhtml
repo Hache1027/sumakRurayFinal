@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>ASIGNACIONES</title>
+	<h:outputStylesheet library="css" name="sumakruray.css"></h:outputStylesheet>
+</h:head> 
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar> 
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<p:panelGrid columns="4">
+				<h:outputText value="Usuario:" />
+				<p:selectOneMenu filterMatchMode="contains" filter="true" style="width:270px"
+						required="true" requiredMessage="Debe seleccionar un técnico"
+					value="#{beanRegInsumos.idTecnicoSeleccionado}">
+					<f:selectItem itemLabel="Seleccione un Técnico..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanRegInsumos.listaUsuarios}" var="u"
+						itemLabel="#{u.apellidos} #{u.nombres}"
+						itemValue="#{u.idSegUsuario}"></f:selectItems> 
+					<p:ajax update="tablaAsignaciones"   
+						listener="#{beanRegInsumos.actionListenerSeleccionarTecnico()}"></p:ajax>
+				</p:selectOneMenu>
+				<h:outputText value="Prioridad:" />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanRegInsumos.idPrioridadSeleccionada}"
+					required="true" requiredMessage="Debe seleccionar una prioridad">
+					<f:selectItem itemLabel="Seleccione la prioridad..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanRegInsumos.listaPrioridades}" var="u"
+						itemLabel="#{u.priNombre}" itemValue="#{u.idPri}"></f:selectItems>
+				</p:selectOneMenu>
+			</p:panelGrid>
+			<br />
+			<p:panelGrid columns="2" styleClass="top-aligned-columns">
+				<h:panelGroup>
+					<p:dataTable value="#{beanRegInsumos.listaInsumos}" var="p"
+					rows="10" paginator="true">
+						<p:column headerText="INSUMOS:" filterBy="#{p.insNombre}" sortBy="#{p.insNombre}">
+							<h:outputText value="#{p.insNombre}" />
+						</p:column>
+						<p:column width="40px">
+							<p:commandButton icon="pi pi-arrow-right" title="asignar"
+								update="@form" 
+								actionListener="#{beanRegInsumos.actionListenerAsignarInsumo(p.insId)}"></p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:dataTable id="tablaAsignaciones"
+						value="#{beanRegInsumos.listaInsumosAsignados}" var="asig">
+						<f:facet name="header">
+							<h:outputText value="Responsabilidades:" />
+						</f:facet>
+						<p:column headerText="INSUMO" sortBy="#{asig.regInsumo.insNombre}">
+							<h:outputText value="#{asig.regInsumo.insNombre} " />
+						</p:column>
+						<p:column headerText="PRIORIDAD" sortBy="#{asig.prioridad.priNombre}">
+							<h:outputText value="#{asig.prioridad.priNombre} " />
+						</p:column>
+						<p:column width="50px">
+							<p:commandButton icon="pi pi-times-circle" title="eliminar"
+								styleClass="ui-button-danger" update="@form"
+								actionListener="#{beanRegInsumos.actionListenerEliminarAsignacionInsumo(asig.usuInsId)}"></p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</p:panelGrid>
+		</h:form>
+	</p:panel>
+</body>
+</html>

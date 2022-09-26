@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Bodega de Accesorios</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/SumakRuray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Menú" icon="pi pi-home"
+				action="/menu?faces-redirect=true" />
+
+			<p:menuitem value="Equipos Inactivos" icon="pi pi-user-plus"
+				action="#{beanBodega.actionSelectionEquiposInactivos()}" />
+
+			<p:menuitem value="Accesorio Inactivos" icon="pi pi-user-plus"
+				action="#{beanBodega.actionSelectionAccesoriosInactivos()}" />
+
+			<p:menuitem value="Accesorios/Equipo Inactivos"
+				icon="pi pi-user-plus"
+				action="#{beanBodega.actionSelectionAccesoriosInactivosCE()}" />
+
+
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form id="lista2">
+			<p:dataTable value="#{beanBodega.listaAccesorioCEBodegas}"
+				var="AccesorioBodega" paginator="true" rows="5">
+
+				<p:column headerText="Accesorio"
+					filterBy="#{AccesorioBodega.acceNombre}"
+					filterMatchMode="contains">
+					<h:outputText value="#{AccesorioBodega.acceNombre}" />
+				</p:column>
+				<p:column headerText=" ULTIMO RESPONSABLE "
+					filterBy="#{AccesorioBodega.responsable.respNombres} #{AccesorioBodega.responsable.respApellidos}"
+					filterMatchMode="contains">
+					<h:outputText
+						value="#{AccesorioBodega.responsable.respNombres} #{AccesorioBodega.responsable.respApellidos}" />
+				</p:column>
+				<p:column headerText="ULTIMA DEPENDENCIA "
+					filterBy="#{AccesorioBodega.segDependencia.depDescripcion}"
+					filterMatchMode="contains">
+					<h:outputText
+						value="#{AccesorioBodega.segDependencia.depDescripcion}" />
+				</p:column>
+				<p:column headerText="ESTADO ACCESORIO"
+					filterBy="#{AccesorioBodega.acceEstado}}"
+					filterMatchMode="contains">
+
+					<h:outputText value="#{AccesorioBodega.acceEstado}" />
+				</p:column>
+
+
+				<p:column headerText="OPCIONES">
+					<p:commandButton icon="pi pi-eye" title="Vista Accesorio"
+						styleClass="ui-button-warning"
+						action="#{beanAccesorio.actionSeleccionarAccesorio(AccesorioBodega)}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>

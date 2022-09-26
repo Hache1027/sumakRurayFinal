@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Perfiles por módulo</title>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl> 
+	<h:form> 
+		<p:menubar> 
+			<p:menuitem value="Regresar" icon="pi pi-home" action="modulos?faces-redirect=true" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<p:commandButton value="Nuevo" icon="pi pi-plus" id="cmdNuevo"></p:commandButton>
+		<p:overlayPanel for="cmdNuevo" showCloseIcon="true">
+			<h:form>
+				<p:panelGrid columns="2">
+					<h:outputText value="Nombre del módulo:" />
+					<h:outputText
+						value="#{beanSegModulos.moduloSeleccionado.nombreModulo}" />
+					<h:outputText value="Nombre del perfil:" />
+					<p:inputText value="#{beanSegModulos.nuevoPerfil.nombrePerfil}" maxlength="50"
+						required="true" requiredMessage="Ingrese el nombre del perfil." />
+					<h:outputText value="Ruta de acceso:" />
+					<p:inputText value="#{beanSegModulos.nuevoPerfil.rutaAcceso}" maxlength="50"
+						required="true" requiredMessage="Ingrese el nombre del perfil." />
+					<p:commandButton value="Guardar" icon="pi pi-save"
+						update="@form:,formDatos"
+						actionListener="#{beanSegModulos.actionListenerInsertarPerfil()}"></p:commandButton>
+				</p:panelGrid>
+			</h:form>
+		</p:overlayPanel>
+		<h:form id="formDatos">
+			<p:dataTable value="#{beanSegModulos.listaPerfiles}" var="p"
+				emptyMessage="No hay registros aún.">
+				<p:column headerText="NOMBRE MÓDULO">
+					<h:outputText value="#{p.segModulo.nombreModulo}" />
+				</p:column>
+				<p:column headerText="NOMBRE PERFIL">
+					<h:outputText value="#{p.nombrePerfil}" />
+				</p:column>
+				<p:column headerText="RUTA DE ACCESO">
+					<h:outputText value="#{p.rutaAcceso}" />
+				</p:column>
+				<p:column headerText="OPCIONES" style="width:100px">
+					<p:commandButton icon="pi pi-pencil" title="editar" styleClass="rounded-button ui-button-secondary"
+						actionListener="#{beanSegModulos.actionListenerCargarPerfil(p)}"
+						oncomplete="PF('dialogoEdicion').show()" update=":formEdicion" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:dialog header="Edición" widgetVar="dialogoEdicion" width="580px">
+		<h:form id="formEdicion">
+			<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-5, ui-grid-col-7">
+				<h:outputText value="Nombre del módulo:" />
+				<h:outputText
+					value="#{beanSegModulos.moduloSeleccionado.nombreModulo}" />
+				<h:outputText value="Nombre del perfil:" />
+				<p:inputText value="#{beanSegModulos.edicionPerfil.nombrePerfil}" maxlength="50"
+					required="true" requiredMessage="Ingrese el nombre del perfil." style="width:100%;"/>
+				<h:outputText value="Ruta de acceso:" />
+				<p:inputText value="#{beanSegModulos.edicionPerfil.rutaAcceso}" 
+							style="width:100%;" maxlength="50"/>
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					update="@form,:formDatos"
+					actionListener="#{beanSegModulos.actionListenerGuardarEdicionPerfil()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+</body>
+</html>

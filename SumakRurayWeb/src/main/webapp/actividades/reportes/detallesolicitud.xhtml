@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>DETALLES SOLICITUD</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="#{beanReportes.actionMenuReporteSolicitudes()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form id="datosSolicitud">
+			<p:panelGrid columns="6">
+				<f:facet name="header">
+					<h:outputText value="DATOS DE LA SOLICITUD" />
+				</f:facet>
+				<h:outputText value="CÓDIGO SOLICITUD: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regCodigo}"
+					required="true" disabled="true" />
+				<h:outputText value="SOLICITANTE: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.segUsuario.apellidos} #{beanDetalleSolicitud.solicitudSeleccionada.segUsuario.nombres}"
+					required="true" disabled="true" />
+				<h:outputText value="DEPENDENCIA: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regDependencia}"
+					required="true" disabled="true" />
+				<h:outputText value="INSUMO: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regInsumo.insNombre}"
+					required="true" disabled="true" />
+				<h:outputText value="FECHA SOLICITUD: " />
+				<p:datePicker showTime="true"
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regFechaCreacion}"
+					disabled="true">
+				</p:datePicker>
+				<h:outputText value="FECHA FINALIZACIÓN: " />
+				<p:datePicker showTime="true"
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regFechaFin}"
+					required="true" disabled="true">
+				</p:datePicker>
+				<h:outputText value="ESTADO: " />
+				<p:inputText
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regTipo.tipNombre}"
+					disabled="true" />
+				<h:outputText value="Descripción de Solicitud: " /> 
+				<p:inputTextarea
+					value="#{beanDetalleSolicitud.solicitudSeleccionada.regDescripcion}"
+					rows="6" cols="33" disabled="true" />
+				<p:commandButton value="DESCARGAR ADJUNTO" icon="pi pi-download"
+					styleClass="rounded-button ui-button-success" ajax="false"
+					disabled="#{beanDetalleSolicitud.solicitudSeleccionada.regAdjunto  == null}">
+					<p:fileDownload value="#{beanDetalleSolicitud.Descargar()}" />
+				</p:commandButton>
+				<p:commandButton value="TRASPASAR SOLICITUD" icon="pi pi-users"
+					oncomplete="PF('dialogotraspasar').show()"
+					disabled="#{beanDetalleSolicitud.verificarTraspasar()}"
+					styleClass="rounded-button ui-button-warning" />
+			</p:panelGrid>
+		</h:form>
+		<p:dialog header="TRASPASO" widgetVar="dialogotraspasar"
+			showEffect="fade" modal="true" responsive="true">
+			<h:form>
+				<h:panelGrid columns="2">
+					<h:outputText value="Técnico: " />
+					<p:selectOneMenu filterMatchMode="contains" filter="true"
+						value="#{beanDetalleSolicitud.idTecnicoSeleccionado}"
+						effect="fold" style="width:250px">
+						<f:selectItem itemLabel="Seleccione un Técnico..."
+							noSelectionOption="true" />
+						<f:selectItems value="#{beanDetalleSolicitud.listaTecnicos}" 
+							var="u"
+							itemLabel="#{u.apellidos} #{u.nombres}"
+							itemValue="#{u.idSegUsuario}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="Motivo del traspaso: " />
+					<p:inputTextarea value="#{beanDetalleSolicitud.moticoTraspaso}"
+						maxlength="500" rows="6" cols="33" />
+					<p:commandButton value="Traspasar" icon="pi pi-arrow-circle-right"
+						update="@form,:formDatos,:datosSolicitud" oncomplete="PF('dialogotraspasar').hide()"
+						actionListener="#{beanDetalleSolicitud.actionListenerTraspasar()}"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<h:form id="formDatos">
+			<p:dataTable value="#{beanDetalleSolicitud.listaDetallesSolicitud}"
+				var="p" reflow="true" emptyMessage="No hay registros aún.">
+				<p:column headerText="Motivo Traspaso" style="width:200px">
+					<h:outputText value="#{p.detMotTraspaso}" />
+				</p:column>
+				<p:column headerText="Técnico" width="200px">
+					<h:outputText value="#{p.segUsuario.apellidos} #{p.segUsuario.nombres}" />
+				</p:column>
+				<p:column headerText="Actividad" width="300px">
+					<h:outputText value="#{p.regActividad.actDescripcion}" />
+				</p:column>
+				<p:column headerText="Observación" width="300px">
+					<h:outputText value="#{p.detObservacion}" />
+				</p:column>
+				<p:column headerText="FECHA INICIO" sortBy="#{b.detFechaIni}">
+					<h:outputText value="#{p.detFechaIni}" />
+				</p:column>
+				<p:column headerText="FECHA FIN" sortBy="#{b.detFechaFin}">
+					<h:outputText value="#{p.detFechaFin}" />
+				</p:column>
+				<p:column headerText="Estado Actividad">
+					<span
+						class="solicitud-badge badge-#{p.regTipo.tipCodigo.toLowerCase()}">
+						#{p.regTipo.tipNombre}</span>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>

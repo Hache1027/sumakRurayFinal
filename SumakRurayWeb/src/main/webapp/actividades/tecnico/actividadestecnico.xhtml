@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>ACTIVIDADES</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog" action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<p:panelGrid columns="6">
+				<f:facet name="header">
+					<p:row>
+						<p:column colspan="7">IMPRIMIR REPORTES</p:column>
+					</p:row>
+				</f:facet>
+				<h:outputText value="Fecha inicio:" />
+				<p:datePicker value="#{beanReportes.fechaini}" />
+				<h:outputText value="Fecha fin:" />
+				<p:datePicker value="#{beanReportes.fechafin}" />
+				<p:commandButton
+					action="#{beanDetalleSolicitud.actionReporteResumido(beanDetalleSolicitud.idTecnicoReporte
+						,beanReportes.fechaini,beanReportes.fechafin)}"
+					styleClass="rounded-button ui-button-danger" ajax="false"
+					value="Resumido" icon="pi pi-print">
+				</p:commandButton>
+				<p:commandButton
+					action="#{beanDetalleSolicitud.actionReporteDetallado(beanDetalleSolicitud.idTecnicoReporte
+						,beanReportes.fechaini,beanReportes.fechafin)}"
+					styleClass="rounded-button ui-button-danger" ajax="false"
+					value="Detallado" icon="pi pi-print">
+				</p:commandButton>
+			</p:panelGrid>
+			<br />
+			<p:panelGrid columns="1">
+				<p:commandButton value="Nueva Actividad" icon="pi pi-plus-circle"
+					styleClass="rounded-button ui-button-success"
+					oncomplete="PF('dialogoNuevo').show()" update=":formNuevo"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+		<h:form id="formDatos" responsive="true" modal="true">
+			<p:dataTable value="#{beanDetalleSolicitud.listaDetalles}" var="b"
+				editable="true" editMode="cell" editInitEvent="dblclick"
+				emptyMessage="No hay registros aún." paginator="true" rows="10"
+				reflow="true" modal="true">
+				<p:column headerText="CÓDIGO SOLICITUD" width="110px"
+					sortBy="#{b.regSolicitud.regCodigo}">
+					<h:outputText value="#{b.regSolicitud.regCodigo}" />
+				</p:column>
+				<p:column headerText="ACTIVIDAD REALIZADA" width="400px"
+					sortBy="#{b.regActividad.actDescripcion}">
+					<h:outputText value="#{b.regActividad.actDescripcion}" />
+				</p:column>
+				<p:column headerText="INSUMO" sortBy="#{b.regInsumo.insNombre}"
+					width="180px" filterBy="#{b.regInsumo.insNombre}">
+					<h:outputText value="#{b.regInsumo.insNombre}" />
+				</p:column>
+				<p:column headerText="DEPENDENCIA" filterBy="#{b.segDependencia.depDescripcion}"
+					sortBy="#{b.segDependencia.depDescripcion}" width="180px">
+					<h:outputText value="#{b.segDependencia.depDescripcion}" />
+				</p:column>
+				<p:column headerText="FECHA INICIO" sortBy="#{b.detFechaIni}" sortOrder="DESC">
+					<h:outputText value="#{b.detFechaIni}" />
+				</p:column>
+				<p:column headerText="FECHA FIN" sortBy="#{b.detFechaFin}">
+					<h:outputText value="#{b.detFechaFin}" />
+				</p:column>
+				<p:column headerText="ESTADO" sortBy="#{b.regTipo.tipNombre}"
+					filterBy="#{b.regTipo.tipNombre}">
+					<span
+						class="solicitud-badge badge-#{b.regTipo.tipCodigo.toLowerCase()}">
+						#{b.regTipo.tipNombre}</span>
+				</p:column>
+				<p:column headerText="Opciones">
+					<p:commandButton icon="pi pi-pencil"
+						styleClass="rounded-button ui-button-secondary"
+						actionListener="#{beanDetalleSolicitud.actionListenerCargarDetalle(b)}"
+						oncomplete="PF('dialogoEdicion').show()" update=":formEdicion"></p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+	<p:dialog header="Edición" widgetVar="dialogoEdicion" showEffect="fade"
+		width="88%" modal="true" responsive="true">
+		<h:form id="formEdicion">
+			<p:panelGrid columns="4" layout="grid"
+				columnClasses="ui-grid-col-3, ui-grid-col-7,ui-grid-col-3, ui-grid-col-7">
+				<h:outputText value="CÓDIGO SOLICITUD:" />
+				<h:outputText
+					value="#{beanDetalleSolicitud.edicionDetalle.regSolicitud.regCodigo}" />
+				<h:outputText value="Actividad realizada: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.actividadSeleccionada}" effect="fold"
+					style="width:443px">
+					<f:selectItem itemLabel="Seleccione una actividad..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaActividades}"
+						var="u" itemLabel="#{u.actDescripcion}" itemValue="#{u.actId}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Observación:" />
+				<p:inputTextarea
+					value="#{beanDetalleSolicitud.edicionDetalle.detObservacion}"
+					required="true" requiredMessage="Ingrese una Observación"
+					maxlength="500" rows="6" cols="54" />
+				<p:outputLabel value="Dependencia: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.idDepandenciaSeleccionada}"
+					effect="fold" style="width:90%"
+					disabled="#{beanDetalleSolicitud.edicionDetalle.regSolicitud  != null}">
+					<f:selectItem itemLabel="Seleccione una dependencia..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaDependencias}"
+						var="u" itemLabel="#{u.depDescripcion}"
+						itemValue="#{u.idSegDependencia}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:outputLabel value="Insumo: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.idInsumoSeleccionado}" effect="fold"
+					style="width:90%"
+					disabled="#{beanDetalleSolicitud.edicionDetalle.regSolicitud  != null}">
+					<f:selectItem itemLabel="Seleccione un insumo..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaInsumos}" var="u"
+						itemLabel="#{u.insNombre}" itemValue="#{u.insId}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Estado de la Actividad: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.tipoSelected}" effect="fold"
+					style="width:250px" required="true" requiredMessage="Debe elegir un ESTADO">
+					<f:selectItem itemLabel="Seleccione un estado..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaTipo}" var="u"
+						itemLabel="#{u.tipNombre}" itemValue="#{u.tipId}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Fecha Inicio:" />
+				<p:datePicker value="#{beanDetalleSolicitud.fechaIni}"
+					showTime="true"
+					disabled="#{beanDetalleSolicitud.edicionDetalle.regSolicitud  != null}" />
+				<h:outputText value="Fecha Fin:" />
+				<p:datePicker value="#{beanDetalleSolicitud.fechaFin}"
+					showTime="true"
+					disabled="#{beanDetalleSolicitud.edicionDetalle.regSolicitud  != null}" />
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					update="@form,:formDatos" oncomplete="PF('dialogoEdicion').hide()" 
+					disabled="#{!beanDetalleSolicitud.edicionDetalle.estadoMostrar}"
+					actionListener="#{beanDetalleSolicitud.actionListenerActualizarEdicionDetalle()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	<p:dialog header="Nueva" widgetVar="dialogoNuevo" showEffect="fade"
+		width="80%" modal="true" responsive="true">
+		<h:form id="formNuevo">
+			<p:panelGrid columns="4" layout="grid"
+				columnClasses="ui-grid-col-2, ui-grid-col-7,ui-grid-col-2, ui-grid-col-7"
+				contentStyleClass="align-items-baseline ui-fluid">
+				<p:outputLabel value="Insumo: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.idInsumoSeleccionadonuevo}"
+					effect="fold" style="width:90%">
+					<f:selectItem itemLabel="Seleccione un insumo..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaInsumos}" var="u"
+						itemLabel="#{u.insNombre}" itemValue="#{u.insId}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:outputLabel value="Dependencia: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.idDepandenciaSeleccionadanuevo}"
+					effect="fold" style="width:90%">
+					<f:selectItem itemLabel="Seleccione una dependencia..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaDependencias}"
+						var="u" itemLabel="#{u.depDescripcion}"
+						itemValue="#{u.idSegDependencia}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:outputLabel value="Actividad realizada: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.actividadSeleccionadanueva}"
+					effect="fold" style="width:90%">
+					<f:selectItem itemLabel="Seleccione una actividad..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaActividades}"
+						var="u" itemLabel="#{u.actDescripcion}" itemValue="#{u.actId}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:outputLabel value="Observación:" />
+				<p:inputTextarea
+					value="#{beanDetalleSolicitud.nuevoDetalle.detObservacion}"
+					required="true" requiredMessage="Ingrese una Observación"
+					maxlength="500" rows="6" cols="46" />
+				<p:outputLabel value="Fecha Inicio:" />
+				<p:datePicker value="#{beanDetalleSolicitud.fechaIninuevo}"
+					showTime="true" required="true"
+					requiredMessage="Debe ingresar una fecha de inicio" />
+				<p:outputLabel value="Fecha Fin:" />
+				<p:datePicker value="#{beanDetalleSolicitud.fechaFinnuevo}"
+					showTime="true" />
+				<p:outputLabel value="Estado de la Actividad: " />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanDetalleSolicitud.tipoSelectednuevo}" effect="fold"
+					style="width:250px" required="true" requiredMessage="Debe elegir un ESTADO">
+					<f:selectItem itemLabel="Seleccione un estado..."
+						noSelectionOption="true" />
+					<f:selectItems value="#{beanDetalleSolicitud.listaTipo}" var="u"
+						itemLabel="#{u.tipNombre}" itemValue="#{u.tipId}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					styleClass="rounded-button ui-button-help"
+					update="@form,:formDatos" oncomplete="PF('dialogoNuevo').hide()"
+					style="width:150px"
+					actionListener="#{beanDetalleSolicitud.actionListenerRegistrarActividad()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+</body>
+</html>

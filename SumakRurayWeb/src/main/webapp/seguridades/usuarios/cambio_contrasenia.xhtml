@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarOnlyLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>CAMBIO CONTRASEÑA</title>
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/sumakruray.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl> 
+	<h:form>
+		<p:menubar> 
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="/menu?faces-redirect=true" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+		<p:staticMessage severity="warn" summary="CAMBIO DE CONTRASEÑA"></p:staticMessage>
+	</h:form>
+	<div align="center">
+		<h:form>
+			<p:panelGrid columns="1" style="width:550px" layout="grid">
+				<p:outputLabel for="CA" value="Contraseña Actual" />
+				<p:password id="CA" value="#{beanSegUsuarios.cambioContrasenia.contraseniaAnterior}" style="width:300px"
+					required="true" requiredMessage="Ingrese la contraseña Actual" maxlength="60"/>
+				<p:outputLabel for="CN" value="Contraseña Nueva" />
+				<p:password id="CN" value="#{beanSegUsuarios.cambioContrasenia.contraseniaNueva}" style="width:300px"
+					required="true" requiredMessage="Ingrese la nueva contraseña" maxlength="60"/>
+				<p:outputLabel for="CCN" value="Confirmar contraseña Nueva" />
+				<p:password id="CCN" value="#{beanSegUsuarios.verificarContrasenia}" style="width:300px"
+					required="true" requiredMessage="Debe confirmar la nueva contraseña" maxlength="60"/>
+				<p:outputLabel for="motivo" value="Motivo del cambio" />
+				<p:inputTextarea id="motivo" required="true" requiredMessage="Debe ingresar el motivo por el que 
+					cambia la contraseña" maxlength="300"
+					value="#{beanSegUsuarios.cambioContrasenia.motivo}"
+					rows="6" cols="45"/>
+				<p:commandButton value="GUARDAR CAMBIOS" icon="pi pi-save"
+					update="@form" styleClass="rounded-button ui-button-warning"
+					actionListener="#{beanSegUsuarios.actionListenerCambiarContraseniaUsuario()}">
+					<p:confirm header="Confirmación"
+						message="¿Desea Guardar los cambios?" icon="pi pi-info-circle" />
+				</p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</div>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>
