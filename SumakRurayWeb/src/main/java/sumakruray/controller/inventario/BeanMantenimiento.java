@@ -409,7 +409,7 @@ public class BeanMantenimiento implements Serializable {
 			Class.forName("org.postgresql.Driver");
 			System.out.println("Driver");
 			Connection connection = null;
-			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sumakruray2", "postgres",
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sumakruray", "postgres",
 					"vicoc123");
 			JasperPrint impresion = JasperFillManager.fillReport(ruta, parametros, connection);
 			JasperExportManager.exportReportToPdfStream(impresion, response.getOutputStream());
@@ -440,7 +440,7 @@ public class BeanMantenimiento implements Serializable {
 			Class.forName("org.postgresql.Driver");
 			System.out.println("Driver");
 			Connection connection = null;
-			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sumakruray2", "postgres",
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sumakruray", "postgres",
 					"vicoc123");
 			JasperPrint impresion = JasperFillManager.fillReport(ruta, parametros, connection);
 			JasperExportManager.exportReportToPdfStream(impresion, response.getOutputStream());

@@ -11,7 +11,7 @@
 <h:head>
 	<title>Menú de Accesorios</title>
 	<link rel="stylesheet" type="text/css"
-		href="../../resources/css/SumakRuray.css" />
+		href="../../resources/css/sumakRuray.css" />
 </h:head>
 <body>
 	<h:form>
@@ -89,7 +89,7 @@
 	<!-- ************Ventana emergente para enviar a Bodega********** -->
 
 	<p:dialog widgetVar="dialogoAccesorioBodega" align="center"
-		header="Accesorio de Bodega">
+		header="Accesorio de Bodega" modal="true">
 		<h:form id="lista4">
 			<div align="center">
 				<p>
@@ -106,13 +106,13 @@
 					<b><h:outputText value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBodega.nuevoBodegaAccesorio.bodObservacion}"/>
+					value="#{beanBodega.nuevoBodegaAccesorio.bodObservacion}" maxlength="300"/>
 				<p>
 					<p:panelGrid columns="3">
 						<p:commandButton value="Enviar a Bodega"
 							icon="pi pi-sort-amount-down" styleClass="ui-button-danger"
 							action="#{beanAccesorio.actionListenerInsertarNuevoAccesorioABodega(beanAccesorio.accesorioBodega,beanAccesorio.equipoDevuelto.equipo)}"
-							update="@form,:lista1">
+							update="@form,:lista1" oncomplete="PF('dialogoAccesorioBodega').hide()">
 							<p:confirm header="Confirmación"
 								message="Desea enviar a Bodega este Accesorio?"
 								icon="pi pi-info-circle" />
