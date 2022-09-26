@@ -42,7 +42,9 @@
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
-					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog"
+						action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
 					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
 						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
 				</p:menuButton>
@@ -167,7 +169,8 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanResponsable.actionListenerInsertarNuevoResponsable()}"
-					update="listaResponsable" oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
+					update="listaResponsable"
+					oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
 			</p:panelGrid>
 
 
