@@ -32,7 +32,7 @@
 	</h:form>
 	<p:panel>
 		<p:commandButton value="Nuevo" icon="pi pi-plus" id="cmdNuevo"></p:commandButton>
-		<p:overlayPanel for="cmdNuevo" showCloseIcon="true">
+		<p:overlayPanel for="cmdNuevo" showCloseIcon="true" modal="true" dynamic="true">
 			<h:form> 
 				<p:panelGrid columns="2">
 					<h:outputText value="Nombre Categoría: " />

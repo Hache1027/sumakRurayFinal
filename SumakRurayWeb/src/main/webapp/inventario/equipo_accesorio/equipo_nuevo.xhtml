@@ -11,7 +11,7 @@
 <h:head>
 	<title>Nuevo Equipo</title>
 	<link rel="stylesheet" type="text/css"
-		href="../../resources/css/SumakRuray.css" />
+		href="../../resources/css/sumakruray.css" />
 
 </h:head>
 <body>
@@ -45,7 +45,9 @@
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
-					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cambiar Contraseña" icon="pi pi-cog"
+						action="#{beanSegUsuarios.actionMenuCambioContrasenia()}"
+						onclick="location.href='../../seguridades/usuarios/cambio_contrasenia.xhtml'"></p:menuitem>
 					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
 						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
 				</p:menuButton>

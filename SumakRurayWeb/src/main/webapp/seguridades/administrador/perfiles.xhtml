@@ -32,7 +32,7 @@
 	</h:form>
 	<p:panel>
 		<p:commandButton value="Nuevo" icon="pi pi-plus" id="cmdNuevo"></p:commandButton>
-		<p:overlayPanel for="cmdNuevo" showCloseIcon="true">
+		<p:overlayPanel for="cmdNuevo" showCloseIcon="true" modal="true" dynamic="true">
 			<h:form>
 				<p:panelGrid columns="2">
 					<h:outputText value="Nombre del módulo:" />
@@ -70,7 +70,7 @@
 			</p:dataTable>
 		</h:form>
 	</p:panel>
-	<p:dialog header="Edición" widgetVar="dialogoEdicion" width="580px">
+	<p:dialog header="Edición" widgetVar="dialogoEdicion" width="580px" modal="true" responsive="true" >
 		<h:form id="formEdicion">
 			<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-5, ui-grid-col-7">
 				<h:outputText value="Nombre del módulo:" />
