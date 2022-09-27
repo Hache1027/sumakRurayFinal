@@ -24,7 +24,7 @@
 			<p:menuitem value="Menú" icon="pi pi-home"
 				action="/menu?faces-redirect=true" />
 			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left"
-				action="tipo_equipo" />
+				action="menu" />
 			<p:menuitem value="Responsable" icon="pi pi-plus"
 				title="Nuevo Responsable"
 				action="#{beanResponsable.actionNuevoResponsable()}"
@@ -41,6 +41,11 @@
 				title="Nuevo Dependencia"
 				action="#{beanDependencia.actionNuevoSegDependencia()}"
 				oncomplete="PF('dialogoCrearDependencia').show()" />
+			<p:menuitem value="Tipo Equipo" icon="pi pi-plus"
+				title="Nuevo Tipo de Equipo"
+				action="#{beanTipoEquipo.actionMenuNuevoTipoEquipos()}"
+				oncomplete="PF('dialogoCrearTipoEquipo').show()" />
+
 
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
@@ -61,9 +66,7 @@
 		<div align="center">
 			<p:splitter style="height: auto; width:auto" styleClass="mb-5">
 
-				<p:splitterPanel
-					styleClass="flex align-items-center justify-content-center"
-					size="60" minSize="60">
+				<p:splitterPanel>
 					<!-- ________________________splitter 1 _______________________________________ -->
 					<p>
 						<b><h:outputText value="INFORMACIÓN DEL  EQUIPO" /></b>
@@ -74,7 +77,18 @@
 							action="#{beanEquipo.actionListenerInsertarNuevoEquipo()}"
 							update="@form" />
 					</p>
+
 					<p:panelGrid columns="4" id="datosEquipo">
+						<h:outputText value="TIPO EQUIPO" />
+						<p:selectOneMenu filterMatchMode="contains" filter="true"
+							value="#{beanEquipo.tipEquiIdSeleccionado}" required="true"
+							requiredMessage="Ingrese un tipo de Equipo" id="listaTipoEquipo">
+							<f:selectItem itemLabel="Seleccione un tipo de Equipo..."
+								noSelectionOption="true" />
+							<f:selectItems value="#{beanTipoEquipo.listaTipoEquipos}" var="u"
+								itemLabel=" #{u.tipEquiNombre}" itemValue="#{u.tipEquiId}">
+							</f:selectItems>
+						</p:selectOneMenu>
 						<h:outputText value="NOMBRE:" />
 						<p:inputText value="#{beanEquipo.nuevoEquipo.equiNombre}"
 							required="true" requiredMessage="Ingrese la cedula" />
@@ -157,9 +171,7 @@
 				</p:splitterPanel>
 
 				<!-- ________________________splitter 2 _______________________________________ -->
-				<p:splitterPanel
-					styleClass="flex align-items-center justify-content-center"
-					size="25">
+				<p:splitterPanel>
 					<p>
 						<b><h:outputText value="ACCESORIOS" /></b>
 					</p>
@@ -205,9 +217,7 @@
 					</p:dataTable>
 				</p:splitterPanel>
 				<!-- ________________________splitter 3 _______________________________________ -->
-				<p:splitterPanel
-					styleClass="flex align-items-center justify-content-center"
-					minSize="25">
+				<p:splitterPanel>
 					<p>
 						<b><h:outputText value="CARACTERISTICAS" /></b>
 					</p>
@@ -282,10 +292,8 @@
 		</h:form>
 		<h:form id="lista2">
 			<div align="center">
-				<p:splitter style="height: 500px; width:1600px" styleClass="mb-5">
-					<p:splitterPanel
-						styleClass="flex align-items-center justify-content-center"
-						size="130" minSize="60">
+				<p:splitter style="height: auto; width:auto" styleClass="mb-5">
+					<p:splitterPanel>
 						<p>
 							<b><h:outputText value="INFORMACIÓN DEL ACCESORIO" /></b>
 						</p>
@@ -347,9 +355,7 @@
 					</p:splitterPanel>
 					<!-- ________________________splitter 2 Accesorio_________________________ -->
 
-					<p:splitterPanel
-						styleClass="flex align-items-center justify-content-center"
-						minSize="25">
+					<p:splitterPanel>
 						<p>
 							<b><h:outputText value="CARACTERISTICAS" /></b>
 						</p>
@@ -389,9 +395,7 @@
 					</p:splitterPanel>
 					<!-- ________________________splitter 3 Accesorio_________________________ -->
 
-					<p:splitterPanel
-						styleClass="flex align-items-center justify-content-center"
-						minSize="25">
+					<p:splitterPanel>
 						<p>
 							<b><h:outputText value="ACCESORIOS DEL EQUIPO" /></b>
 						</p>
@@ -445,14 +449,16 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanResponsable.actionListenerInsertarNuevoResponsable()}"
-					update="@form,:lista3:listaResponsable" oncomplete="PF('dialogoCrearResponsable').show()"></p:commandButton>
+					update="@form,:lista3:listaResponsable"
+					oncomplete="PF('dialogoCrearResponsable').show()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
 	<!-- ________________________VENTANA EMERGENTE CREAR PROVEEDOR _______________________________________ -->
 
-	<p:dialog header="Crear Proveedor" widgetVar="dialogoCrearProveedor" modal="true">
-		<h:form id="formCrearProveedor" >
+	<p:dialog header="Crear Proveedor" widgetVar="dialogoCrearProveedor"
+		modal="true">
+		<h:form id="formCrearProveedor">
 			<p:panelGrid columns="2">
 				<h:outputText value="Empresa:" />
 				<p:inputText value="#{beanProveedor.nuevoProveedor.proEmpresa}"
@@ -470,14 +476,16 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanProveedor.actionListenerInsertarNuevoProveedor()}"
-					update="@form,:lista3:listaProveedor,:lista2:listaProveedor2" oncomplete="PF('dialogoCrearProveedor').hide()"></p:commandButton>
+					update="@form,:lista3:listaProveedor,:lista2:listaProveedor2"
+					oncomplete="PF('dialogoCrearProveedor').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
 	<!-- ________________________VENTANA EMERGENTE CREAR ATRIBUTO _______________________________________ -->
 
-	<p:dialog header="Crear Atributo" widgetVar="dialogoCrearAtributo" modal="true">
+	<p:dialog header="Crear Atributo" widgetVar="dialogoCrearAtributo"
+		modal="true">
 		<h:form id="formCrearAtributo">
 			<p:panelGrid columns="2">
 				<h:outputText value="Descripción:" />
@@ -485,7 +493,8 @@
 					required="true" requiredMessage="Ingrese el nombre del atributo" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanAtributo.actionListenerInsertarNuevoAtributo()}"
-					update="@form,:lista3:listaAtributo,:lista2:listaAtributo" oncomplete="PF('dialogoCrearAtributo').hide()"></p:commandButton>
+					update="@form,:lista3:listaAtributo,:lista2:listaAtributo"
+					oncomplete="PF('dialogoCrearAtributo').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
@@ -493,7 +502,8 @@
 
 	<!-- ________________________VENTANA EMERGENTE CREAR TIPO MARCA _______________________________________ -->
 
-	<p:dialog header="Crear tipo Marca" widgetVar="dialogoCrearTipoMarca" modal="true">
+	<p:dialog header="Crear tipo Marca" widgetVar="dialogoCrearTipoMarca"
+		modal="true">
 		<h:form id="formCrearTipoMarca">
 			<p:panelGrid columns="2">
 				<h:outputText value="Descripción:" />
@@ -501,7 +511,8 @@
 					required="true" requiredMessage="Ingrese la Marca" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanMarca.actionListenerInsertarNuevoMarca()}"
-					update="@form,:lista3:listaMarca,:lista2:listaMarca2" oncomplete="PF('dialogoCrearTipoMarca').hide()"></p:commandButton>
+					update="@form,:lista3:listaMarca,:lista2:listaMarca2"
+					oncomplete="PF('dialogoCrearTipoMarca').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
@@ -517,7 +528,8 @@
 					required="true" requiredMessage="Ingrese la Dependencia" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanDependencia.actionListenerInsertarNuevoSegDependencia()}"
-					update="@form,:lista3:listaDependencia" oncomplete="PF('dialogoCrearDependencia').hide()"></p:commandButton>
+					update="@form,:lista3:listaDependencia"
+					oncomplete="PF('dialogoCrearDependencia').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
@@ -534,7 +546,8 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanTipoAccesorio.actionListenerInsertarNuevoTipoAccesorio()}"
-					update="@form,:lista2:listaTipoAccesorio" oncomplete="PF('dialogoCrearTipoAccesorio').hide()"></p:commandButton>
+					update="@form,:lista2:listaTipoAccesorio"
+					oncomplete="PF('dialogoCrearTipoAccesorio').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
@@ -610,6 +623,21 @@
 				</p:splitterPanel>
 			</p:splitter>
 		</div>
+	</p:dialog>
+	<p:dialog header="Crear Tipo Equipo" widgetVar="dialogoCrearTipoEquipo"
+		modal="true">
+		<h:form id="formCrearTipoEquipo">
+			<p:panelGrid columns="2">
+				<h:outputText value="Nombre:" />
+				<p:inputText value="#{beanTipoEquipo.nuevoTipoEquipo.tipEquiNombre}"
+					required="true" requiredMessage="Ingrese el tipo de Equipo" />
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					actionListener="#{beanTipoEquipo.actionListenerInsertarNuevoTipoEquipo()}"
+					update="@form,:lista3:listaTipoEquipo"
+					oncomplete="PF('dialogoCrearTipoEquipo').hide()"></p:commandButton>
+
+			</p:panelGrid>
+		</h:form>
 	</p:dialog>
 
 

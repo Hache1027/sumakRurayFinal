@@ -19,9 +19,8 @@
 			<p:menuitem value="Menú" icon="pi pi-home"
 				action="/menu?faces-redirect=true" />
 			<p:menuitem value="Nuevo Equipo" icon="pi pi-users"
-				action="tipo_equipo" />
-			<p:menuitem value="Equipo para Baja" icon="pi pi-sort-amount-down"
-				action="#{beanSegDependencia.actionMenuDependencias()}" />
+				action="#{beanEquipo.actionMenuEquipos()}" />
+
 
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"

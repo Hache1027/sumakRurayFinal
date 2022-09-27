@@ -74,6 +74,8 @@ public class BeanEquipo implements Serializable {
 	@Inject
 	private BeanBodega beanBodega;
 	@Inject
+	private BeanTipoEquipo beanTipoEquipo;
+	@Inject
 	private BeanListaIp beanListaIp;
 	@Inject
 	private BeanSegLogin beanSegLogin;
@@ -239,6 +241,7 @@ public class BeanEquipo implements Serializable {
 		beanProveedor.actionConsultarAllProveedor();
 		beanMarca.actionConsultarAllMarca();
 		beanAtributo.actionConsultarAllAtributo();
+		beanTipoEquipo.actionFindAllTiposEquipo();
 	}
 
 	/**
@@ -293,8 +296,7 @@ public class BeanEquipo implements Serializable {
 	 * @throws Exception
 	 */
 
-	public String actionMenuEquipos(int tipEquiIdSeleccionados) throws Exception {
-		tipEquiIdSeleccionado = tipEquiIdSeleccionados;
+	public String actionMenuEquipos() throws Exception {
 		VaciarVariablesEquipo();
 		cargarVaribalesParaEquipo();
 		verificador = true;
@@ -637,9 +639,9 @@ public class BeanEquipo implements Serializable {
 		try {
 			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-			
+
 			equipo.setEquiFechaModificacion(tiempo);
-			equipo.setEquiUsuarioModifica(persona.getNombres()+" "+persona.getApellidos());
+			equipo.setEquiUsuarioModifica(persona.getNombres() + " " + persona.getApellidos());
 
 			managerEquipo.actualizarEquipofromMantenimiento(beanSegLogin.getLoginDTO(), equipo);
 

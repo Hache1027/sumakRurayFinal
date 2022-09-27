@@ -31,6 +31,7 @@ public class BeanTipoAccesorio implements Serializable {
 	private List<TipoAccesorio> listaTipoAccesorios;
 	private TipoAccesorio nuevoTipoAccesorio;
 	private TipoAccesorio edicionTipoAccesorio;
+	private String tipoAcesorio;
 
 	//
 	public BeanTipoAccesorio() {
@@ -52,6 +53,13 @@ public class BeanTipoAccesorio implements Serializable {
 	public void actionNuevoTipoAccesorio() {
 		nuevoTipoAccesorio = new TipoAccesorio();
 		nuevoTipoAccesorio.setTipAccCantidad(0);
+	}
+
+	// Redirección al menu de TipoAccesorio
+	public void actionFindTipoAccesorio() throws Exception {
+		System.out.println(tipoAcesorio + ".......");
+		listaTipoAccesorios = managerTipoAE.findTipoAccebyName(tipoAcesorio);
+
 	}
 	/*
 	 * 
@@ -139,4 +147,13 @@ public class BeanTipoAccesorio implements Serializable {
 		this.edicionTipoAccesorio = edicionTipoAccesorio;
 	}
 
+	public String getTipoAcesorio() {
+		return tipoAcesorio;
+	}
+
+	public void setTipoAcesorio(String tipoAcesorio) {
+		this.tipoAcesorio = tipoAcesorio;
+	}
+
+	
 }

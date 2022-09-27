@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-
+import sumakruray.model.core.entities.Accesorio;
 import sumakruray.model.core.entities.TipoAccesorio;
 import sumakruray.model.core.entities.TipoEquipo;
 import sumakruray.model.core.managers.ManagerDAO;
@@ -20,7 +20,6 @@ import sumakruray.model.seguridades.dtos.LoginDTO;
 public class ManagerTipoAE {
 	@EJB
 	private ManagerDAO mDAO;
-	
 
 	/**
 	 * Default constructor.
@@ -36,12 +35,21 @@ public class ManagerTipoAE {
 	public List<TipoAccesorio> findAllTipoAccesorios() {
 		return mDAO.findAll(TipoAccesorio.class, null);
 	}
+
+	/**
+	 * Consulta un tipo de accesorio Accesorios
+	 */
+	public List<TipoAccesorio> findTipoAccebyName(String nombre) throws Exception {
+		return mDAO.findWhere(TipoAccesorio.class, "tip_acc_nombre='" + nombre + "'", null);
+	}
+
 	/**
 	 * Insertar un nuevo registro de TipoAccesorio
 	 */
 	public void insertarTipoAccesorio(LoginDTO loginDTO, TipoAccesorio nuevoTipoAccesorio) throws Exception {
 		mDAO.insertar(nuevoTipoAccesorio);
 	}
+
 	/**
 	 * Consultar un TipoAccesorio por su tipAccId
 	 */
@@ -58,12 +66,14 @@ public class ManagerTipoAE {
 	public List<TipoEquipo> findAllTipoEquipos() {
 		return mDAO.findAll(TipoEquipo.class, null);
 	}
+
 	/**
 	 * Insertar un nuevo registro de TipoEquipo
 	 */
 	public void insertarTipoEquipo(LoginDTO loginDTO, TipoEquipo nuevoTipoEquipo) throws Exception {
 		mDAO.insertar(nuevoTipoEquipo);
 	}
+
 	/**
 	 * Consultar un TipoEquipo por su tipEquiId
 	 */

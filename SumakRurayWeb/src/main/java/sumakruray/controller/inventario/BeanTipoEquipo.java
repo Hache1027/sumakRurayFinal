@@ -34,20 +34,17 @@ public class BeanTipoEquipo implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	// **********************--___TipoEquipo__--******************************************
-	@PostConstruct
-	public void inicializar() {
-		listaTipoEquipos = managerTipoAE.findAllTipoEquipos();
+	// Crear TipoEquipo
+	public void actionMenuNuevoTipoEquipos() {
 		nuevoTipoEquipo = new TipoEquipo();
 		nuevoTipoEquipo.setTipEquiCantidad(0);
 	}
 
-	// Crear TipoEquipo
-	public String actionMenuNuevoTipoEquipos() {
-		nuevoTipoEquipo = new TipoEquipo();
-
-		nuevoTipoEquipo.setTipEquiCantidad(0);
-		return "TipoEquipo";
+	/**
+	 * Consultar todos los Tipos de Equipos
+	 */
+	public void actionFindAllTiposEquipo() {
+		listaTipoEquipos = managerTipoAE.findAllTipoEquipos();
 	}
 
 	// Crear TipoEquipos

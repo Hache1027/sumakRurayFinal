@@ -39,6 +39,10 @@
 				title="Nueva Dependencia"
 				action="#{beanDependencia.actionNuevoSegDependencia()}"
 				oncomplete="PF('dialogoCrearDependencia').show()" />
+			<p:menuitem value="Tipo Accesorio" icon="pi pi-plus"
+				title="Nuevo tipo Accesorio"
+				action="#{beanTipoAccesorio.actionNuevoTipoAccesorio()}"
+				oncomplete="PF('dialogoCrearTipoAccesorio').show()" />
 
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
@@ -57,9 +61,7 @@
 		<div align="center">
 
 			<p:splitter style="height: auto; width:auto" styleClass="mb-5">
-				<p:splitterPanel
-					styleClass="flex align-items-center justify-content-center"
-					size="130" minSize="60">
+				<p:splitterPanel>
 					<p>
 						<b><h:outputText value="INFORMACIÓN ACCESORIOS" /></b>
 					</p>
@@ -70,6 +72,18 @@
 							update="@form" />
 					</p>
 					<p:panelGrid columns="6">
+						<h:outputText value="TIPO ACCESORIO" />
+						<p:selectOneMenu filterMatchMode="contains" filter="true"
+							value="#{beanAccesorio.tipAccIdSeleccionado}"
+							id="listaTipoAccesorio" required="true"
+							requiredMessage="Ingrese el Tipo de Accesorio" style="width:200px">
+							<f:selectItem itemLabel="Seleccione un Tipo de Accesorio..."
+								noSelectionOption="true" />
+							<f:selectItems value="#{beanTipoAccesorio.listaTipoAccesorios}"
+								var="u" itemLabel=" #{u.tipAccNombre}" itemValue="#{u.tipAccId}"></f:selectItems>
+						</p:selectOneMenu>
+
+
 						<p:outputLabel for="@next" value="NOMBRE:" />
 						<p:inputText value="#{beanAccesorio.nuevoAccesorio.acceNombre}"
 							required="true" requiredMessage="Ingrese la cedula" />
@@ -86,7 +100,8 @@
 						<p:spinner value="#{beanAccesorio.nuevoAccesorio.acceGarantia}"
 							required="true" style=" width:100px" />
 						<h:outputText value="AÑOS UTIL :" />
-						<p:spinner value="#{beanAccesorio.nuevoAccesorio.acceAnioVidaUtil}"
+						<p:spinner
+							value="#{beanAccesorio.nuevoAccesorio.acceAnioVidaUtil}"
 							required="true" style=" width:100px" />
 
 
@@ -160,9 +175,7 @@
 
 				</p:splitterPanel>
 				<!-- ____________________________Splitter 2________________________________ -->
-				<p:splitterPanel
-					styleClass="flex align-items-center justify-content-center"
-					minSize="25">
+				<p:splitterPanel>
 					<p>
 						<b><h:outputText value="CARACTERISTICAS" /></b>
 					</p>
@@ -191,7 +204,7 @@
 							update="@form" styleClass="rounded-button ui-button-help" />
 					</p:panelGrid>
 					<p:dataTable value="#{beanAccesorio.cabecera.accesorioAtributos}"
-						var="atributos" style="width:400px">
+						var="atributos" style="width:auto">
 						<p:column headerText="ATRIBUTO" style="width:10px">
 							<h:outputText value="#{atributos.atributo.atriNombre}" />
 						</p:column>
@@ -238,13 +251,15 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanResponsable.actionListenerInsertarNuevoResponsable()}"
-					update="@form,:lista3:listaResponsable" oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
+					update="@form,:lista3:listaResponsable"
+					oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
 
-	<p:dialog header="Crear Proveedor" widgetVar="dialogoCrearProveedor" modal="true">
+	<p:dialog header="Crear Proveedor" widgetVar="dialogoCrearProveedor"
+		modal="true">
 		<h:form id="formCrearProveedor">
 			<p:panelGrid columns="2">
 				<h:outputText value="Empresa:" />
@@ -263,12 +278,14 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanProveedor.actionListenerInsertarNuevoProveedor()}"
-					update="@form,:lista3:listaProveedor" oncomplete="PF('dialogoCrearProveedor').hide()"></p:commandButton>
+					update="@form,:lista3:listaProveedor"
+					oncomplete="PF('dialogoCrearProveedor').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
-	<p:dialog header="Crear Atributo" widgetVar="dialogoCrearAtributo" modal="true">
+	<p:dialog header="Crear Atributo" widgetVar="dialogoCrearAtributo"
+		modal="true">
 		<h:form id="formCrearAtributo">
 			<p:panelGrid columns="2">
 				<h:outputText value="Descripción:" />
@@ -278,7 +295,8 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanAtributo.actionListenerInsertarNuevoAtributo()}"
-					update="@form,:lista3:listaAtributos" oncomplete="PF('dialogoCrearAtributo').hide()"></p:commandButton>
+					update="@form,:lista3:listaAtributos"
+					oncomplete="PF('dialogoCrearAtributo').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
@@ -293,12 +311,14 @@
 					value="#{beanTipoAccesorio.nuevoTipoAccesorio.tipAccNombre}"
 					required="true" requiredMessage="Ingrese el tipo de Accesorio" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
-					actionListener="#{beanStock.actionListenerInsertarNuevoStock()}"
-					update="@form,:lista3" oncomplete="PF('dialogoCrearTipoAccesorio').hide()"></p:commandButton>
+					actionListener="#{beanTipoAccesorio.actionListenerInsertarNuevoTipoAccesorio()}"
+					update="@form,:lista3:listaTipoAccesorio"
+					oncomplete="PF('dialogoCrearTipoAccesorio').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
-	<p:dialog header="Crear tipo Marca" widgetVar="dialogoCrearTipoMarca" modal="true">
+	<p:dialog header="Crear tipo Marca" widgetVar="dialogoCrearTipoMarca"
+		modal="true">
 		<h:form id="formCrearTipoMarca">
 			<p:panelGrid columns="2">
 				<h:outputText value="Descripción:" />
@@ -306,7 +326,8 @@
 					required="true" requiredMessage="Ingrese la Marca" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanMarca.actionListenerInsertarNuevoMarca()}"
-					update="@form,:lista3:listaMarca" oncomplete="PF('dialogoCrearTipoMarca').hide()"></p:commandButton>
+					update="@form,:lista3:listaMarca"
+					oncomplete="PF('dialogoCrearTipoMarca').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
@@ -320,7 +341,8 @@
 					required="true" requiredMessage="Ingrese la Dependencia" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanDependencia.actionListenerInsertarNuevoSegDependencia()}"
-					update="@form,:lista3:listaDependencia" oncomplete="PF('dialogoCrearDependencia').hide()"></p:commandButton>
+					update="@form,:lista3:listaDependencia"
+					oncomplete="PF('dialogoCrearDependencia').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
@@ -429,8 +451,6 @@
 		</h:form>
 
 	</p:dialog>
-
-
 
 </body>
 </html>

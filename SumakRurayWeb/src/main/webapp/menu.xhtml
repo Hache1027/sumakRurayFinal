@@ -41,10 +41,10 @@
 					<br />MENÚ <i class="pi pi-clone"></i> <br />
 				</div>
 				<h:form>
-						<p:dataView value="#{beanSegLogin.loginDTO.listaPerfiles}" style="width:600px"
+						<p:dataView value="#{beanSegLogin.loginDTO.listaPerfiles}" style="width:auto"
 							var="perfil" layout="grid" gridIcon="pi pi-th-large"
 							emptyMessage="No tiene perfiles asignados. Consulte al administrador.">
-							<p:dataViewGridItem>
+							<p:dataViewGridItem columns="4">
 								<p:commandLink
 									action="#{beanSegLogin.actionMenu(perfil.rutaAcceso)}">
 									<p:panelGrid columns="1">

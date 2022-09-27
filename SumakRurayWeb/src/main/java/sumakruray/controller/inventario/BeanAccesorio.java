@@ -76,6 +76,8 @@ public class BeanAccesorio implements Serializable {
 	@Inject
 	private BeanSegLogin beanSegLogin;
 	@Inject
+	private BeanTipoAccesorio beanTipoAccesorio;
+	@Inject
 	private BeanEquipo beanEquipo;
 	@Inject
 	private BeanMantenimiento beanMantenimiento;
@@ -129,6 +131,8 @@ public class BeanAccesorio implements Serializable {
 	private int atriIdSeleccionado;
 	// Marcas
 	private int marIdSeleccionado;
+	// Tipo Accesorio
+	private int tipAccIdSeleccionado;
 	// Bodega
 	private BodegaAccesorio bodegaAccesorio;
 	private List<BodegaAccesorio> bodegaAccesorioBuscado;
@@ -140,7 +144,7 @@ public class BeanAccesorio implements Serializable {
 	private List<AccesorioMantenimiento> listaAcceMan;
 
 	// --------Extras
-	private int tipAccIdSeleccionado;
+
 	private boolean verificador_mantenimiento;
 	private String vidaUtil;
 	private String valorDepreciado;
@@ -225,6 +229,7 @@ public class BeanAccesorio implements Serializable {
 		beanProveedor.actionConsultarAllProveedor();
 		beanMarca.actionConsultarAllMarca();
 		beanAtributo.actionConsultarAllAtributo();
+		beanTipoAccesorio.actionConsultarAllTipoAccesorio();
 	}
 
 	/**
@@ -233,10 +238,9 @@ public class BeanAccesorio implements Serializable {
 	 * @return la pagina de npara un nuevo aacesorio
 	 * @throws Exception
 	 */
-	public String actionMenuAccesorios(int tipAccIdSeleccionados) throws Exception {
+	public String actionMenuAccesorios() throws Exception {
 		cargarVaribalesAccesorio();
 		inicializarVaribalesAccesorio();
-		tipAccIdSeleccionado = tipAccIdSeleccionados;
 		return "accesorios_nuevo";
 	}
 

@@ -12,6 +12,8 @@
 	<title>Tipo Accesorio</title>
 	<link rel="stylesheet" type="text/css"
 		href="../../resources/css/sumakruray.css" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" />
 </h:head>
 <body>
 	<p:growl>
@@ -21,7 +23,8 @@
 		<p:menubar>
 			<p:menuitem value="Menú" icon="pi pi-home"
 				action="/menu?faces-redirect=true" />
-			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left" action="menu" />
+			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left"
+				action="menu" />
 			<p:menuitem value="Tipo Accesorio" icon="pi pi-plus"
 				title="Nuevo tipo Accesorio"
 				oncomplete="PF('dialogoCrearTipoAccesorio').show()" />
@@ -38,29 +41,52 @@
 		</p:menubar>
 	</h:form>
 
+
 	<div align="center">
 		<h:form id="lista">
-			<p:panel style="width:50%; ">
-				<p:staticMessage severity="info" summary="TIPOS DE ACCESORIOS"
-					style="width: 100%" />
+			<p:inputText value="#{beanTipoAccesorio.tipoAcesorio}"
+				style="width:300px" />
 
-				<p:dataView value="#{beanTipoAccesorio.listaTipoAccesorios}"
-					var="accesorios" layout="grid" gridIcon="pi pi-th-large"
-					emptyMessage="No tiene perfiles asignados. Consulte al administrador.">
+			<p:commandButton icon="pi pi-search"
+				styleClass="rounded-button ui-button-help"
+				actionListener="#{beanTipoAccesorio.actionFindTipoAccesorio()}"
+				update="@form"></p:commandButton>
 
-					<p:dataViewGridItem>
 
-						<p:commandLink
-							action="#{beanAccesorio.actionMenuAccesorios(accesorios.tipAccId)}">
-							<p:panelGrid columns="1">
-								<h:outputText value="#{accesorios.tipAccNombre}" />
+			<div class="wrapper fadeInDown">
+				<div id="formContentTipoAccesorio">
+					<div class="fadeIn first">
+						<br />Tipos de Accesorios <i class="pi pi-clone"></i> <br />
+					</div>
 
-								<i class="pi pi-desktop" style="font-size: 4rem"></i>
-							</p:panelGrid>
-						</p:commandLink>
-					</p:dataViewGridItem>
-				</p:dataView>
-			</p:panel>
+
+
+
+					<p:dataView value="#{beanTipoAccesorio.listaTipoAccesorios}"
+						style="width:auto" var="accesorios" layout="grid"
+						gridIcon="pi pi-th-large"
+						emptyMessage="No tiene creados tipos de accesorios">
+						<p:dataViewGridItem columns="4">
+
+							<p:commandLink
+								action="#{beanAccesorio.actionMenuAccesorios(accesorios.tipAccId)}">
+
+								<p:panelGrid columns="1">
+									<h:outputText value="#{accesorios.tipAccNombre}" />
+									<i class="pi pi-desktop" style="font-size: 2rem"></i>
+								</p:panelGrid>
+							</p:commandLink>
+						</p:dataViewGridItem>
+					</p:dataView>
+
+
+
+					<div id="formFooter">
+						<h:outputText value="Tipps Accesorios" />
+					</div>
+
+				</div>
+			</div>
 		</h:form>
 	</div>
 
@@ -76,7 +102,8 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanTipoAccesorio.actionListenerInsertarNuevoTipoAccesorio()}"
-					update="@form,:lista" oncomplete="PF('dialogoCrearTipoAccesorio').hide()"></p:commandButton>
+					update="@form,:lista"
+					oncomplete="PF('dialogoCrearTipoAccesorio').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>
