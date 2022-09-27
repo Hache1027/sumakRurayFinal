@@ -16,7 +16,7 @@
 </h:head>
 <body>
 	<h:form>
-		<p:menubar> 
+		<p:menubar>
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -41,20 +41,21 @@
 					<br />MENÚ <i class="pi pi-clone"></i> <br />
 				</div>
 				<h:form>
-						<p:dataView value="#{beanSegLogin.loginDTO.listaPerfiles}" style="width:auto"
-							var="perfil" layout="grid" gridIcon="pi pi-th-large"
-							emptyMessage="No tiene perfiles asignados. Consulte al administrador.">
-							<p:dataViewGridItem columns="4">
-								<p:commandLink
-									action="#{beanSegLogin.actionMenu(perfil.rutaAcceso)}">
-									<p:panelGrid columns="1">
-										<h:outputText value="#{perfil.segModulo.nombreModulo}" />
-										<h:outputText value="#{perfil.nombrePerfil}" />
-										<i class="#{perfil.segModulo.icono}" style="font-size: 2rem"></i>
-									</p:panelGrid>
-								</p:commandLink>
-							</p:dataViewGridItem>
-						</p:dataView>
+					<p:dataView value="#{beanSegLogin.loginDTO.listaPerfiles}"
+						style="width:auto" var="perfil" layout="grid"
+						gridIcon="pi pi-th-large"
+						emptyMessage="No tiene perfiles asignados. Consulte al administrador.">
+						<p:dataViewGridItem columns="4">
+							<p:commandLink
+								action="#{beanSegLogin.actionMenu(perfil.rutaAcceso)}">
+								<p:panelGrid columns="1">
+									<h:outputText value="#{perfil.segModulo.nombreModulo}" />
+									<h:outputText value="#{perfil.nombrePerfil}" />
+									<i class="#{perfil.segModulo.icono}" style="font-size: 2rem"></i>
+								</p:panelGrid>
+							</p:commandLink>
+						</p:dataViewGridItem>
+					</p:dataView>
 				</h:form>
 				<div id="formFooter">
 					<h:outputText value="Bienvenido #{beanSegLogin.loginDTO.correo}" />

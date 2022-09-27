@@ -449,12 +449,12 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanResponsable.actionListenerInsertarNuevoResponsable()}"
-<<<<<<< HEAD
 					update="@form,:lista3:listaResponsable"
-					oncomplete="PF('dialogoCrearResponsable').show()"></p:commandButton>
-=======
-					update="@form,:lista3:listaResponsable" oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
->>>>>>> 69ca0e7b8fe7f90fb99415e0bb3a884878bb91ec
+					oncomplete="PF('dialogoCrearResponsable').show()">
+				</p:commandButton>
+
+
+
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
@@ -578,7 +578,8 @@
 								required="true" requiredMessage="Ingrese una Ip" />
 							<p:commandButton value="ASIGNAR" icon="pi pi-sign-in"
 								actionListener="#{beanListaIp.actionSeleccionarNuevoListaIp(beanListaIp.nuevoListaIp)}"
-								update="@form,:lista3:informacionIp" oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
+								update="@form,:lista3:informacionIp"
+								oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
 						</p:panelGrid>
 						<p>
 							<b><h:outputText value="IP ASIGNADO ANTERIORMENTE" /></b>
