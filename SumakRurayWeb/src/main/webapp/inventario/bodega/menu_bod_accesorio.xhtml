@@ -300,7 +300,7 @@
 	<!-- ************Ventana emergente para dar de baja un accesorio********** -->
 
 	<p:dialog widgetVar="dialogoAccesorioBaja" align="center"
-		header="Accesorio de Baja">
+		header="Accesorio de Baja" modal="true">
 		<h:form id="lista4">
 			<div align="center">
 				<p>
@@ -318,7 +318,7 @@
 					<b><h:outputText value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBaja.nuevoBajaAccesorio.bajaDescripcion}" />
+					value="#{beanBaja.nuevoBajaAccesorio.bajaDescripcion}" maxlength="300" />
 				<p>
 					<p:panelGrid columns="3">
 						<h:outputText value="ESTADO:" />
@@ -331,7 +331,7 @@
 						<p:commandButton value="Dar de Baja" icon="pi pi-sort-amount-down"
 							styleClass="ui-button-danger"
 							actionListener="#{beanBaja.actionListenerInsertarNuevoAccesorioABaja()}"
-							update="@form,:lista2">
+							update="@form,:lista2" oncomplete="PF('dialogoAccesorioBaja').hide()">
 							<p:confirm header="Confirmación"
 								message="Desea dar de baja este Accesorio?"
 								icon="pi pi-info-circle" />

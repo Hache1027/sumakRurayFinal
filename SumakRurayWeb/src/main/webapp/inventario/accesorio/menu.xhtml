@@ -11,7 +11,11 @@
 <h:head>
 	<title>Menú de Accesorios</title>
 	<link rel="stylesheet" type="text/css"
+<<<<<<< HEAD
+		href="../../resources/css/sumakRuray.css" />
+=======
 		href="../../resources/css/sumakruray.css" />
+>>>>>>> 4114b01c3dafe11fce0c3456084dc71e8b3c033a
 </h:head>
 <body>
 	<h:form>
@@ -92,7 +96,7 @@
 	<!-- ************Ventana emergente para enviar a Bodega********** -->
 
 	<p:dialog widgetVar="dialogoAccesorioBodega" align="center"
-		header="Accesorio de Bodega">
+		header="Accesorio de Bodega" modal="true">
 		<h:form id="lista4">
 			<div align="center">
 				<p>
@@ -109,13 +113,17 @@
 					<b><h:outputText value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
+<<<<<<< HEAD
 					value="#{beanBodega.nuevoBodegaAccesorio.bodObservacion}" />
+=======
+					value="#{beanBodega.nuevoBodegaAccesorio.bodObservacion}" maxlength="300"/>
+>>>>>>> 69ca0e7b8fe7f90fb99415e0bb3a884878bb91ec
 				<p>
 					<p:panelGrid columns="3">
 						<p:commandButton value="Enviar a Bodega"
 							icon="pi pi-sort-amount-down" styleClass="ui-button-danger"
 							action="#{beanAccesorio.actionListenerInsertarNuevoAccesorioABodega(beanAccesorio.accesorioBodega,beanAccesorio.equipoDevuelto.equipo)}"
-							update="@form,:lista1">
+							update="@form,:lista1" oncomplete="PF('dialogoAccesorioBodega').hide()">
 							<p:confirm header="Confirmación"
 								message="Desea enviar a Bodega este Accesorio?"
 								icon="pi pi-info-circle" />
