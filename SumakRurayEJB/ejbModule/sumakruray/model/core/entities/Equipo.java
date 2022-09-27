@@ -54,6 +54,19 @@ public class Equipo implements Serializable {
 	@Column(name="equi_valor")
 	private double equiValor;
 
+	//bi-directional many-to-one association to BitacoraEquipo
+	@OneToMany(mappedBy="equipo")
+	private List<BitacoraEquipo> bitacoraEquipos;
+
+	//bi-directional many-to-one association to BodegaEquipo
+	@OneToMany(mappedBy="equipo")
+	private List<BodegaEquipo> bodegaEquipos;
+
+	//bi-directional many-to-one association to Marca
+	@ManyToOne
+	@JoinColumn(name="mar_id")
+	private Marca marca;
+
 	//bi-directional many-to-one association to Proveedor
 	@ManyToOne
 	@JoinColumn(name="pro_id")
@@ -69,27 +82,14 @@ public class Equipo implements Serializable {
 	@JoinColumn(name="id_seg_dependencia")
 	private SegDependencia segDependencia;
 
-	//bi-directional many-to-one association to EquipoAccesorio
-	@OneToMany(mappedBy="equipo",cascade = CascadeType.ALL)
-	private List<EquipoAccesorio> equipoAccesorios;
-
-	//bi-directional many-to-one association to BitacoraEquipo
-	@OneToMany(mappedBy="equipo")
-	private List<BitacoraEquipo> bitacoraEquipos;
-
-	//bi-directional many-to-one association to BodegaEquipo
-	@OneToMany(mappedBy="equipo")
-	private List<BodegaEquipo> bodegaEquipos;
-
-	//bi-directional many-to-one association to Marca
-	@ManyToOne
-	@JoinColumn(name="mar_id")
-	private Marca marca;
-
 	//bi-directional many-to-one association to TipoEquipo
 	@ManyToOne
 	@JoinColumn(name="tip_equi_id")
 	private TipoEquipo tipoEquipo;
+
+	//bi-directional many-to-one association to EquipoAccesorio
+	@OneToMany(mappedBy="equipo",cascade = CascadeType.ALL)
+	private List<EquipoAccesorio> equipoAccesorios;
 
 	//bi-directional many-to-one association to EquipoAtributo
 	@OneToMany(mappedBy="equipo",cascade = CascadeType.ALL)
@@ -206,52 +206,6 @@ public class Equipo implements Serializable {
 		this.equiValor = equiValor;
 	}
 
-	public Proveedor getProveedor() {
-		return this.proveedor;
-	}
-
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
-	}
-
-	public Responsable getResponsable() {
-		return this.responsable;
-	}
-
-	public void setResponsable(Responsable responsable) {
-		this.responsable = responsable;
-	}
-
-	public SegDependencia getSegDependencia() {
-		return this.segDependencia;
-	}
-
-	public void setSegDependencia(SegDependencia segDependencia) {
-		this.segDependencia = segDependencia;
-	}
-
-	public List<EquipoAccesorio> getEquipoAccesorios() {
-		return this.equipoAccesorios;
-	}
-
-	public void setEquipoAccesorios(List<EquipoAccesorio> equipoAccesorios) {
-		this.equipoAccesorios = equipoAccesorios;
-	}
-
-	public EquipoAccesorio addEquipoAccesorio(EquipoAccesorio equipoAccesorio) {
-		getEquipoAccesorios().add(equipoAccesorio);
-		equipoAccesorio.setEquipo(this);
-
-		return equipoAccesorio;
-	}
-
-	public EquipoAccesorio removeEquipoAccesorio(EquipoAccesorio equipoAccesorio) {
-		getEquipoAccesorios().remove(equipoAccesorio);
-		equipoAccesorio.setEquipo(null);
-
-		return equipoAccesorio;
-	}
-
 	public List<BitacoraEquipo> getBitacoraEquipos() {
 		return this.bitacoraEquipos;
 	}
@@ -304,12 +258,58 @@ public class Equipo implements Serializable {
 		this.marca = marca;
 	}
 
+	public Proveedor getProveedor() {
+		return this.proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public Responsable getResponsable() {
+		return this.responsable;
+	}
+
+	public void setResponsable(Responsable responsable) {
+		this.responsable = responsable;
+	}
+
+	public SegDependencia getSegDependencia() {
+		return this.segDependencia;
+	}
+
+	public void setSegDependencia(SegDependencia segDependencia) {
+		this.segDependencia = segDependencia;
+	}
+
 	public TipoEquipo getTipoEquipo() {
 		return this.tipoEquipo;
 	}
 
 	public void setTipoEquipo(TipoEquipo tipoEquipo) {
 		this.tipoEquipo = tipoEquipo;
+	}
+
+	public List<EquipoAccesorio> getEquipoAccesorios() {
+		return this.equipoAccesorios;
+	}
+
+	public void setEquipoAccesorios(List<EquipoAccesorio> equipoAccesorios) {
+		this.equipoAccesorios = equipoAccesorios;
+	}
+
+	public EquipoAccesorio addEquipoAccesorio(EquipoAccesorio equipoAccesorio) {
+		getEquipoAccesorios().add(equipoAccesorio);
+		equipoAccesorio.setEquipo(this);
+
+		return equipoAccesorio;
+	}
+
+	public EquipoAccesorio removeEquipoAccesorio(EquipoAccesorio equipoAccesorio) {
+		getEquipoAccesorios().remove(equipoAccesorio);
+		equipoAccesorio.setEquipo(null);
+
+		return equipoAccesorio;
 	}
 
 	public List<EquipoAtributo> getEquipoAtributos() {

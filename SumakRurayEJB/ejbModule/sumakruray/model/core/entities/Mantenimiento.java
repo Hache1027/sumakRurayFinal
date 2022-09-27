@@ -23,7 +23,7 @@ public class Mantenimiento implements Serializable {
 	@Column(name = "man_descripcion", length = 500)
 	private String manDescripcion;
 
-	@Column(name = "man_diagnostico", length = 100)
+	@Column(name = "man_diagnostico", length = 500)
 	private String manDiagnostico;
 
 	@Column(name = "man_estado", length = 50)
@@ -35,23 +35,20 @@ public class Mantenimiento implements Serializable {
 	@Column(name = "man_fecha_modificacion")
 	private Timestamp manFechaModificacion;
 
-	@Column(name = "man_funcionario", length = 100)
-	private String manFuncionario;
-
-	@Column(name = "man_funcionario_entrega", length = 100)
-	private String manFuncionarioEntrega;
-
-	@Column(name = "man_funcionario_recibe", length = 100)
-	private String manFuncionarioRecibe;
-
 	@Column(name = "man_tipo_int_ext", length = 100)
 	private String manTipoIntExt;
 
 	@Column(name = "man_tipo_pre_corr", length = 100)
 	private String manTipoPreCorr;
 
+	@Column(name = "man_usuario", length = 100)
+	private String manUsuario;
+
 	@Column(name = "man_usuario_crea", length = 100)
 	private String manUsuarioCrea;
+
+	@Column(name = "man_usuario_entrega", length = 100)
+	private String manUsuarioEntrega;
 
 	@Column(name = "man_usuario_modifica", length = 100)
 	private String manUsuarioModifica;
@@ -118,30 +115,6 @@ public class Mantenimiento implements Serializable {
 		this.manFechaModificacion = manFechaModificacion;
 	}
 
-	public String getManFuncionario() {
-		return this.manFuncionario;
-	}
-
-	public void setManFuncionario(String manFuncionario) {
-		this.manFuncionario = manFuncionario;
-	}
-
-	public String getManFuncionarioEntrega() {
-		return this.manFuncionarioEntrega;
-	}
-
-	public void setManFuncionarioEntrega(String manFuncionarioEntrega) {
-		this.manFuncionarioEntrega = manFuncionarioEntrega;
-	}
-
-	public String getManFuncionarioRecibe() {
-		return this.manFuncionarioRecibe;
-	}
-
-	public void setManFuncionarioRecibe(String manFuncionarioRecibe) {
-		this.manFuncionarioRecibe = manFuncionarioRecibe;
-	}
-
 	public String getManTipoIntExt() {
 		return this.manTipoIntExt;
 	}
@@ -158,12 +131,28 @@ public class Mantenimiento implements Serializable {
 		this.manTipoPreCorr = manTipoPreCorr;
 	}
 
+	public String getManUsuario() {
+		return this.manUsuario;
+	}
+
+	public void setManUsuario(String manUsuario) {
+		this.manUsuario = manUsuario;
+	}
+
 	public String getManUsuarioCrea() {
 		return this.manUsuarioCrea;
 	}
 
 	public void setManUsuarioCrea(String manUsuarioCrea) {
 		this.manUsuarioCrea = manUsuarioCrea;
+	}
+
+	public String getManUsuarioEntrega() {
+		return this.manUsuarioEntrega;
+	}
+
+	public void setManUsuarioEntrega(String manUsuarioEntrega) {
+		this.manUsuarioEntrega = manUsuarioEntrega;
 	}
 
 	public String getManUsuarioModifica() {

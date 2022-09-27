@@ -7,7 +7,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-
 import sumakruray.model.core.entities.Accesorio;
 import sumakruray.model.core.entities.AccesorioMantenimiento;
 import sumakruray.model.core.entities.Equipo;
@@ -24,7 +23,7 @@ import sumakruray.model.seguridades.dtos.LoginDTO;
 public class ManagerMantenimiento {
 	@EJB
 	private ManagerDAO mDAO;
-	
+
 	@EJB
 	private ManagerBitacora managerBitacora;
 
@@ -124,16 +123,14 @@ public class ManagerMantenimiento {
 		EquipoMantenimiento.getMantenimiento()
 				.setManDiagnostico(edicionEquipoMantenimiento.getMantenimiento().getManDiagnostico());
 		EquipoMantenimiento.getMantenimiento()
-				.setManFuncionarioRecibe(edicionEquipoMantenimiento.getMantenimiento().getManFuncionarioRecibe());
-		EquipoMantenimiento.getMantenimiento()
-				.setManFuncionarioEntrega(edicionEquipoMantenimiento.getMantenimiento().getManFuncionarioEntrega());
+				.setManUsuarioEntrega(edicionEquipoMantenimiento.getMantenimiento().getManUsuarioEntrega());
 		EquipoMantenimiento.getMantenimiento()
 				.setManUsuarioRecibe(edicionEquipoMantenimiento.getMantenimiento().getManUsuarioRecibe());
 		EquipoMantenimiento.getMantenimiento()
 				.setManFechaModificacion(edicionEquipoMantenimiento.getMantenimiento().getManFechaModificacion());
 		EquipoMantenimiento.getMantenimiento()
 				.setManUsuarioModifica(edicionEquipoMantenimiento.getMantenimiento().getManUsuarioModifica());
-		
+
 		mDAO.actualizar(EquipoMantenimiento);
 		managerBitacora.mostrarLogEquipo(loginDTO, edicionEquipoMantenimiento.getEquipo(), "ActualizarMantenimiento",
 				" Hoja de Mantenimiento Actualizado ");
@@ -157,16 +154,15 @@ public class ManagerMantenimiento {
 		AccesorioMantenimiento.getMantenimiento()
 				.setManDiagnostico(edicionAccesorioMantenimiento.getMantenimiento().getManDiagnostico());
 		AccesorioMantenimiento.getMantenimiento()
-				.setManFuncionarioRecibe(edicionAccesorioMantenimiento.getMantenimiento().getManFuncionarioRecibe());
-		AccesorioMantenimiento.getMantenimiento()
-				.setManFuncionarioEntrega(edicionAccesorioMantenimiento.getMantenimiento().getManFuncionarioEntrega());
+				.setManUsuarioEntrega(edicionAccesorioMantenimiento.getMantenimiento().getManUsuarioEntrega());
+
 		AccesorioMantenimiento.getMantenimiento()
 				.setManUsuarioRecibe(edicionAccesorioMantenimiento.getMantenimiento().getManUsuarioRecibe());
 		AccesorioMantenimiento.getMantenimiento()
 				.setManFechaModificacion(edicionAccesorioMantenimiento.getMantenimiento().getManFechaModificacion());
 		AccesorioMantenimiento.getMantenimiento()
 				.setManUsuarioModifica(edicionAccesorioMantenimiento.getMantenimiento().getManUsuarioModifica());
-		
+
 		mDAO.actualizar(AccesorioMantenimiento);
 
 		managerBitacora.mostrarLogAccesorio(loginDTO, edicionAccesorioMantenimiento.getAccesorio(),

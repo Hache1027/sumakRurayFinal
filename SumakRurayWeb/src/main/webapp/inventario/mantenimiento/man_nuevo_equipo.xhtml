@@ -59,7 +59,7 @@
 									itemValue="#{u.equiId}"></f:selectItems>
 
 							</p:selectOneMenu>
-							<p:commandButton title="Carrito" icon="pi pi-search"
+							<p:commandButton title="Busqueda" icon="pi pi-search"
 								actionListener="#{beanMantenimiento.ActionfindEquipo()}"
 								update="@form" styleClass="rounded-button ui-button-help" />
 
@@ -90,9 +90,9 @@
 							<h:outputText value="GARANTIA" />
 							<h:outputText
 								value="#{beanMantenimiento.equipoDevuelto.equiNroSerie}" />
-							<h:outputText value="FUNCIONARIO ENTREGA" />
+							<h:outputText value="FUNCIONARIO QUE ENTREGA" />
 							<p:inputText
-								value="#{beanMantenimiento.nuevoMantenimiento.manFuncionarioRecibe}" />
+								value="#{beanMantenimiento.nuevoMantenimiento.manUsuario}" />
 							
 
 						</p:panelGrid>

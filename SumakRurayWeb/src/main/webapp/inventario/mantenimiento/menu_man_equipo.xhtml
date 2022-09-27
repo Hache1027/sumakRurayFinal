@@ -61,11 +61,11 @@
 					filterMatchMode="contains">
 					<h:outputText value="#{equipoMantenimiento.equipo.equiNombre}" />
 				</p:column>
-				<p:column headerText="ULTIMO FUNCIONARIO"
-					filterBy="#{equipoMantenimiento.mantenimiento.manFuncionario}"
+				<p:column headerText="ULTIMO RESPONSABLE"
+					filterBy="#{equipoMantenimiento.equipo.responsable.respNombres} #{equipoMantenimiento.equipo.responsable.respApellidos}"
 					filterMatchMode="contains">
 					<h:outputText
-						value="#{equipoMantenimiento.mantenimiento.manFuncionario}" />
+						value="#{equipoMantenimiento.equipo.responsable.respNombres} #{equipoMantenimiento.equipo.responsable.respApellidos}" />
 				</p:column>
 				<p:column headerText="EXT-INT"
 					filterBy="#{equipoMantenimientoTipoIntExt}"

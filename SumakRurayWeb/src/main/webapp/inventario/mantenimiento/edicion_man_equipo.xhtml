@@ -86,15 +86,16 @@
 						<h:outputText value="GARANTIA" />
 						<h:outputText
 							value="#{beanMantenimiento.edicionEquipoMantenimiento.equipo.equiNroSerie}" />
-						<h:outputText value="FUNCIONARIO ENTREGA" />
+						<h:outputText value=" FUNCIONARIO QUE ENTREGÓ" />
 						<h:outputText
-							value="#{beanMantenimiento.edicionEquipoMantenimiento.mantenimiento.manFuncionarioRecibe}" />
+							value="#{beanMantenimiento.nuevoMantenimiento.manUsuario}" />
+
+						<h:outputText value=" USUARIO/EMPRESA QUE ENTREGA" />
+						<p:inputText
+							value="#{beanMantenimiento.nuevoMantenimiento.manUsuarioEntrega}" />
 						<h:outputText value="USUARIO QUE RECIBE (RETORNO)" />
 						<p:inputText
 							value="#{beanMantenimiento.edicionEquipoMantenimiento.mantenimiento.manUsuarioRecibe}" />
-						<h:outputText value=" FUNCIONARIO/EMPRESA QUE ENTREGA" />
-						<p:inputText
-							value="#{beanMantenimiento.nuevoMantenimiento.manFuncionarioEntrega}" />
 					</p:panelGrid>
 
 					<br />
@@ -244,7 +245,8 @@
 	</p:dialog>
 	<!-- ________________________VENTANA EMERGENTE CREAR ATRIBUTO _______________________________________ -->
 
-	<p:dialog header="Crear Atributo" widgetVar="dialogoCrearAtributo" modal="true">
+	<p:dialog header="Crear Atributo" widgetVar="dialogoCrearAtributo"
+		modal="true">
 		<h:form id="formCrearAtributo">
 			<p:panelGrid columns="2">
 				<h:outputText value="Descripción:" />
@@ -252,7 +254,8 @@
 					required="true" requiredMessage="Ingrese el nombre del atributo" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanAtributo.actionListenerInsertarNuevoAtributo()}"
-					update="@form,:lista3:listaAtributos" oncomplete="PF('dialogoCrearAtributo').hide()"></p:commandButton>
+					update="@form,:lista3:listaAtributos"
+					oncomplete="PF('dialogoCrearAtributo').hide()"></p:commandButton>
 
 			</p:panelGrid>
 		</h:form>

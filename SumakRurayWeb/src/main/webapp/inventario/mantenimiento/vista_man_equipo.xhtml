@@ -74,11 +74,11 @@
 						<h:outputText
 							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.equipo.equiNombre}" />
 
-						<h:outputText value="RESPOSABLE" />
+						<h:outputText value="ULTIMO RESPONSABLE" />
 						<h:outputText
-							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.equipo.responsable.respNombres}" />
+							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.equipo.responsable.respNombres} #{beanMantenimiento.equipoMantenimientoSeleccionado.equipo.responsable.respApellidos}" />
 
-						<h:outputText value="DEPENDENCIA" />
+						<h:outputText value="ULTIMA DEPENDENCIA" />
 						<h:outputText
 							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.equipo.segDependencia.depDescripcion}" />
 						<h:outputText value="SERIE" />
@@ -88,13 +88,14 @@
 						<h:outputText value="GARANTIA" />
 						<h:outputText
 							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.equipo.equiNroSerie}" />
+						
 						<h:outputText value="FUNCIONARIO ENTREGA" />
 						<h:outputText
-							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.mantenimiento.manFuncionarioEntrega}" />
+							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.mantenimiento.manUsuario}" />
 
-						<h:outputText value=" FUNCIONARIO/EMPRESA QUE RECIBE" />
+						<h:outputText value=" USUARIO/EMPRESA QUE ENTREGA" />
 						<h:outputText
-							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.mantenimiento.manFuncionarioRecibe}" />
+							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.mantenimiento.manUsuarioEntrega}" />
 						<h:outputText value="USUARIO QUE RECIBE (RETORNO)" />
 						<h:outputText
 							value="#{beanMantenimiento.equipoMantenimientoSeleccionado.mantenimiento.manUsuarioRecibe}" />

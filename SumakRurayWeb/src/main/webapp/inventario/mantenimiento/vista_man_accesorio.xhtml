@@ -72,11 +72,11 @@
 							<h:outputText
 								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.accesorio.acceNombre}" />
 
-							<h:outputText value="RESPOSABLE" />
+							<h:outputText value="ULTIMO RESPONSABLE" />
 							<h:outputText
-								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.accesorio.responsable.respNombres}" />
+								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.accesorio.responsable.respNombres} #{beanMantenimiento.accesorioMantenimientoSeleccionado.accesorio.responsable.respApellidos}" />
 
-							<h:outputText value="DEPENDENCIA" />
+							<h:outputText value="ULTIMA DEPENDENCIA" />
 							<h:outputText
 								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.accesorio.segDependencia.depDescripcion}" />
 							<h:outputText value="SERIE" />
@@ -86,13 +86,10 @@
 							<h:outputText value="GARANTIA" />
 							<h:outputText
 								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.accesorio.acceNroSerie}" />
-							<h:outputText value="FUNCIONARIO ENTREGA" />
-							<h:outputText
-								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.mantenimiento.manFuncionarioEntrega}" />
 
-							<h:outputText value=" FUNCIONARIO RECIBE" />
+							<h:outputText value=" FUNCIONARIO QUE ENTREGA" />
 							<h:outputText
-								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.mantenimiento.manFuncionarioRecibe}" />
+								value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.mantenimiento.manUsuario}" />
 
 						</p:panelGrid>
 
@@ -131,10 +128,15 @@
 
 					<br />
 					<p:panelGrid columns="2">
-						<h:outputText value="USUARIO QUE RECIBE" />
+						<h:outputText value=" USUARIO/EMPRESA QUE ENTREGA" />
+						<h:outputText
+							value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.mantenimiento.manUsuarioEntrega}" />
+
+						<h:outputText value=" USUARIO RECIBE" />
 						<h:outputText
 							value="#{beanMantenimiento.accesorioMantenimientoSeleccionado.mantenimiento.manUsuarioRecibe}" />
-						
+
+
 					</p:panelGrid>
 				</p:splitterPanel>
 				<!-- ________________________splitter 2 _______________________________________ -->

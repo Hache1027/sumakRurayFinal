@@ -62,11 +62,11 @@
 					<h:outputText
 						value="#{accesorioMantenimiento.accesorio.acceNombre}" />
 				</p:column>
-				<p:column headerText="ULTIMO FUNCIONARIO"
-					filterBy="#{accesorioMantenimiento.mantenimiento.manFuncionario}"
+				<p:column headerText="ULTIMO RESPONSABLE"
+					filterBy="#{accesorioMantenimiento.accesorio.responsable.respNombres} #{accesorioMantenimiento.accesorio.responsable.respApellidos}"
 					filterMatchMode="contains">
 					<h:outputText
-						value="#{accesorioMantenimiento.mantenimiento.manFuncionario}" />
+						value="#{accesorioMantenimiento.accesorio.responsable.respNombres} #{accesorioMantenimiento.accesorio.responsable.respApellidos}" />
 				</p:column>
 				<p:column headerText="EXT-INT"
 					filterBy="#{accesorioMantenimientoTipoIntExt}"

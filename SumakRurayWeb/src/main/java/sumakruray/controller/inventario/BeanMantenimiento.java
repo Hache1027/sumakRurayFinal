@@ -224,35 +224,36 @@ public class BeanMantenimiento implements Serializable {
 	 */
 	public void actionListenerInsertarNuevoEquipoMantenimiento() {
 		try {
-			String enlace = "";
-			nuevoMantenimiento.setManFechaCreacion(tiempo);
-			
-			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
-			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-			
-			nuevoMantenimiento.setManUsuarioCrea(persona.getNombres()+" "+persona.getApellidos());
-			nuevoMantenimiento.setManFuncionario(equipoDevuelto.getResponsable().getRespNombres() + " "
-					+ equipoDevuelto.getResponsable().getRespApellidos());
-			nuevoMantenimiento.setManEstado("En_Mantenimiento");
 
-			// Cambiar el estado de Equipo
-			equipoDevuelto.setEquiEstado("Mantenimiento");
-			nuevoMantenimiento.setManFuncionario(equipoDevuelto.getResponsable().getRespNombres() + " "
-					+ equipoDevuelto.getResponsable().getRespApellidos());
-			enlace += nuevoMantenimiento.getManDescripcion();
-			enlace += " de tipo : " + nuevoMantenimiento.getManTipoIntExt() + " y "
-					+ nuevoMantenimiento.getManTipoPreCorr();
+			if (equipoDevuelto.getEquipoAccesorios().size() > 0) {
+				String enlace = "";
+				nuevoMantenimiento.setManFechaCreacion(tiempo);
 
-			managerEquipo.cambiarEstadoEquipo(beanSegLogin.getLoginDTO(), equipoDevuelto, "Mantenimiento", enlace);
+				int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
+				SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
 
-			managerMantenimiento.insertarEquipoMantenimiento(nuevoMantenimiento, equipoDevuelto);
-			listaEquipoMantenimientos = managerMantenimiento.findAllEquipoMantenimientos();
-			nuevoMantenimiento = new Mantenimiento();
-			equipoDevuelto = null;
-			actionRecargarListaEquiposMantenimiento("En_Mantenimiento");
-			listaEquiposInactivos = managerEquipo.findWhereByEquiEstado("Inactivo");
-			JSFUtil.crearMensajeINFO("EquipoMantenimiento insertado.");
+				nuevoMantenimiento.setManUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
 
+				nuevoMantenimiento.setManEstado("En_Mantenimiento");
+
+				// Cambiar el estado de Equipo
+				equipoDevuelto.setEquiEstado("Mantenimiento");
+				enlace += nuevoMantenimiento.getManDescripcion();
+				enlace += " de tipo : " + nuevoMantenimiento.getManTipoIntExt() + " y "
+						+ nuevoMantenimiento.getManTipoPreCorr();
+
+				managerEquipo.cambiarEstadoEquipo(beanSegLogin.getLoginDTO(), equipoDevuelto, "Mantenimiento", enlace);
+
+				managerMantenimiento.insertarEquipoMantenimiento(nuevoMantenimiento, equipoDevuelto);
+				listaEquipoMantenimientos = managerMantenimiento.findAllEquipoMantenimientos();
+				nuevoMantenimiento = new Mantenimiento();
+				equipoDevuelto = null;
+				actionRecargarListaEquiposMantenimiento("En_Mantenimiento");
+				listaEquiposInactivos = managerEquipo.findWhereByEquiEstado("Inactivo");
+				JSFUtil.crearMensajeINFO("EquipoMantenimiento insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("Primero Quitar los accesorios del Equipo");
+			}
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
@@ -268,10 +269,8 @@ public class BeanMantenimiento implements Serializable {
 			nuevoMantenimiento.setManFechaCreacion(tiempo);
 			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-			
-			nuevoMantenimiento.setManUsuarioCrea(persona.getNombres()+" "+persona.getApellidos());
-			nuevoMantenimiento.setManFuncionario(accesorioDevuelto.getResponsable().getRespNombres() + " "
-					+ accesorioDevuelto.getResponsable().getRespApellidos());
+
+			nuevoMantenimiento.setManUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
 			nuevoMantenimiento.setManEstado("En_Mantenimiento");
 
 			// Cambiar el estado de Accesorio
@@ -304,10 +303,10 @@ public class BeanMantenimiento implements Serializable {
 		try {
 			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-			
+
 			edicionEquipoMantenimiento.getMantenimiento().setManFechaModificacion(tiempo);
 			edicionEquipoMantenimiento.getMantenimiento()
-					.setManUsuarioModifica(persona.getNombres()+" "+persona.getApellidos());
+					.setManUsuarioModifica(persona.getNombres() + " " + persona.getApellidos());
 
 			managerMantenimiento.actualizarEquipoMantenimiento(beanSegLogin.getLoginDTO(), edicionEquipoMantenimiento);
 			listaEquipoMantenimientos = managerMantenimiento.findAllEquipoMantenimientos();
@@ -330,9 +329,7 @@ public class BeanMantenimiento implements Serializable {
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
 			edicionAccesorioMantenimiento.getMantenimiento().setManFechaModificacion(tiempo);
 			edicionAccesorioMantenimiento.getMantenimiento()
-					.setManUsuarioModifica(persona.getNombres()+" "+persona.getApellidos());
-
-			System.out.println(".....................����");
+					.setManUsuarioModifica(persona.getNombres() + " " + persona.getApellidos());
 
 			managerMantenimiento.actualizarAccesorioMantenimiento(beanSegLogin.getLoginDTO(),
 					edicionAccesorioMantenimiento);
