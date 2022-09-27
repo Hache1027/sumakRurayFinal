@@ -65,6 +65,49 @@ public class BeanProveedor implements Serializable {
 		nuevoProveedor = new Proveedor();
 		nuevoProveedor.setProEstado(true);
 	}
+
+	/**
+	 * Verificación de nombre duplicao e un proveedor
+	 * 
+	 * @param Nombre de la empresa
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validarCreacionProveedor(String Nombre) throws Exception {
+
+		actionConsultarAllProveedor();
+		for (int i = 0; i < listaProveedors.size(); i++) {
+			if (listaProveedors.get(i).getProEmpresa().equals(Nombre))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Insertar un nuevo registro de un proveedor
+	 */
+	public void actionListenerInsertarNuevoProveedor() {
+
+		try {
+			if (validarCreacionProveedor(nuevoProveedor.getProEmpresa()) == false) {
+
+				nuevoProveedor.setProFechaCreacion(tiempo);
+				int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
+				SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
+				nuevoProveedor.setProUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
+				managerProveedor.insertarProveedor(nuevoProveedor);
+				listaProveedors = managerProveedor.findAllProveedors();
+				nuevoProveedor = new Proveedor();
+				JSFUtil.crearMensajeINFO("Proveedor insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("El proveedor ya existe");
+
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	/*
 	 * 
 	 * 
@@ -90,29 +133,6 @@ public class BeanProveedor implements Serializable {
 		nuevoProveedor = new Proveedor();
 		nuevoProveedor.setProEstado(true);
 		return "proveedors";
-	}
-
-	// Insertar un nuevo registro de un proveedor
-	public void actionListenerInsertarNuevoProveedor() {
-
-		try {
-			nuevoProveedor.setProFechaCreacion(tiempo);
-			System.out.println(beanSegLogin.getLoginDTO().getIdSegUsuario()
-					+ ".........................................................");
-			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
-			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-			
-			System.out.println(beanSegLogin.getLoginDTO().getIdSegUsuario()
-					+ ".........................................................");
-			nuevoProveedor.setProUsuarioCrea(persona.getNombres()+" "+persona.getApellidos());
-			managerProveedor.insertarProveedor(nuevoProveedor);
-			listaProveedors = managerProveedor.findAllProveedors();
-			nuevoProveedor = new Proveedor();
-			JSFUtil.crearMensajeINFO("Proveedor insertado.");
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	// Escoger Proveedor para editar

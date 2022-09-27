@@ -15,6 +15,7 @@ import sumakruray.controller.seguridades.BeanSegLogin;
 import sumakruray.model.core.entities.Proveedor;
 import sumakruray.model.core.entities.Responsable;
 import sumakruray.model.core.entities.SegDependencia;
+import sumakruray.model.core.entities.SegUsuario;
 import sumakruray.model.inventario.managers.ManagerDependencia;
 import sumakruray.model.seguridades.managers.ManagerSeguridades;
 
@@ -64,6 +65,45 @@ public class BeanDependencia implements Serializable {
 		nuevoSegDependencia.setEstado(true);
 	}
 
+	/**
+	 * Verificación de duplicas de una Dependencia
+	 * 
+	 * @param descripcion de la marca
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validarCreacionMarcar(SegDependencia dependencia) throws Exception {
+		actionConsultarAllDependencias();
+		for (int i = 0; i < listaDependencias.size(); i++) {
+			if (listaDependencias.get(i).getDepDescripcion().equals(dependencia.getDepDescripcion())
+					|| listaDependencias.get(i).getDepCodigo().equals(dependencia.getDepCodigo()))
+				return true;
+		}
+		return false;
+	}
+
+	// Insertar un nuevo registro de Dependencia
+	public void actionListenerInsertarNuevoSegDependencia() {
+
+		try {
+			if (validarCreacionMarcar(nuevoSegDependencia) == false) {
+				nuevoSegDependencia.setFechaCreacion(tiempo);
+				int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
+				SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
+				nuevoSegDependencia.setUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
+				managerDependencia.insertarSegDependencia(nuevoSegDependencia);
+				listaDependencias = managerDependencia.findAllSegDependencias();
+				nuevoSegDependencia = new SegDependencia();
+				JSFUtil.crearMensajeINFO("SegDependencia insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("La dependencia ya existe");
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 * 
 	 * 
@@ -88,33 +128,6 @@ public class BeanDependencia implements Serializable {
 		nuevoSegDependencia = new SegDependencia();
 		nuevoSegDependencia.setEstado(true);
 		return "SegDependencias";
-	}
-
-	// Insertar un nuevo registro de Dependencia
-	public void actionListenerInsertarNuevoSegDependencia() {
-
-		try {
-			/*
-			 * nuevoSegDependencia.setProFechaCreacion(tiempo);
-			 * System.out.println(beanSegLogin.getLoginDTO().getIdSegUsuario() +
-			 * "........................................................."); int
-			 * IdSegUsuario = beanSegLogin.getLoginDTO().getIdSegUsuario(); Persona persona
-			 * = managerSeguridades.BuscarPersona(IdSegUsuario);
-			 * System.out.println(beanSegLogin.getLoginDTO().getIdSegUsuario() +
-			 * ".........................................................");
-			 * nuevoSegDependencia.setProUsuarioCrea(persona.getPerNombres() + " " +
-			 * persona.getPerApellidos());
-			 */
-
-			System.out.println(nuevoSegDependencia.getDepDescripcion() + "++++++++++++++++++++++++++++++");
-			managerDependencia.insertarSegDependencia(nuevoSegDependencia);
-			listaDependencias = managerDependencia.findAllSegDependencias();
-			nuevoSegDependencia = new SegDependencia();
-			JSFUtil.crearMensajeINFO("SegDependencia insertado.");
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	// Escoger SegDependencia para editar

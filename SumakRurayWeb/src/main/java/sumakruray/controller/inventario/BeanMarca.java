@@ -58,6 +58,43 @@ public class BeanMarca implements Serializable {
 	public void actionNuevoMarca() {
 		nuevoMarca = new Marca();
 	}
+
+	/**
+	 * Verificación de duplicas de marcas
+	 * 
+	 * @param descripcion de la marca
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validarCreacionMarcar(String descripcion) throws Exception {
+
+		actionConsultarAllMarca();
+
+		for (int i = 0; i < listaMarcas.size(); i++) {
+			if (listaMarcas.get(i).getMarDescripcion().equals(descripcion))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Insertar un nuevo registro de Maca
+	 */
+	public void actionListenerInsertarNuevoMarca() {
+		try {
+			if (validarCreacionMarcar(nuevoMarca.getMarDescripcion()) == false) {
+				managerMarca.insertarMarca(beanSegLogin.getLoginDTO(), nuevoMarca);
+				listaMarcas = managerMarca.findAllMarcas();
+				nuevoMarca = new Marca();
+				JSFUtil.crearMensajeINFO("Marca insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("La marca ya existe");
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	/*
 	 * 
 	 * 
@@ -85,19 +122,6 @@ public class BeanMarca implements Serializable {
 	public String actionMenuNuevoMarcas() {
 		nuevoMarca = new Marca();
 		return "Marca";
-	}
-
-	// Insertar un nuevo registro de Maca
-	public void actionListenerInsertarNuevoMarca() {
-		try {
-			managerMarca.insertarMarca(beanSegLogin.getLoginDTO(), nuevoMarca);
-			listaMarcas = managerMarca.findAllMarcas();
-			nuevoMarca = new Marca();
-			JSFUtil.crearMensajeINFO("Marca insertado.");
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	// Escoger Marca para editar

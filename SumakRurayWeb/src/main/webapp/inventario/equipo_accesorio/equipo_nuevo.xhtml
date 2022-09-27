@@ -102,12 +102,18 @@
 						<p:spinner value="#{beanEquipo.nuevoEquipo.equiValor}"
 							stepFactor="0.01" required="true"
 							requiredMessage="Ingrese el Precio" />
+
 						<h:outputText value="GARANTIA:" />
+
 						<p:spinner value="#{beanEquipo.nuevoEquipo.equiGarantia}"
-							stepFactor="1" required="true" />
+							stepFactor="1" />
+
 						<h:outputText value="AÑOS UTIL :" />
+
 						<p:spinner value="#{beanEquipo.nuevoEquipo.equiAnioVidaUtil}"
-							required="true" style=" width:100px" />
+							required="true" requiredMessage="Ingrese el anio util"
+							style=" width:100px" />
+
 						<h:outputText value="PROVEEDOR" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.proIdSeleccionado}" id="listaProveedor"

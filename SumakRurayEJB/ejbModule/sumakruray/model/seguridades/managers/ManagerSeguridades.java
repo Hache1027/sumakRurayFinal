@@ -389,6 +389,8 @@ public class ManagerSeguridades {
 		}
 		return false;
 	}
+	
+	
 
 	/**
 	 * Busca si existe una dependencia anterior con un código igual(nueva dependencia)

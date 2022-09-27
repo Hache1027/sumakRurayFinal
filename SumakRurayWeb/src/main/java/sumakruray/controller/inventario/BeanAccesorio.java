@@ -149,6 +149,7 @@ public class BeanAccesorio implements Serializable {
 	private String vidaUtil;
 	private String valorDepreciado;
 	private boolean verificadorNuevoAccesorio;
+	private String enlace;
 
 	// Tiempo
 	private Timestamp tiempo;
@@ -209,12 +210,16 @@ public class BeanAccesorio implements Serializable {
 		nuevoAccesorio.setAcceEstado("Activo");
 		nuevoAccesorio.setAcceAnioVidaUtil(5);
 		respaldoAccesorio.setAcceAnioVidaUtil(5);
+		nuevoAccesorio.setAcceGarantia(0);
+		respaldoAccesorio.setAcceGarantia(0);
 		respIdSeleccionado = 0;
 		proIdSeleccionado = 0;
 		marIdSeleccionado = 0;
+		atriIdSeleccionado = 0;
 		idSegDependenciaSeleccionado = 0;
 		cabecera = null;
 		tipAccIdSeleccionado = 0;
+		beanAtributo.setNuevoAtributo(null);
 		actionConsultarListaAccesoriosActivos();// Accesorios Activos
 	}
 
@@ -341,38 +346,50 @@ public class BeanAccesorio implements Serializable {
 	public void actionListenerInsertarNuevoAccesorio() {
 
 		try {
+
 			// Insertar directamente un nuevo Accesorio sin Atributos
 			if (cabecera == null) {
 				AsignarValoresNuevoAcesorios();
 			}
-			if (verificadorNuevoAccesorio) {
-				cabecera.setSegDependencia(managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
-				cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
+			cabecera.setAcceNroSerie(nuevoAccesorio.getAcceNroSerie());
+			cabecera.setAcceNombre(nuevoAccesorio.getAcceNombre());
+			cabecera.setAcceCodBodega(nuevoAccesorio.getAcceCodBodega());
+			if (idSegDependenciaSeleccionado != 0 && respIdSeleccionado != 0) {
 
-			}
-			// Insertar Accesorio con o sin Atributos
-			managerAccesorio.registrarAccesorio(beanSegLogin.getLoginDTO(), cabecera);
-			// M�todo para identficar el nuevo accesorio creado desde un nuevo equipo
+				if (validarCreacionAccesorio(cabecera) == false) {
+					cabecera.setSegDependencia(managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
+					cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
+					if (verificadorNuevoAccesorio) {
+						cabecera.setSegDependencia(
+								managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
+						cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
+					}
+					// Insertar Accesorio con o sin Atributos
+					managerAccesorio.registrarAccesorio(beanSegLogin.getLoginDTO(), cabecera);
+					// M�todo para identficar el nuevo accesorio creado desde un nuevo equipo
+					if (verificadorNuevoAccesorio) {
+						beanEquipo.ActionAccesorioColocarAEquipo(cabecera);
+					}
+					// M�todo para verificar si se crea el accesorio desde un nuevo equipo
+					if (beanEquipo.getCabecera() == null) {
+						inicializarVaribalesAccesorio();
+					} else {
+						AccesorioCreado = managerAccesorio.findByNroSerieAccesorio(cabecera.getAcceNroSerie());
+						nuevoAccesorio = new Accesorio();
+						nuevoAccesorio.setResponsable(beanEquipo.getCabecera().getResponsable());
+						nuevoAccesorio.setSegDependencia(beanEquipo.getCabecera().getSegDependencia());
+						cabecera = null;
+					}
+					actionConsultarListaAccesoriosActivos();
 
-			// M�todo para verificar si se crea el accesorio desde un nuevo equipo
-			if (verificadorNuevoAccesorio) {
-
-				beanEquipo.ActionAccesorioColocarAEquipo(cabecera);
-			}
-
-			// M�todo para verificar si se crea el accesorio desde un nuevo equipo
-			if (beanEquipo.getCabecera() == null) {
-				inicializarVaribalesAccesorio();
+					JSFUtil.crearMensajeINFO("Accesorio insertado Exitamente");
+				} else {
+					JSFUtil.crearMensajeWARN(enlace + "Estan Repetidos");
+					enlace = "";
+				}
 			} else {
-				AccesorioCreado = managerAccesorio.findByNroSerieAccesorio(cabecera.getAcceNroSerie());
-				nuevoAccesorio = new Accesorio();
-				nuevoAccesorio.setResponsable(beanEquipo.getCabecera().getResponsable());
-				nuevoAccesorio.setSegDependencia(beanEquipo.getCabecera().getSegDependencia());
-				cabecera = null;
+				JSFUtil.crearMensajeWARN("Ingrese un Responsable o Dependencia ");
 			}
-			actionConsultarListaAccesoriosActivos();
-
-			JSFUtil.crearMensajeINFO("Accesorio insertado �Exitamente!");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
@@ -510,9 +527,7 @@ public class BeanAccesorio implements Serializable {
 
 			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-
 			edicionAccesorio.setAcceFechaModificacion(tiempo);
-
 			edicionAccesorio.setAcceUsuarioModifica(persona.getNombres() + " " + persona.getApellidos());
 			managerAccesorio.actualizarAccesorio(beanSegLogin.getLoginDTO(), edicionAccesorio);
 			inicializarVaribalesAccesorio();
@@ -716,42 +731,70 @@ public class BeanAccesorio implements Serializable {
 		JSFUtil.crearMensajeWARN("Equipo y Accesorios Activados");
 	}
 
-	/*
+	/**
+	 * Busca si existe un Accesorio a crear
 	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * +
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
+	 * @param nroSerie campo a verificar
+	 * @return
+	 * @throws Exception
 	 */
 
-	// Vista Accesorios
-	public String actionRegresar(String pagina) throws Exception {
-		return pagina;
+	public boolean validarCreacionAccesorio(Accesorio accesorio) throws Exception {
+		enlace = "";
+		boolean nro = false;
+		boolean nom = false;
+		boolean cod = false;
+		actionRecargarListaAccesoriosAll();
+		List<Accesorio> listaAllAccesorio = listaAccesoriosAll;
+		for (int i = 0; i < listaAllAccesorio.size(); i++) {
+			if (listaAllAccesorio.get(i).getAcceNroSerie().equals(accesorio.getAcceNroSerie()) && nro == false) {
+				enlace += "Nro de Serie , ";
+				nro = true;
+			}
+			if (listaAllAccesorio.get(i).getAcceNombre().equals(accesorio.getAcceNombre()) && nom == false) {
+				enlace += " Nombre , ";
+				nom = true;
+			}
+			if (listaAllAccesorio.get(i).getAcceCodBodega().equals(accesorio.getAcceCodBodega()) && cod == false) {
+				enlace += " Codigo de Bodega , ";
+				cod = true;
+			}
+
+		}
+
+		if (!enlace.equals("")) {
+			return true;
+		}
+		return false;
 	}
 
-	// Insertrar un nuevo Registro de Accesorio con o sin Atributos
-
-	/*
-	 * Setters and Getters
+	/**
+	 * Botones de regresar y menu
+	 * 
+	 * @param pagina
+	 * @return
+	 * @throws Exception
 	 */
+	public String actionRegresar(String pagina) throws Exception {
+		nuevoAccesorio = null;
+		cabecera = null;
+		idSegDependenciaSeleccionado = 0;
+		respaldoAccesorio = null;
+		respIdSeleccionado = 0;
+		proIdSeleccionado = 0;
+		marIdSeleccionado = 0;
+		idSegDependenciaSeleccionado = 0;
+		tipAccIdSeleccionado = 0;
+		beanDependencia.setNuevoSegDependencia(null);
+		beanAtributo.setNuevoAtributo(null);
+		beanMarca.setNuevoMarca(null);
+		beanProveedor.setNuevoProveedor(null);
+		beanResponsable.setNuevoResponsable(null);
+		beanTipoAccesorio.setNuevoTipoAccesorio(null);
+		enlace = null;
+
+		return pagina;
+	}
 
 	public List<Accesorio> getListaAccesoriosActivos() {
 		return listaAccesoriosActivos;

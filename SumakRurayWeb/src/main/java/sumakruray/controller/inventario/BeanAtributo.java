@@ -36,13 +36,13 @@ public class BeanAtributo implements Serializable {
 	private AccesorioAtributo edicionAccesorioAtributo;
 	// Equipo Atributo
 	private EquipoAtributo edicionEquipoAtributo;
-	
+
 	// CAMBIOS REALIZADOS HACHE
-	
+
 	private List<Atributo> listaAtributosEquipo;
 	private List<AccesorioAtributo> listAccesorioAtributo;
 	private List<EquipoAtributo> listEquipoAtributo;
-	
+
 	// --------------------- HACHE ---------------------
 
 	@Inject
@@ -57,15 +57,15 @@ public class BeanAtributo implements Serializable {
 	// **********************--___ARIBUTOS__--******************************************
 	@PostConstruct
 	public void inicializar() {
-		
+
 		listaAtributos = managerAtributo.findBitacoraAccesorioAtributosLista();
 		listaAtributosEquipo = managerAtributo.findBitacoraEquipoAtributosLista();
 		for (int i = 0; i < listaAtributosEquipo.size(); i++) {
 			System.out.println(listaAtributosEquipo.get(i).getAtriId());
 
 		}
-		
-		nuevoAtributo = new Atributo(); 
+
+		nuevoAtributo = new Atributo();
 	}
 
 	/**
@@ -88,7 +88,6 @@ public class BeanAtributo implements Serializable {
 	 * @param atributo
 	 */
 	public void actionSeleccionarEdicionAccesorioAtributo(AccesorioAtributo accesorioAtributo) {
-		System.out.println(accesorioAtributo.getAtriDescripcion() + "------------");
 		edicionAccesorioAtributo = accesorioAtributo;
 	}
 
@@ -115,7 +114,7 @@ public class BeanAtributo implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Accion actualizar Atributo
 	 */
@@ -130,6 +129,41 @@ public class BeanAtributo implements Serializable {
 		}
 	}
 
+	/**
+	 * } verificación de Atributo duplicado
+	 * 
+	 * @param nombre del Atributo
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validarCreacionAtributo(String nombre) throws Exception {
+		actionConsultarAllAtributo();
+
+		for (int i = 0; i < listaAtributos.size(); i++) {
+			if (listaAtributos.get(i).getAtriNombre().equals(nombre))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Crear Atributos
+	 */
+	public void actionListenerInsertarNuevoAtributo() {
+		try {
+			if (validarCreacionAtributo(nuevoAtributo.getAtriNombre()) == false) {
+				managerAtributo.insertarAtributo(nuevoAtributo);
+				listaAtributos = managerAtributo.findAllAtributos();
+				nuevoAtributo = new Atributo();
+				JSFUtil.crearMensajeINFO("Caracteristica insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("La Caracteristica Ya existe");
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
 	/*
 	 * 
@@ -154,19 +188,6 @@ public class BeanAtributo implements Serializable {
 	 * 
 	 */
 
-	// Crear Atributos
-	public void actionListenerInsertarNuevoAtributo() {
-		try {
-			managerAtributo.insertarAtributo(nuevoAtributo);
-			listaAtributos = managerAtributo.findAllAtributos();
-			nuevoAtributo = new Atributo();
-			JSFUtil.crearMensajeINFO("Atributo insertado.");
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
 	// Escoger Atributos para editar
 	public void actionSeleccionarEdicionAtributo(Atributo atributo) {
 		edicionAtributo = atributo;
@@ -183,18 +204,18 @@ public class BeanAtributo implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	// CAMBIOS REALIZADOS POR HACHE 
-	
+
+	// CAMBIOS REALIZADOS POR HACHE
+
 	// Escoger Atributos para editar
-		public void actionSeleccionarAccesorioAtributo() {
-			listAccesorioAtributo = managerAtributo.findAllAccesoriosAtributos();
-			listEquipoAtributo = managerAtributo.findAllEquiposAtributos();
-		}
-	
-	// ------------------------------------------------- HACHE --------------------------------------------
-	
-	
+	public void actionSeleccionarAccesorioAtributo() {
+		listAccesorioAtributo = managerAtributo.findAllAccesoriosAtributos();
+		listEquipoAtributo = managerAtributo.findAllEquiposAtributos();
+	}
+
+	// ------------------------------------------------- HACHE
+	// --------------------------------------------
+
 	// *****************--__Getter and
 	// Setter__--************************************+
 
@@ -238,10 +259,8 @@ public class BeanAtributo implements Serializable {
 		this.edicionEquipoAtributo = edicionEquipoAtributo;
 	}
 
-	
-	
 	// GETTERS AND SETTERS CREADOS POR HACHE ----------------------
-	
+
 	public List<Atributo> getListaAtributosEquipo() {
 		return listaAtributosEquipo;
 	}
@@ -265,10 +284,8 @@ public class BeanAtributo implements Serializable {
 	public void setListEquipoAtributo(List<EquipoAtributo> listEquipoAtributo) {
 		this.listEquipoAtributo = listEquipoAtributo;
 	}
-	
-	
-	
-	// --------------------------------------------------------- HACHE --------------------------------
-	
+
+	// --------------------------------------------------------- HACHE
+	// --------------------------------
 
 }

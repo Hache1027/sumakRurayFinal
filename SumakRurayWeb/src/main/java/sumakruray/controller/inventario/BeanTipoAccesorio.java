@@ -61,6 +61,38 @@ public class BeanTipoAccesorio implements Serializable {
 		listaTipoAccesorios = managerTipoAE.findTipoAccebyName(tipoAcesorio);
 
 	}
+
+	/**
+	 * } verificación de tipo accesorio duplicado
+	 * 
+	 * @param nombre del Tipo Accesorio
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validarCreacionTipoAccesorio(String nombre) throws Exception {
+		actionConsultarAllTipoAccesorio();
+		for (int i = 0; i < listaTipoAccesorios.size(); i++) {
+			if (listaTipoAccesorios.get(i).getTipAccNombre().equals(nombre))
+				return true;
+		}
+		return false;
+	}
+
+	// Crear un nuevo TipoAccesorios
+	public void actionListenerInsertarNuevoTipoAccesorio() {
+		try {
+			if (validarCreacionTipoAccesorio(nuevoTipoAccesorio.getTipAccNombre()) == false) {
+				managerTipoAE.insertarTipoAccesorio(beanSegLogin.getLoginDTO(), nuevoTipoAccesorio);
+				inicializarVaribalesTipoAccesorio();
+				JSFUtil.crearMensajeINFO("TipoAccesorio insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("El Tipo de Accesorio Ya Existe");
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	/*
 	 * 
 	 * 
@@ -100,19 +132,6 @@ public class BeanTipoAccesorio implements Serializable {
 	public List<TipoAccesorio> actionTipoAccesorios() {
 		listaTipoAccesorios = managerTipoAE.findAllTipoAccesorios();
 		return listaTipoAccesorios;
-	}
-
-	// Crear un nuevo TipoAccesorios
-	public void actionListenerInsertarNuevoTipoAccesorio() {
-		try {
-			managerTipoAE.insertarTipoAccesorio(beanSegLogin.getLoginDTO(), nuevoTipoAccesorio);
-			inicializarVaribalesTipoAccesorio();
-
-			JSFUtil.crearMensajeINFO("TipoAccesorio insertado.");
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	// Escoger TipoAccesorio para editar
@@ -155,5 +174,4 @@ public class BeanTipoAccesorio implements Serializable {
 		this.tipoAcesorio = tipoAcesorio;
 	}
 
-	
 }

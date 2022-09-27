@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import sumakruray.controller.JSFUtil;
 import sumakruray.controller.seguridades.BeanSegLogin;
+import sumakruray.model.core.entities.Accesorio;
 import sumakruray.model.core.entities.Atributo;
 import sumakruray.model.core.entities.Proveedor;
 import sumakruray.model.core.entities.Responsable;
@@ -64,6 +65,50 @@ public class BeanResponsable implements Serializable {
 		nuevoResponsable = new Responsable();
 		nuevoResponsable.setRespEstado(true);
 	}
+
+	/**
+	 * Verificar cedulas duplicadas
+	 * 
+	 * @param Identificacion
+	 * @return
+	 * @throws Exception
+	 */
+
+	public boolean validarCreacionResponsable(String Identificacion) throws Exception {
+
+		actionConsultarAllResponsable();
+		for (int i = 0; i < listaResponsables.size(); i++) {
+			if (listaResponsables.get(i).getRespIdentificacion().equals(Identificacion))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Crear Responsables
+	 */
+	public void actionListenerInsertarNuevoResponsable() {
+		try {
+			if (validarCreacionResponsable(nuevoResponsable.getRespIdentificacion()) == false) {
+
+				int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
+				SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
+
+				nuevoResponsable.setRespFechaCreacion(tiempo);
+				nuevoResponsable.setRespUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
+				managerResponsable.insertarResponsable(nuevoResponsable);
+				listaResponsables = managerResponsable.findAllResponsables();
+				nuevoResponsable = new Responsable();
+				nuevoResponsable.setRespEstado(true);
+				JSFUtil.crearMensajeINFO("Responsable insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN(" La cédula ya existe");
+			}
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	/*
 	 * 
 	 * 
@@ -100,25 +145,6 @@ public class BeanResponsable implements Serializable {
 		return "responsables";
 	}
 
-	// Crear Responsables
-	public void actionListenerInsertarNuevoResponsable() {
-		try {
-			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
-			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-
-			nuevoResponsable.setRespFechaCreacion(tiempo);
-			nuevoResponsable.setRespUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
-			managerResponsable.insertarResponsable(nuevoResponsable);
-			listaResponsables = managerResponsable.findAllResponsables();
-			nuevoResponsable = new Responsable();
-			nuevoResponsable.setRespEstado(true);
-			JSFUtil.crearMensajeINFO("Responsable insertado.");
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
 	// Escoger Resposable para editar
 	public void actionSeleccionarEdicionResponsable(Responsable responsable) {
 		edicionResponsable = responsable;
@@ -129,9 +155,9 @@ public class BeanResponsable implements Serializable {
 		try {
 			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-			
+
 			edicionResponsable.setRespFechaModificacion(tiempo);
-			edicionResponsable.setRespUsuarioModifica(persona.getNombres()+" "+persona.getApellidos());
+			edicionResponsable.setRespUsuarioModifica(persona.getNombres() + " " + persona.getApellidos());
 			managerResponsable.actualizarResponsable(beanSegLogin.getLoginDTO(), edicionResponsable);
 			listaResponsables = managerResponsable.findAllResponsables();
 			JSFUtil.crearMensajeINFO("Responsable actualizado.");
@@ -152,6 +178,7 @@ public class BeanResponsable implements Serializable {
 			e.printStackTrace();
 		}
 	}
+
 	// *****************--__Getter and
 	// Setter__--************************************+
 

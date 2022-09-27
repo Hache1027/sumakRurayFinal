@@ -19,6 +19,7 @@ import sumakruray.model.core.entities.AccesorioAtributo;
 import sumakruray.model.core.entities.Atributo;
 import sumakruray.model.core.entities.Equipo;
 import sumakruray.model.core.entities.ListaIp;
+import sumakruray.model.core.entities.SegDependencia;
 import sumakruray.model.core.entities.TipoAccesorio;
 import sumakruray.model.core.managers.ManagerDAO;
 import sumakruray.model.seguridades.dtos.LoginDTO;
@@ -372,6 +373,7 @@ public class ManagerAccesorio {
 		return (List<AccesorioAtributo>) q.getResultList();
 
 	}
+	
 
 	// ------------------------------------------------------ HACHE
 	// -----------------------------------

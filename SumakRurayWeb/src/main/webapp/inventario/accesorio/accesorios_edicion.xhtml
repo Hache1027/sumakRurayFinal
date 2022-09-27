@@ -11,8 +11,8 @@
 <h:head>
 	<title>Edición del Accesorio</title>
 	<link rel="stylesheet" type="text/css"
-		href="../../resources/css/sumakRuray.css" />
-
+		href="../../resources/css/sumakruray.css" />
+	
 
 </h:head>
 <body>
@@ -22,9 +22,9 @@
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Menú" icon="pi pi-home"
-				action="/menu?faces-redirect=true" />
+				action="beanAccesorio.actionRegresar(/menu?faces-redirect=true)" />
 			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left"
-				action="menu" />
+				action="#{beanAccesorio.actionRegresar('menu')}" />
 			<p:menuitem value="Responsable" icon="pi pi-plus"
 				title="Nuevo Responsable"
 				action="#{beanResponsable.actionNuevoResponsable()}"
