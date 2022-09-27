@@ -378,10 +378,10 @@ public class BeanEquipo implements Serializable {
 				if (beanMantenimiento.getEquipoDevuelto() != null) {
 					beanMantenimiento.setEquipoDevuelto(cabecera);
 				} else {
-					if (cabecera.getEquiId() != null) {
 
+					bodegaAccesorioBuscado = managerBodega.findWhereByAcceIdBodegaOne(acceIdSeleccionado);
+					if (cabecera.getEquiId() != null || bodegaAccesorioBuscado.size() > 0) {
 						bodegaEquipoBuscado = managerBodega.findWhereByEquiIdBodega(cabecera.getEquiId(), "Inactivo");
-						bodegaAccesorioBuscado = managerBodega.findWhereByAcceIdBodegaOne(acceIdSeleccionado);
 						Accesorio accesorio = managerAccesorio.findByIdAccesorio(acceIdSeleccionado);
 						if (bodegaAccesorioBuscado.size() > 0 && bodegaEquipoBuscado.size() > 0) {
 
