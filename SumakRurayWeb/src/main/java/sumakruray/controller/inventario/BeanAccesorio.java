@@ -108,6 +108,7 @@ public class BeanAccesorio implements Serializable {
 	private Accesorio vistaAccesorio;
 	private Accesorio accesorioBodega;
 	private List<Accesorio> listaAccesoriosAll;
+	private Equipo equipoDevuelto;
 
 	// Cabecera
 	private Accesorio cabecera;
@@ -119,7 +120,7 @@ public class BeanAccesorio implements Serializable {
 	// consulta)
 	private List<EquipoAccesorio> equiposDevuelto;
 	// Equipo asignado a un accesorio (asignado de una lista de Equipos)
-	private EquipoAccesorio equipoDevuelto;
+	private EquipoAccesorio equipoAccesorioDevuelto;
 
 	// Dependencias
 	private int idSegDependenciaSeleccionado;
@@ -208,10 +209,6 @@ public class BeanAccesorio implements Serializable {
 		respaldoAccesorio = new Accesorio();
 		respaldoAccesorio.setAcceEstado("Activo");
 		nuevoAccesorio.setAcceEstado("Activo");
-		nuevoAccesorio.setAcceAnioVidaUtil(5);
-		respaldoAccesorio.setAcceAnioVidaUtil(5);
-		nuevoAccesorio.setAcceGarantia(0);
-		respaldoAccesorio.setAcceGarantia(0);
 		respIdSeleccionado = 0;
 		proIdSeleccionado = 0;
 		marIdSeleccionado = 0;
@@ -220,6 +217,7 @@ public class BeanAccesorio implements Serializable {
 		cabecera = null;
 		tipAccIdSeleccionado = 0;
 		beanAtributo.setNuevoAtributo(null);
+		valorAtributo=null;
 		actionConsultarListaAccesoriosActivos();// Accesorios Activos
 	}
 
@@ -288,27 +286,30 @@ public class BeanAccesorio implements Serializable {
 	 */
 
 	public void actionListenerAdicionarAtributo(String verificador) throws Exception {
-		System.out.println(verificador + "m----");
-		String add = "ADD";
-		if (cabecera == null) {
-			AsignarValoresNuevoAcesorios();
-		} else if (cabecera != null && !verificador.equals("SinAtributo")) {
+		if (!valorAtributo.equals("")) {
+			String add = "ADD";
+			if (cabecera == null) {
+				AsignarValoresNuevoAcesorios();
+			} else if (cabecera != null && !verificador.equals("SinAtributo")) {
 
-			for (int i = 0; i < cabecera.getAccesorioAtributos().size(); i++) {
-				int id = cabecera.getAccesorioAtributos().get(i).getAtributo().getAtriId();
-				if (id == atriIdSeleccionado) {
-					JSFUtil.crearMensajeWARN("Producto ya seleccionado-->  " + id);
-					add = "no";
-					break;
+				for (int i = 0; i < cabecera.getAccesorioAtributos().size(); i++) {
+					int id = cabecera.getAccesorioAtributos().get(i).getAtributo().getAtriId();
+					if (id == atriIdSeleccionado) {
+						JSFUtil.crearMensajeWARN("Caracteristica ya seleccionado");
+						add = "no";
+						break;
+					}
 				}
-			}
 
-			if (add.equals("ADD")) {
-				cabecera = managerAccesorio.adicionarAtributo(cabecera, nuevoAccesorio, atriIdSeleccionado,
-						valorAtributo);
-			}
-			beanMantenimiento.setAccesorioDevuelto(cabecera);
+				if (add.equals("ADD")) {
+					cabecera = managerAccesorio.adicionarAtributo(cabecera, nuevoAccesorio, atriIdSeleccionado,
+							valorAtributo);
+				}
+				beanMantenimiento.setAccesorioDevuelto(cabecera);
 
+			}
+		} else {
+			JSFUtil.crearMensajeWARN("Digite una Descripcion de la Caracteristica");
 		}
 	}
 
@@ -359,7 +360,7 @@ public class BeanAccesorio implements Serializable {
 				if (validarCreacionAccesorio(cabecera) == false) {
 					cabecera.setSegDependencia(managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
 					cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
-					if (verificadorNuevoAccesorio) {
+					if (verificadorNuevoAccesorio && equipoDevuelto != null) {
 						cabecera.setSegDependencia(
 								managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
 						cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
@@ -367,7 +368,7 @@ public class BeanAccesorio implements Serializable {
 					// Insertar Accesorio con o sin Atributos
 					managerAccesorio.registrarAccesorio(beanSegLogin.getLoginDTO(), cabecera);
 					// M�todo para identficar el nuevo accesorio creado desde un nuevo equipo
-					if (verificadorNuevoAccesorio) {
+					if (verificadorNuevoAccesorio && equipoDevuelto != null) {
 						beanEquipo.ActionAccesorioColocarAEquipo(cabecera);
 					}
 					// M�todo para verificar si se crea el accesorio desde un nuevo equipo
@@ -384,7 +385,7 @@ public class BeanAccesorio implements Serializable {
 
 					JSFUtil.crearMensajeINFO("Accesorio insertado Exitamente");
 				} else {
-					JSFUtil.crearMensajeWARN(enlace + "Estan Repetidos");
+					JSFUtil.crearMensajeWARN(enlace + "Ya Existen");
 					enlace = "";
 				}
 			} else {
@@ -425,6 +426,7 @@ public class BeanAccesorio implements Serializable {
 	public String actionSeleccionarAccesorio(Accesorio accesorio) throws Exception {
 		vistaAccesorio = ConsultarAccesorioAtributoEquipo(accesorio);
 		ConsultarVidaUtilofAccessorio(accesorio);
+		
 
 		return "accesorios_vista";
 	}
@@ -453,7 +455,7 @@ public class BeanAccesorio implements Serializable {
 		accesorioConsulta.setAccesorioAtributos(listaAccesorioAtributo);
 		equiposDevuelto = managerEquipo.findByAcceIdSeleccionadforEquipo(accesorio.getAcceId());
 		if (equiposDevuelto.size() > 0) {
-			equipoDevuelto = equiposDevuelto.get(0);
+			equipoAccesorioDevuelto = equiposDevuelto.get(0);
 		}
 
 		return accesorioConsulta;
@@ -472,7 +474,7 @@ public class BeanAccesorio implements Serializable {
 
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
-		String Date = "31/12/2014";
+		String Date = format.format(accesorio.getAcceFechaCreacion());
 		Date datos = format.parse(Date);
 		Timestamp dato = new Timestamp(datos.getTime());
 
@@ -551,7 +553,7 @@ public class BeanAccesorio implements Serializable {
 			accesorio.setAcceUsuarioModifica(persona.getNombres() + " " + persona.getApellidos());
 			managerAccesorio.actualizarAccesoriofromMantenimiento(beanSegLogin.getLoginDTO(), accesorio);
 
-			JSFUtil.crearMensajeINFO("Equipo actualizado.");
+			JSFUtil.crearMensajeINFO("Accesorio actualizado.");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
@@ -691,6 +693,7 @@ public class BeanAccesorio implements Serializable {
 	 * @throws Exception
 	 */
 	public void actionVistaSeleccionarAccesorio(Accesorio accesorio) throws Exception {
+		equipoAccesorioDevuelto=null;
 		vistaAccesorio = ConsultarAccesorioAtributoEquipo(accesorio);
 		idSegDependenciaSeleccionado = vistaAccesorio.getSegDependencia().getIdSegDependencia();
 		respIdSeleccionado = vistaAccesorio.getResponsable().getRespId();
@@ -724,6 +727,7 @@ public class BeanAccesorio implements Serializable {
 		managerAccesorio.actualizarEstadoAccesorio(beanSegLogin.getLoginDTO(), accesorio, "Activo", enlace);
 		beanBodega.actionSelectionEquiposInactivos();
 		beanBodega.actionSelectionAccesoriosInactivos();
+	
 
 		// beanBodega.actionSelectionAccesoriosInactivosCE();
 		// beanAccesorio.actionConsultarListaAccesoriosActivos();
@@ -792,6 +796,12 @@ public class BeanAccesorio implements Serializable {
 		beanResponsable.setNuevoResponsable(null);
 		beanTipoAccesorio.setNuevoTipoAccesorio(null);
 		enlace = null;
+		equipoAccesorioDevuelto = null;
+		beanEquipo.setEquipoDevuelto(null);
+		beanEquipo.setListaAccesorioofEquipoTemporal(null);
+		vistaAccesorio=null;
+		edicionAccesorio=null;
+		valorAtributo=null;
 
 		return pagina;
 	}
@@ -900,12 +910,12 @@ public class BeanAccesorio implements Serializable {
 		this.listaAccesorioAtributo = listaAccesorioAtributo;
 	}
 
-	public EquipoAccesorio getEquipoDevuelto() {
-		return equipoDevuelto;
+	public EquipoAccesorio getEquipoAccesorioDevuelto() {
+		return equipoAccesorioDevuelto;
 	}
 
-	public void setEquipoDevuelto(EquipoAccesorio equipoDevuelto) {
-		this.equipoDevuelto = equipoDevuelto;
+	public void setEquipoAccesorioDevuelto(EquipoAccesorio equipoAccesorioDevuelto) {
+		this.equipoAccesorioDevuelto = equipoAccesorioDevuelto;
 	}
 
 	public Accesorio getAccesorioCreado() {
@@ -954,6 +964,14 @@ public class BeanAccesorio implements Serializable {
 
 	public void setVerificadorNuevoAccesorio(boolean verificadorNuevoAccesorio) {
 		this.verificadorNuevoAccesorio = verificadorNuevoAccesorio;
+	}
+
+	public Equipo getEquipoDevuelto() {
+		return equipoDevuelto;
+	}
+
+	public void setEquipoDevuelto(Equipo equipoDevuelto) {
+		this.equipoDevuelto = equipoDevuelto;
 	}
 
 }

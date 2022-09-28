@@ -22,9 +22,9 @@
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Menú" icon="pi pi-home"
-				action="/menu?faces-redirect=true" />
+				action="#{beanEquipo.actionRegresar ('/menu?faces-redirect=true')}" />
 			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left"
-				action="menu" />
+				action="#{beanEquipo.actionRegresar ('menu')}" />
 			<p:menuitem value="Responsable" icon="pi pi-plus"
 				title="Nuevo Responsable"
 				action="#{beanResponsable.actionNuevoResponsable()}"

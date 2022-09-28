@@ -22,7 +22,7 @@
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Menú" icon="pi pi-home"
-				action="beanAccesorio.actionRegresar(/menu?faces-redirect=true)" />
+				action="#{beanAccesorio.actionRegresar('/menu?faces-redirect=true')}" />
 			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left"
 				action="#{beanAccesorio.actionRegresar('menu')}" />
 			<f:facet name="options">
@@ -101,10 +101,10 @@
 						<p:panelGrid columns="4">
 							<h:outputText value="NOMBRE" />
 							<h:outputText
-								value="#{beanAccesorio.equipoDevuelto.equipo.equiNombre}   " />
+								value="#{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNombre}   " />
 							<h:outputText value="NRO. SERIE " />
 							<h:outputText
-								value=" #{beanAccesorio.equipoDevuelto.equipo.equiNroSerie} " />
+								value=" #{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNroSerie} " />
 						</p:panelGrid>
 
 

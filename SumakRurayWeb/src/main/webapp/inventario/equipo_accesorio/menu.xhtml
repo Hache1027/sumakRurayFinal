@@ -78,8 +78,6 @@
 						oncomplete="PF('dialogoEquipoBodega').show()"
 						update="@form,:lista4">
 					</p:commandButton>
-
-
 				</p:column>
 			</p:dataTable>
 		</h:form>
@@ -99,11 +97,12 @@
 						<h:outputText value="#{beanEquipo.equipoBodega.equiNroSerie}" />
 					</p:panelGrid>
 				</p>
-				<p>
-					<b><h:outputText value="OBSERVACIÓN" /></b>
-				</p>
+				<p></p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBodega.nuevoBodegaEquipo.bodObservacion}" maxlength="300" />
+					value="#{beanBodega.nuevoBodegaEquipo.bodObservacion}" maxlength="300"
+					required="true"
+					requiredMessage="Ingrese  la descripcion para enviar a Bodega" />
+
 				<p>
 					<p:panelGrid columns="3">
 						<p:commandButton value="Enviar a Bodega"

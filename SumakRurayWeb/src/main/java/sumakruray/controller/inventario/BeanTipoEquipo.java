@@ -47,15 +47,37 @@ public class BeanTipoEquipo implements Serializable {
 		listaTipoEquipos = managerTipoAE.findAllTipoEquipos();
 	}
 
-	// Crear TipoEquipos
+	/**
+	 * } verificación de tipo equipo duplicado
+	 * 
+	 * @param nombre del Tipo equipo
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean validarCreacionTipoAccesorio(String nombre) throws Exception {
+		actionFindAllTiposEquipo();
+		for (int i = 0; i < listaTipoEquipos.size(); i++) {
+			if (listaTipoEquipos.get(i).getTipEquiNombre().equals(nombre))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Crear TipoEquipos
+	 */
 	public void actionListenerInsertarNuevoTipoEquipo() {
 		try {
-			managerTipoAE.insertarTipoEquipo(beanSegLogin.getLoginDTO(), nuevoTipoEquipo);
-			listaTipoEquipos = managerTipoAE.findAllTipoEquipos();
-			nuevoTipoEquipo = new TipoEquipo();
+			if (validarCreacionTipoAccesorio(nuevoTipoEquipo.getTipEquiNombre()) == false) {
+				managerTipoAE.insertarTipoEquipo(beanSegLogin.getLoginDTO(), nuevoTipoEquipo);
+				listaTipoEquipos = managerTipoAE.findAllTipoEquipos();
+				nuevoTipoEquipo = new TipoEquipo();
 
-			nuevoTipoEquipo.setTipEquiCantidad(0);
-			JSFUtil.crearMensajeINFO("TipoEquipo insertado.");
+				nuevoTipoEquipo.setTipEquiCantidad(0);
+				JSFUtil.crearMensajeINFO("TipoEquipo insertado.");
+			} else {
+				JSFUtil.crearMensajeWARN("El Tipo Equipo Ya Existe");
+			}
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();

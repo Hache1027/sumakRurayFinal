@@ -9,7 +9,7 @@
 		type="preRenderView"></f:event>
 </f:metadata>
 <h:head>
-	<title> Accesorios de Bajas</title>
+	<title>Accesorios de Bajas</title>
 	<link rel="stylesheet" type="text/css"
 		href="../../resources/css/sumakruray.css" />
 </h:head>
@@ -77,6 +77,7 @@
 				<p:column headerText="OPCIONES">
 					<p:commandButton icon="pi pi-eye" title="Vista Accesorio"
 						styleClass="ui-button-warning"
+						actionListener="#{beanBaja.actionSelectionAccesoriosBajasVista(AccesorioBaja)}"
 						action="#{beanAccesorio.actionSeleccionarAccesorio(AccesorioBaja.accesorio)}" />
 				</p:column>
 			</p:dataTable>

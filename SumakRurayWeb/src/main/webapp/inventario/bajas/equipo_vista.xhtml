@@ -96,14 +96,25 @@
 
 						</p:panelGrid>
 						<p>
-							<b><h:outputText value="IP ASIGNADO" /></b>
+							<b><h:outputText value="INFORMACIÓN DE BAJA" /></b>
+						</p>
+						<p:panelGrid columns="4">
+							<h:outputText value="TIPO DE BAJA" />
+							<h:outputText
+								value="#{beanBaja.equipoBaja.bajaTipoObsolDania}   " />
+							<h:outputText value="DESCRIPCIÓN " />
+							<h:outputText rows="6" style="width: 600px;"
+								value=" #{beanBaja.equipoBaja.bajaDescripcion} " />
+						</p:panelGrid>
+						<p>
+							<b><h:outputText value="ULTIMO ASIGNADO" /></b>
 						</p>
 						<p:panelGrid columns="6" id="informacionIp">
 							<h:outputText value="IP" />
 							<h:outputText value="#{beanEquipo.ipEquipo.ipsIp}" />
 							<h:outputText value="PUERTA DE ENLACE" />
 							<h:outputText value="#{beanEquipo.ipEquipo.ipsPuertaEnlace}" />
-							
+
 						</p:panelGrid>
 						<br /> <br />
 					</div>
@@ -113,7 +124,7 @@
 					styleClass="flex align-items-center justify-content-center"
 					size="15">
 					<p>
-						<b><h:outputText value="ACCESORIOS" /></b>
+						<b><h:outputText value="ACCESORIOS DE BAJAS CON EL EQUIPO" /></b>
 					</p>
 					<p:dataTable value="#{beanEquipo.listaAccesoriosEquipo}"
 						var="EquipoAccesorios" style="width:350px" scrollable="true"

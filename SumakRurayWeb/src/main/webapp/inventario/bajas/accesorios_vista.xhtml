@@ -76,16 +76,29 @@
 							value="#{beanAccesorio.vistaAccesorio.segDependencia.depDescripcion} " />
 
 					</p:panelGrid>
+
+					<p>
+						<b><h:outputText value="INFORMACIÓN DE BAJA" /></b>
+					</p>
+					<p:panelGrid columns="4">
+						<h:outputText value="TIPO DE BAJA" />
+						<h:outputText
+							value="#{beanBaja.accesorioBaja.bajaTipoObsolDania}   " />
+						<h:outputText value="DESCRIPCIÓN " />
+						<h:outputText rows="6" style="width: 600px;"
+							value=" #{beanBaja.accesorioBaja.bajaDescripcion} " />
+					</p:panelGrid>
+
 					<p>
 						<b><h:outputText value="EQUIPO QUE PERTENECE" /></b>
 					</p>
 					<p:panelGrid columns="4">
 						<h:outputText value="NOMBRE" />
 						<h:outputText
-							value="#{beanAccesorio.equipoDevuelto.equipo.equiNombre}   " />
+							value="#{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNombre}   " />
 						<h:outputText value="NRO. SERIE " />
 						<h:outputText
-							value=" #{beanAccesorio.equipoDevuelto.equipo.equiNroSerie} " />
+							value=" #{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNroSerie} " />
 					</p:panelGrid>
 
 

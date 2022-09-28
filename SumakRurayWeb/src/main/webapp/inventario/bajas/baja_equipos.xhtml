@@ -71,6 +71,7 @@
 				</p:column>
 				<p:column headerText="OPCIONES">
 					<p:commandButton icon="pi pi-eye" title="vista"
+						actionListener="#{beanBaja.actionSelectionEquiposBajasVista(equipoBaja)}"
 						action="#{beanEquipo.actionVistaEquipo(equipoBaja.equipo)}"
 						styleClass="ui-button-warning" update="@form" />
 
