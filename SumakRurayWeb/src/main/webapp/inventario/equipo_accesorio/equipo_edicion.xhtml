@@ -126,7 +126,7 @@
 						<h:outputText value="PUERTA DE ENLACE" />
 						<h:outputText
 							value="#{beanEquipo.edicionipEquipo.ipsPuertaEnlace}" />
-						
+
 						<p:commandButton value="CAMBIAR IP" icon="pi pi-wifi"
 							styleClass="rounded-button ui-button-help"
 							action="#{beanListaIp.actionNuevoIpAEquipo()}"
@@ -374,7 +374,7 @@
 	<!-- ________________________VENTANA EMERGENTE CREAR RESPOSABLE _______________________________________ -->
 
 	<p:dialog header="Crear Responsable"
-		widgetVar="dialogoCrearResponsable">
+		widgetVar="dialogoCrearResponsable" modal="true">
 		<h:form id="formCrearResponsable">
 			<p:panelGrid columns="4">
 				<h:outputText value="Identificación:" />
@@ -405,14 +405,15 @@
 
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanResponsable.actionListenerInsertarNuevoResponsable()}"
-					update="@form,:lista3:listaResponsable,:lista2:listaResponsable2"></p:commandButton>
+					update="@form,:lista3:listaResponsable,:lista2:listaResponsable2"
+					oncomplete="PF('dialogoCrearResponsable').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
 	<!-- ________________________VENTANA EMERGENTE CREAR DEPENDENCIA _______________________________________ -->
 
 	<p:dialog header="Crear Dependencia"
-		widgetVar="dialogoCrearDependencia">
+		widgetVar="dialogoCrearDependencia" modal="true">
 		<h:form id="formCrearDependencia">
 			<p:panelGrid columns="2">
 				<h:outputText value="Descripción:" />
@@ -421,7 +422,7 @@
 					required="true" requiredMessage="Ingrese la Dependencia" />
 				<p:commandButton value="Guardar" icon="pi pi-save"
 					actionListener="#{beanDependencia.actionListenerInsertarNuevoSegDependencia()}"
-					update="@form,:lista3:listaDependencia"></p:commandButton>
+					update="@form,:lista3:listaDependencia" oncomplete="PF('dialogoCrearDependencia').hide()"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
@@ -464,7 +465,8 @@
 
 							<p:commandButton value="ASIGNAR" icon="pi pi-sign-in"
 								actionListener="#{beanListaIp.actionSeleccionarNuevoListaIp(beanEquipo.edicionipEquipo)}"
-								update="@form,:lista3:informacionIp" oncomplete="PF('dialogoCrearIp').hide()"></p:commandButton>
+								update="@form,:lista3:informacionIp"
+								oncomplete="PF('dialogoCrearIp').hide()"></p:commandButton>
 						</p:panelGrid>
 						<p>
 							<b><h:outputText value="IP ASIGNADO ANTERIORMENTE" /></b>
@@ -475,7 +477,7 @@
 							<h:outputText value="PUERTA DE ENLACE" />
 							<h:outputText
 								value="#{beanListaIp.ultimoListaIp.ipsPuertaEnlace}" />
-							
+
 							<h:outputText value="EQUIPO" />
 							<h:outputText
 								value="#{beanListaIp.ultimoListaIp.equipo.equiNombre}" />

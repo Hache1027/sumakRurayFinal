@@ -60,8 +60,13 @@ public class BeanAtributo implements Serializable {
 
 		listaAtributos = managerAtributo.findBitacoraAccesorioAtributosLista();
 		listaAtributosEquipo = managerAtributo.findBitacoraEquipoAtributosLista();
+		
 		for (int i = 0; i < listaAtributosEquipo.size(); i++) {
 			System.out.println(listaAtributosEquipo.get(i).getAtriId());
+		}
+			
+			for (int i = 0; i < listaAtributos.size(); i++) {
+				System.out.println(listaAtributos.get(i).getAtriId());
 
 		}
 
@@ -130,7 +135,7 @@ public class BeanAtributo implements Serializable {
 	}
 
 	/**
-	 * } verificación de Atributo duplicado
+	 * } verificaciï¿½n de Atributo duplicado
 	 * 
 	 * @param nombre del Atributo
 	 * @return

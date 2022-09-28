@@ -99,7 +99,7 @@
 	<!-- ________________________VENTANA PRINCIPAL CREAR ACCESORIOS _______________________________________ -->
 
 	<p:dialog header="Información del Accesorio"
-		widgetVar="dialogoActivarAccesorio">
+		widgetVar="dialogoActivarAccesorio" modal="true">
 		<h:form id="lista3">
 			<div align="center">
 				<p:splitter style="height: auto; width:auto" styleClass="mb-5">
@@ -109,7 +109,7 @@
 							<p:commandButton value="ACTIVAR SIN EQUIPO" icon="pi pi-save"
 								styleClass="rounded-button ui-button-help"
 								action="#{beanAccesorio.actionActivarAccesorio(beanAccesorio.vistaAccesorio)}"
-								update="@form" />
+								update="@form" oncomplete="PF('dialogoActivarAccesorio').hide()"/>
 						</p>
 						<p>
 

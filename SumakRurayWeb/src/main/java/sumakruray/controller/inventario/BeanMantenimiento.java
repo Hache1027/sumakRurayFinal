@@ -225,7 +225,7 @@ public class BeanMantenimiento implements Serializable {
 	public void actionListenerInsertarNuevoEquipoMantenimiento() {
 		try {
 
-			if (equipoDevuelto.getEquipoAccesorios().size() > 0) {
+			if (equipoDevuelto.getEquipoAccesorios().size() == 0) {
 				String enlace = "";
 				nuevoMantenimiento.setManFechaCreacion(tiempo);
 

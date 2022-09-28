@@ -98,7 +98,7 @@
 	</p:panel>
 	<!-- ************Ventana emergente para dar de baja un Equipo********** -->
 
-	<p:dialog widgetVar="dialogoEquipoBaja" align="center"
+	<p:dialog widgetVar="dialogoEquipoBaja" align="center" modal="true"
 		header="Equipo de Baja">
 		<h:form id="lista4">
 			<div align="center">
@@ -115,7 +115,7 @@
 					<b><h:outputText value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBaja.nuevoBajaEquipo.bajaDescripcion}" />
+					value="#{beanBaja.nuevoBajaEquipo.bajaDescripcion}" maxlength="300"/>
 				<p>
 					<p:panelGrid columns="3">
 						<h:outputText value="ESTADO:" />
@@ -128,7 +128,7 @@
 						<p:commandButton value="Dar de Baja" icon="pi pi-sort-amount-down"
 							styleClass="ui-button-danger"
 							actionListener="#{beanBaja.actionListenerInsertarNuevoEquipoABaja()}"
-							update="@form,:lista1">
+							update="@form,:lista1" oncomplete="PF('dialogoEquipoBaja').hide()">
 							<p:confirm header="Confirmación"
 								message="Desea dar de baja este Equipo?"
 								icon="pi pi-info-circle" />

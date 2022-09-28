@@ -86,7 +86,7 @@
 	</p:panel>
 	<!-- ************Ventana emergente para enviar a Bodega********** -->
 
-	<p:dialog widgetVar="dialogoEquipoBodega" align="center"
+	<p:dialog widgetVar="dialogoEquipoBodega" align="center" modal="true"
 		header="Equipo de Bodega">
 		<h:form id="lista4">
 			<div align="center">
@@ -103,13 +103,13 @@
 					<b><h:outputText value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBodega.nuevoBodegaEquipo.bodObservacion}" />
+					value="#{beanBodega.nuevoBodegaEquipo.bodObservacion}" maxlength="300" />
 				<p>
 					<p:panelGrid columns="3">
 						<p:commandButton value="Enviar a Bodega"
 							icon="pi pi-sort-amount-down" styleClass="ui-button-danger"
 							action="#{beanEquipo.actionListenerInsertarNuevoEquipoABodega(beanEquipo.equipoBodega)}"
-							update="@form,:lista1">
+							update="@form,:lista1" oncomplete="PF('dialogoEquipoBodega').hide()">
 							<p:confirm header="Confirmación"
 								message="¿Desea enviar este equipo a Bodega?"
 								icon="pi pi-info-circle" />
