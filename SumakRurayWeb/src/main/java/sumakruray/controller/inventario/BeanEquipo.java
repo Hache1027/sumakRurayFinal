@@ -95,6 +95,8 @@ public class BeanEquipo implements Serializable {
 	private BeanAtributo beanAtributo;
 	@Inject
 	private BeanBitacora beanBitacora;
+	@Inject
+	private BeanTipoAccesorio beanTipoAccesorio;
 	// Equipos
 	private List<Equipo> listaEquiposActivos;
 	private List<Equipo> listaEquiposInactivos;
@@ -130,7 +132,10 @@ public class BeanEquipo implements Serializable {
 	// Marcas
 	private int marIdSeleccionado;
 	// Bodega
-
+	private List<BodegaAccesorio> listaAccesoriosBodega;
+	private BodegaEquipo bodegaEquipo;
+	private List<BodegaAccesorio> bodegaAccesorioBuscado;
+	private BodegaAccesorio bodegaAccesorioSeleccionado;
 	// Accesorios
 	private int acceIdSeleccionado;
 
@@ -142,43 +147,14 @@ public class BeanEquipo implements Serializable {
 	private String vidaUtil;
 	private String valorDepreciado;
 	private ArrayList<String> listaAccesorioofEquipoTemporal;
+	private String enlace;
+	private String valorAtributo;
 
 	// Tiempo
 	private Timestamp tiempo;
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 
-	private List<BodegaAccesorio> listaAccesoriosBodega;
-
-	private BodegaEquipo bodegaEquipo;
-
-	// BOdegaAccesorio
-	private List<BodegaAccesorio> bodegaAccesorioBuscado;
-	private BodegaAccesorio bodegaAccesorioSeleccionado;
-//Mnatenimiento
+	// Mantenimiento
 	private List<EquipoMantenimiento> listaEquiMan;
-
-	//
-
-	// Valor o descripcion del atributo
-	private String valorAtributo;
-
 	// Lista IP
 	private ListaIp nuevaIp;
 	private ListaIp ipEquipo;
@@ -260,6 +236,7 @@ public class BeanEquipo implements Serializable {
 		valorAtributo = "";
 		vistaEquipo = null;
 		cabecera = null;
+		tipEquiIdSeleccionado = 0;
 
 	}
 
@@ -321,9 +298,7 @@ public class BeanEquipo implements Serializable {
 		SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
 
 		nuevoEquipo.setEquiUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
-		System.out.println(nuevoEquipo.getEquiNombre() + "----------" + respIdSeleccionado);
-		System.out.println(acceIdSeleccionado + "****************************************************");
-		System.out.println(tipoObjeto + "0");
+
 		cabecera = managerEquipo.adicionarAccesorioAtributo(cabecera, nuevoEquipo, acceIdSeleccionado,
 				atriIdSeleccionado, valorAtributo, tipoObjeto);
 	}
@@ -337,100 +312,97 @@ public class BeanEquipo implements Serializable {
 	public void actionListenerAdicionarAccesorioAtributo(String tipoObjeto) throws Exception {
 		// método que actua cuando crea un nuevo Accesorio mientras esta registrando un
 		// nuevo equipo
-
-		if (beanAccesorio.getAccesorioCreado() != null) {
-			acceIdSeleccionado = beanAccesorio.getAccesorioCreado().getAcceId();
-		}
-
-		// Metodo para verificar si el accesorio o atributo existe en la lista
-
-		String add = "ADD";
-		if (cabecera == null) {
-			AsignarValoresNuevoEquipos(tipoObjeto);
-		} else if (cabecera != null) {
-			if (tipoObjeto.equals("Atributo")) {
-				for (int i = 0; i < cabecera.getEquipoAtributos().size(); i++) {
-					int id = cabecera.getEquipoAtributos().get(i).getAtributo().getAtriId();
-					if (id == atriIdSeleccionado) {
-
-						JSFUtil.crearMensajeWARN("Atributo ya seleccionado ");
-						add = "no";
-						break;
-					}
-				}
-			} else if (tipoObjeto.equals("Accesorio")) {
-				for (int i = 0; i < cabecera.getEquipoAccesorios().size(); i++) {
-					int id = cabecera.getEquipoAccesorios().get(i).getAccesorio().getAcceId();
-					if (id == acceIdSeleccionado) {
-
-						JSFUtil.crearMensajeWARN("Accesorio ya seleccionado ");
-						add = "no";
-						break;
-					}
-				}
+		if (tipoObjeto.equals("Atributo") && !valorAtributo.equals("") || tipoObjeto.equals("Accesorio")
+				|| tipoObjeto.equals("CrearAccesorio")) {
+			if (beanAccesorio.getAccesorioCreado() != null) {
+				acceIdSeleccionado = beanAccesorio.getAccesorioCreado().getAcceId();
 			}
 
-			if (add.equals("ADD")) {
-				System.out.println(tipoObjeto + "1");
-				cabecera = managerEquipo.adicionarAccesorioAtributo(cabecera, nuevoEquipo, acceIdSeleccionado,
-						atriIdSeleccionado, valorAtributo, tipoObjeto);
-				// Insertar Atributos desde Mantenimiento
-				if (beanMantenimiento.getEquipoDevuelto() != null) {
-					beanMantenimiento.setEquipoDevuelto(cabecera);
-				} else {
+			// Metodo para verificar si el accesorio o atributo existe en la lista
 
-					bodegaAccesorioBuscado = managerBodega.findWhereByAcceIdBodegaOne(acceIdSeleccionado);
-					if (cabecera.getEquiId() != null || bodegaAccesorioBuscado.size() > 0) {
-						bodegaEquipoBuscado = managerBodega.findWhereByEquiIdBodega(cabecera.getEquiId(), "Inactivo");
-						Accesorio accesorio = managerAccesorio.findByIdAccesorio(acceIdSeleccionado);
-						if (bodegaAccesorioBuscado.size() > 0 && bodegaEquipoBuscado.size() > 0) {
+			String add = "ADD";
+			if (cabecera == null) {
+				AsignarValoresNuevoEquipos(tipoObjeto);
+			} else if (cabecera != null) {
+				if (tipoObjeto.equals("Atributo")) {
+					for (int i = 0; i < cabecera.getEquipoAtributos().size(); i++) {
+						int id = cabecera.getEquipoAtributos().get(i).getAtributo().getAtriId();
+						if (id == atriIdSeleccionado) {
 
-							accesorio.setAcceEstado("Inactivo_Equipo");
-							managerAccesorio.cambiarEstadoAccesorioEnEquipo(beanSegLogin.getLoginDTO(), accesorio,
-									cabecera, "Inactivo_Equipo");
-							// beanBodega.actionListenerActualizarBodegaPorAccesorio(bodegaAccesorioBuscado.get(0),
-							// "Inactivo_Equipo");
-						} else {
-							accesorio.setAcceEstado("Activo");
-							System.out.println(accesorio.getAcceNombre() + "--------fff----");
-
-							managerAccesorio.cambiarEstadoAccesorioEnEquipo(beanSegLogin.getLoginDTO(), accesorio,
-									cabecera, "Activo");
+							JSFUtil.crearMensajeWARN("Caracteristica ya seleccionado ");
+							add = "no";
+							break;
 						}
-
 					}
-					beanBodega.actionSelectionAccesoriosInactivos();
+				} else if (tipoObjeto.equals("Accesorio")) {
+					for (int i = 0; i < cabecera.getEquipoAccesorios().size(); i++) {
+						int id = cabecera.getEquipoAccesorios().get(i).getAccesorio().getAcceId();
+						if (id == acceIdSeleccionado) {
+
+							JSFUtil.crearMensajeWARN("Accesorio ya seleccionado ");
+							add = "no";
+							break;
+						}
+					}
 				}
 
-				if (nuevoEquipo != null) {
-					if (nuevoEquipo.getSegDependencia() != null) {
-						if (idSegDependenciaSeleccionado != nuevoEquipo.getSegDependencia().getIdSegDependencia()) {
-							cabecera.setSegDependencia(
-									managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
-							System.out.println("1...");
+				if (add.equals("ADD")) {
+					cabecera = managerEquipo.adicionarAccesorioAtributo(cabecera, nuevoEquipo, acceIdSeleccionado,
+							atriIdSeleccionado, valorAtributo, tipoObjeto);
+					// Insertar Atributos desde Mantenimiento
+					if (beanMantenimiento.getEquipoDevuelto() != null) {
+						beanMantenimiento.setEquipoDevuelto(cabecera);
+					} else {
+
+						bodegaAccesorioBuscado = managerBodega.findWhereByAcceIdBodegaOne(acceIdSeleccionado);
+						// Para identificar si es un equipo nuevo o ya esta creado
+						if (cabecera.getEquiId() != null) {
+							bodegaEquipoBuscado = managerBodega.findWhereByEquiIdBodega(cabecera.getEquiId(),
+									"Inactivo");
+							Accesorio accesorio = managerAccesorio.findByIdAccesorio(acceIdSeleccionado);
+							if (bodegaAccesorioBuscado.size() > 0 && bodegaEquipoBuscado.size() > 0) {
+								accesorio.setAcceEstado("Inactivo_Equipo");
+								managerAccesorio.cambiarEstadoAccesorioEnEquipo(beanSegLogin.getLoginDTO(), accesorio,
+										cabecera, "Inactivo_Equipo");
+							} else if (bodegaAccesorioBuscado.size() > 0) {
+								accesorio.setAcceEstado("Activo");
+								managerAccesorio.cambiarEstadoAccesorioEnEquipo(beanSegLogin.getLoginDTO(), accesorio,
+										cabecera, "Activo");
+							}
+
 						}
+						beanBodega.actionSelectionAccesoriosInactivos();
 					}
-					if (nuevoEquipo.getResponsable() != null) {
-						if (respIdSeleccionado != nuevoEquipo.getResponsable().getRespId()) {
-							cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
-							System.out.println("2...");
+
+					if (nuevoEquipo != null) {
+						if (nuevoEquipo.getSegDependencia() != null) {
+							if (idSegDependenciaSeleccionado != nuevoEquipo.getSegDependencia().getIdSegDependencia()) {
+								cabecera.setSegDependencia(
+										managerDependencia.findByIdSegDependencia(idSegDependenciaSeleccionado));
+							}
 						}
-					}
-					if (proIdSeleccionado != nuevoEquipo.getProveedor().getProId()) {
-						cabecera.setProveedor(managerProveedor.findByIdProveedor(proIdSeleccionado));
-						System.out.println("3...");
-					}
-					if (marIdSeleccionado != nuevoEquipo.getMarca().getMarId()) {
-						cabecera.setMarca(managerMarca.findByIdMarca(marIdSeleccionado));
-						System.out.println("4...");
+						if (nuevoEquipo.getResponsable() != null) {
+							if (respIdSeleccionado != nuevoEquipo.getResponsable().getRespId()) {
+								cabecera.setResponsable(managerResponsable.findByIdResponsable(respIdSeleccionado));
+							}
+						}
+						if (proIdSeleccionado != nuevoEquipo.getProveedor().getProId()) {
+							cabecera.setProveedor(managerProveedor.findByIdProveedor(proIdSeleccionado));
+						}
+						if (marIdSeleccionado != nuevoEquipo.getMarca().getMarId()) {
+							cabecera.setMarca(managerMarca.findByIdMarca(marIdSeleccionado));
+						}
 					}
 				}
+				verificador = false;
 			}
-			verificador = false;
-		}
 
-		beanAccesorio.setAccesorioCreado(null);
-		actionRecargarListaEquiposActivos();
+			beanAccesorio.setAccesorioCreado(null);
+			actionRecargarListaEquiposActivos();
+			beanAccesorio.actionConsultarListaAccesoriosActivos();
+		} else {
+			JSFUtil.crearMensajeWARN("Digite una Descripcion de la Caracteristica");
+		}
 
 	}
 
@@ -493,18 +465,25 @@ public class BeanEquipo implements Serializable {
 			if (cabecera == null) {
 				AsignarValoresNuevoEquipos("");
 			}
-			managerEquipo.registrarEquipo(beanSegLogin.getLoginDTO(), cabecera);
+			cabecera.setEquiNroSerie(nuevoEquipo.getEquiNroSerie());
+			cabecera.setEquiNombre(nuevoEquipo.getEquiNombre());
+			cabecera.setEquiCodBodega(nuevoEquipo.getEquiCodBodega());
+			if (validarCreacionEquipo(cabecera) == false) {
+				managerEquipo.registrarEquipo(beanSegLogin.getLoginDTO(), cabecera);
 
-			JSFUtil.crearMensajeINFO("Equipo creado ¡Creado exitosamente!");
-			if (beanListaIp.getEscodigoListaIp() != null) {
-				beanListaIp.getEscodigoListaIp().setEquipo(cabecera);
-				beanListaIp.getEscodigoListaIp().setIpsEstado("Activo");
-				beanListaIp.actionListenerCambiarEstadoListaIp(beanListaIp.getEscodigoListaIp(), "Activo");
+				JSFUtil.crearMensajeINFO("Equipo creado ¡Creado exitosamente!");
+				if (beanListaIp.getEscodigoListaIp() != null) {
+					beanListaIp.getEscodigoListaIp().setEquipo(cabecera);
+					beanListaIp.getEscodigoListaIp().setIpsEstado("Activo");
+					beanListaIp.actionListenerCambiarEstadoListaIp(beanListaIp.getEscodigoListaIp(), "Activo");
+				}
+
+				VaciarVariablesEquipo();
+				actionRecargarListaEquiposActivos();
+			} else {
+				JSFUtil.crearMensajeWARN(enlace + "Ya Existen");
+				enlace = "";
 			}
-
-			VaciarVariablesEquipo();
-			actionRecargarListaEquiposActivos();
-
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
@@ -820,7 +799,7 @@ public class BeanEquipo implements Serializable {
 
 	public void ActionAccesorioColocarAEquipoTemporal(Accesorio accesorio, Equipo equipo) throws Exception {
 		listaAccesorioofEquipoTemporal.add(accesorio.getAcceNroSerie() + "   " + accesorio.getAcceNombre());
-
+		beanAccesorio.setEquipoDevuelto(equipoDevuelto);
 		beanAccesorio.setIdSegDependenciaSeleccionado(equipo.getSegDependencia().getIdSegDependencia());
 		beanAccesorio.setRespIdSeleccionado(equipo.getResponsable().getRespId());
 
@@ -865,13 +844,8 @@ public class BeanEquipo implements Serializable {
 		}
 		Equipo.setEquiEstado("Activo");
 		managerEquipo.cambiarEstadoEquipo(beanSegLogin.getLoginDTO(), Equipo, "Activo", enlace);
-
 		beanBodega.actionSelectionEquiposInactivos();
 		beanBodega.actionSelectionAccesoriosInactivos();
-
-		// beanBodega.actionSelectionAccesoriosInactivosCE();
-		// beanAccesorio.actionConsultarListaAccesoriosActivos();
-		// actionRecargarListaEquiposActivos();
 		JSFUtil.crearMensajeWARN("Equipo y Accesorios Activados");
 	}
 
@@ -883,47 +857,71 @@ public class BeanEquipo implements Serializable {
 	 */
 	public void ConsultarVidaUtilofEquipo(Equipo equipo) throws Exception {
 		String[] a = new String[2];
-
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
-		String Date = "31/12/2014";
+		String Date = format.format(equipo.getEquiFechaCreacion());
 		Date datos = format.parse(Date);
 		Timestamp dato = new Timestamp(datos.getTime());
-
 		a = beanBitacora.actionCargarFechaTranscurridos(dato, equipo.getEquiValor());
 		vidaUtil = a[0];
 		valorDepreciado = a[1];
 
 	}
+	// Validación de un Equipo duplicado
 
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+	public boolean validarCreacionEquipo(Equipo equipo) throws Exception {
+		enlace = "";
+		boolean nro = false;
+		boolean nom = false;
+		boolean cod = false;
+		actionRecargarListaEquiposAll();
+		List<Equipo> listaAllEquipo = listaEquiposAll;
+		for (int i = 0; i < listaAllEquipo.size(); i++) {
+			if (listaAllEquipo.get(i).getEquiNroSerie().equals(equipo.getEquiNroSerie()) && nro == false) {
+				enlace += "Nro de Serie , ";
+				nro = true;
+			}
+			if (listaAllEquipo.get(i).getEquiNombre().equals(equipo.getEquiNombre()) && nom == false) {
+				enlace += " Nombre , ";
+				nom = true;
+			}
+			if (listaAllEquipo.get(i).getEquiCodBodega().equals(equipo.getEquiCodBodega()) && cod == false) {
+				enlace += " Codigo de Bodega , ";
+				cod = true;
+			}
+
+		}
+
+		if (!enlace.equals("")) {
+			return true;
+		}
+		return false;
+	}
+
+	public String actionRegresar(String pagina) {
+		nuevoEquipo = null;
+		respIdSeleccionado = 0;
+		proIdSeleccionado = 0;
+		marIdSeleccionado = 0;
+		idSegDependenciaSeleccionado = 0;
+		acceIdSeleccionado = 0;
+		atriIdSeleccionado = 0;
+		valorAtributo = "";
+		vistaEquipo = null;
+		cabecera = null;
+		tipEquiIdSeleccionado = 0;
+		equipoDevuelto = null;
+		vistaEquipo = null;
+		edicionEquipo = null;
+		enlace = null;
+		beanDependencia.setNuevoSegDependencia(null);
+		beanAtributo.setNuevoAtributo(null);
+		beanMarca.setNuevoMarca(null);
+		beanProveedor.setNuevoProveedor(null);
+		beanResponsable.setNuevoResponsable(null);
+		beanTipoAccesorio.setNuevoTipoAccesorio(null);
+		beanTipoEquipo.setNuevoTipoEquipo(null);
+		return pagina;
+	}
 
 	/*
 	 * 
@@ -1204,6 +1202,14 @@ public class BeanEquipo implements Serializable {
 
 	public void setListaAccesorioofEquipoTemporal(ArrayList<String> listaAccesorioofEquipoTemporal) {
 		this.listaAccesorioofEquipoTemporal = listaAccesorioofEquipoTemporal;
+	}
+
+	public String getEnlace() {
+		return enlace;
+	}
+
+	public void setEnlace(String enlace) {
+		this.enlace = enlace;
 	}
 
 }

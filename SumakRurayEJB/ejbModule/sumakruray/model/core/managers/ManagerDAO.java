@@ -260,21 +260,21 @@ public class ManagerDAO {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public long obtenerValorMax(Class clase,String nombrePropiedad) throws Exception{
+	public int obtenerValorMax(Class clase,String nombrePropiedad) throws Exception{
 		Query q;
 		String sentenciaSQL;
-		BigDecimal valorMax;
+		int valorMax;
 		try {
 			sentenciaSQL="SELECT MAX(o."+nombrePropiedad+") FROM "+clase.getSimpleName()+" o";
 			q = em.createQuery(sentenciaSQL);
-			valorMax=(BigDecimal)q.getSingleResult();
+			valorMax=(int)q.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error al obtener valor max: "+clase.getCanonicalName()+"["+nombrePropiedad+"]. "+e.getMessage());
 		}
-		if(valorMax==null)
+		if(valorMax==0)
 			return 0;
-		return valorMax.longValue();
+		return valorMax;
 	}
 
 	/**

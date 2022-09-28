@@ -109,7 +109,7 @@
 							<p:commandButton value="ACTIVAR SIN EQUIPO" icon="pi pi-save"
 								styleClass="rounded-button ui-button-help"
 								action="#{beanAccesorio.actionActivarAccesorio(beanAccesorio.vistaAccesorio)}"
-								update="@form" />
+								update="@form,:lista2" />
 						</p>
 						<p>
 
@@ -165,10 +165,10 @@
 							<p:panelGrid columns="4" id="EquipoQuePertenece">
 								<h:outputText value="NOMBRE" />
 								<h:outputText
-									value="#{beanAccesorio.equipoDevuelto.equipo.equiNombre}   " />
+									value="#{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNombre}   " />
 								<h:outputText value="NRO. SERIE " />
 								<h:outputText
-									value=" #{beanAccesorio.equipoDevuelto.equipo.equiNroSerie} " />
+									value=" #{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNroSerie} " />
 							</p:panelGrid>
 						</p>
 
@@ -221,8 +221,7 @@
 
 								<p:commandButton value="COLOCAR" icon="pi pi-download"
 									actionListener="#{beanEquipo.ActionAccesorioColocarAEquipo(beanAccesorio.vistaAccesorio)}"
-									update="@form,:lista2,:lista3"
-									styleClass=" ui-button-help ">
+									update="@form,:lista2,:lista3" styleClass=" ui-button-help ">
 								</p:commandButton>
 							</p:panelGrid>
 						</p>
@@ -315,15 +314,19 @@
 					</p:panelGrid>
 				</p>
 				<p>
-					<b><h:outputText value="OBSERVACIÓN" /></b>
+					<b><p:outputLabel for="@next" value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBaja.nuevoBajaAccesorio.bajaDescripcion}" maxlength="300" />
+					value="#{beanBaja.nuevoBajaAccesorio.bajaDescripcion}"
+					maxlength="300" required="true"
+					requiredMessage="Ingrese  la descripcion para dar de Baja" />
 				<p>
 					<p:panelGrid columns="3">
-						<h:outputText value="ESTADO:" />
+						<p:outputLabel for="@next" value="ESTADO:" />
 						<p:selectOneMenu id="option"
-							value="#{beanBaja.nuevoBajaAccesorio.bajaTipoObsolDania}">
+							value="#{beanBaja.nuevoBajaAccesorio.bajaTipoObsolDania}"
+							required="true"
+							requiredMessage="Ingrese el Estado Correspondiente">
 							<f:selectItem itemLabel="Selesccione" itemValue="" />
 							<f:selectItem itemLabel="Obsoleto" itemValue="OBSOLETO" />
 							<f:selectItem itemLabel="Dañado" itemValue="DAÑADO" />
@@ -331,7 +334,8 @@
 						<p:commandButton value="Dar de Baja" icon="pi pi-sort-amount-down"
 							styleClass="ui-button-danger"
 							actionListener="#{beanBaja.actionListenerInsertarNuevoAccesorioABaja()}"
-							update="@form,:lista2" oncomplete="PF('dialogoAccesorioBaja').hide()">
+							update="@form,:lista2"
+							oncomplete="PF('dialogoAccesorioBaja').hide()">
 							<p:confirm header="Confirmación"
 								message="Desea dar de baja este Accesorio?"
 								icon="pi pi-info-circle" />

@@ -112,15 +112,18 @@
 					</p:panelGrid>
 				</p>
 				<p>
-					<b><h:outputText value="OBSERVACIÓN" /></b>
+					<b><p:outputLabel for="@next" value="OBSERVACIÓN" /></b>
 				</p>
 				<p:inputTextarea rows="6" style="width: 600px;"
-					value="#{beanBaja.nuevoBajaEquipo.bajaDescripcion}" />
+					value="#{beanBaja.nuevoBajaEquipo.bajaDescripcion}" required="true"
+					requiredMessage="Ingrese  la descripcion para dar de Baja" />
 				<p>
 					<p:panelGrid columns="3">
-						<h:outputText value="ESTADO:" />
+						<p:outputLabel for="@next" value="ESTADO:" />
 						<p:selectOneMenu id="option"
-							value="#{beanBaja.nuevoBajaEquipo.bajaTipoObsolDania}">
+							value="#{beanBaja.nuevoBajaEquipo.bajaTipoObsolDania}"
+							required="true"
+							requiredMessage="Ingrese el Estado Correspondiente">
 							<f:selectItem itemLabel="Selesccione" itemValue="" />
 							<f:selectItem itemLabel="Obsoleto" itemValue="OBSOLETO" />
 							<f:selectItem itemLabel="Dañado" itemValue="DAÑADO" />

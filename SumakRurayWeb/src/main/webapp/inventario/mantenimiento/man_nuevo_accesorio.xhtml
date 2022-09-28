@@ -37,68 +37,73 @@
 		</p:menubar>
 	</h:form>
 	<br />
+	<h:form id="lista4">
+		<div  >
+			<p:panelGrid columns="3">
+				<h:outputText value="ACCESORIO" />
+				<p:selectOneMenu filterMatchMode="contains" filter="true"
+					value="#{beanMantenimiento.acceIdSeleccionado}">
+					<f:selectItem itemLabel="Seleccione una Accesorio..."
+						noSelectionOption="true" />
+					<f:selectItems
+						value="#{beanMantenimiento.listaAccesoriosInactivos}" var="u"
+						itemLabel=" #{u.acceNroSerie} #{u.acceNombre}"
+						itemValue="#{u.acceId}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:commandButton title="Carrito" icon="pi pi-search"
+					actionListener="#{beanMantenimiento.ActionfindAccesorio()}"
+					update=":lista3" styleClass="rounded-button ui-button-help" />
+			</p:panelGrid>
+		</div>
+	</h:form>
 	<h:form id="lista3">
-
 		<div align="center">
-
-
-			<p:splitter style="height: 500px; width:1600px" styleClass="mb-5">
+			<p:splitter style="height: auto; width:auto" styleClass="mb-5">
 				<!-- ________________________splitter 1 _______________________________________ -->
 				<p:splitterPanel
 					styleClass="flex align-items-center justify-content-center"
 					size="50" minSize="50">
 					<br />
-					<div style="margin-left: 50px" align="left">
-						<p:panelGrid columns="4">
-							<h:outputText value="ACCESORIO" />
-							<p:selectOneMenu filterMatchMode="contains" filter="true"
-								value="#{beanMantenimiento.acceIdSeleccionado}">
-								<f:selectItem itemLabel="Seleccione una Accesorio..."
-									noSelectionOption="true" />
-								<f:selectItems
-									value="#{beanMantenimiento.listaAccesoriosInactivos}" var="u"
-									itemLabel=" #{u.acceNroSerie} #{u.acceNombre}"
-									itemValue="#{u.acceId}"></f:selectItems>
 
-							</p:selectOneMenu>
-							<p:commandButton title="Carrito" icon="pi pi-search"
-								actionListener="#{beanMantenimiento.ActionfindAccesorio()}"
-								update="@form" styleClass="rounded-button ui-button-help" />
+					<p>
+						<p:commandButton value="SAVE" icon="pi pi-save" update="lista3"
+							styleClass="rounded-button ui-button-help"
+							actionListener="#{beanMantenimiento.actionListenerInsertarNuevoAccesorioMantenimiento()}">
+						</p:commandButton>
+					</p>
 
-							<p:commandButton value="SAVE" icon="pi pi-save" update="@form"
-								styleClass="rounded-button ui-button-help"
-								actionListener="#{beanMantenimiento.actionListenerInsertarNuevoAccesorioMantenimiento()}">
-							</p:commandButton>
-						</p:panelGrid>
 
-						<br />
-						<p:panelGrid columns="4">
 
-							<h:outputText value="NOMBRE" />
-							<h:outputText
-								value="#{beanMantenimiento.accesorioDevuelto.acceNombre}" />
+					<br />
+					<p:panelGrid columns="4">
 
-							<h:outputText value="RESPOSABLE" />
-							<h:outputText
-								value="#{beanMantenimiento.accesorioDevuelto.responsable.respNombres}" />
+						<h:outputText value="NOMBRE" />
+						<h:outputText
+							value="#{beanMantenimiento.accesorioDevuelto.acceNombre}" />
 
-							<h:outputText value="DEPENDENCIA" />
-							<h:outputText
-								value="#{beanMantenimiento.accesorioDevuelto.segDependencia.depDescripcion}" />
-							<h:outputText value="SERIE" />
-							<h:outputText
-								value="#{beanMantenimiento.accesorioDevuelto.acceNroSerie}" />
+						<h:outputText value="RESPOSABLE" />
+						<h:outputText
+							value="#{beanMantenimiento.accesorioDevuelto.responsable.respNombres}" />
 
-							<h:outputText value="GARANTIA" />
-							<h:outputText
-								value="#{beanMantenimiento.accesorioDevuelto.acceNroSerie}" />
-								
-							<h:outputText value="FUNCIONARIO QUE ENTREGA" />
-							<p:inputText
-								value="#{beanMantenimiento.nuevoMantenimiento.manUsuario}" />
-						</p:panelGrid>
+						<h:outputText value="DEPENDENCIA" />
+						<h:outputText
+							value="#{beanMantenimiento.accesorioDevuelto.segDependencia.depDescripcion}" />
+						<h:outputText value="SERIE" />
+						<h:outputText
+							value="#{beanMantenimiento.accesorioDevuelto.acceNroSerie}" />
 
-					</div>
+						<h:outputText value="GARANTIA" />
+						<h:outputText
+							value="#{beanMantenimiento.accesorioDevuelto.acceNroSerie}" />
+
+						<p:outputLabel for="@next" value="FUNCIONARIO QUE ENTREGA" />
+						<p:inputText
+							value="#{beanMantenimiento.nuevoMantenimiento.manUsuario}"
+							required="true"
+							requiredMessage="Ingrese el Funcionario que entrega" />
+					</p:panelGrid>
+
+
 				</p:splitterPanel>
 
 
@@ -124,7 +129,7 @@
 			</p:splitter>
 
 
-			<p:splitter style="height: 250px; width:1600px" styleClass="mb-5">
+			<p:splitter style="height: auto; width:auto" styleClass="mb-5">
 				<!-- ________________________splitter 1 _______________________________________ -->
 				<p:splitterPanel
 					styleClass="flex align-items-center justify-content-center"
@@ -132,16 +137,20 @@
 
 					<br />
 					<p:panelGrid columns="2">
-						<h:outputText value="EXTERNO / INTERNO" />
+						<p:outputLabel for="@next" value="EXTERNO / INTERNO" />
 						<p:selectOneMenu id="option"
-							value="#{beanMantenimiento.nuevoMantenimiento.manTipoIntExt}">
+							value="#{beanMantenimiento.nuevoMantenimiento.manTipoIntExt}"
+							required="true"
+							requiredMessage="Ingrese el Tipo Interno o Externo">
 							<f:selectItem itemLabel="Selesccione" itemValue="" />
 							<f:selectItem itemLabel="Interno" itemValue="interno" />
 							<f:selectItem itemLabel="Externo" itemValue="externo" />
 						</p:selectOneMenu>
-						<h:outputText value="PREVENTIVO / CORRECTIVO" />
+						<p:outputLabel for="@next" value="PREVENTIVO / CORRECTIVO" />
 						<p:selectOneMenu id="option2"
-							value="#{beanMantenimiento.nuevoMantenimiento.manTipoPreCorr}">
+							value="#{beanMantenimiento.nuevoMantenimiento.manTipoPreCorr}"
+							required="true"
+							requiredMessage="Ingrese el Tipo Preventivo o Correctivo">
 							<f:selectItem itemLabel="Selesccione" itemValue="" />
 							<f:selectItem itemLabel="Preventivo" itemValue="preventivo" />
 							<f:selectItem itemLabel="Correctivo" itemValue="correctivo" />
@@ -153,10 +162,13 @@
 					styleClass="flex align-items-center justify-content-center"
 					minSize="50">
 					<br />
-					<b><h:outputText value="DESCRIPCION/PROBLEMA/DAÑO" /></b>
+					<b><p:outputLabel for="@next"
+							value="DESCRIPCION DE PROBLEMA/DAÑO" /></b>
 					<p>
 						<p:inputTextarea rows="6" style="width: 600px;"
-							value="#{beanMantenimiento.nuevoMantenimiento.manDescripcion}" />
+							value="#{beanMantenimiento.nuevoMantenimiento.manDescripcion}"
+							required="true"
+							requiredMessage="Ingrese  la descripcion del Daño" />
 					</p>
 				</p:splitterPanel>
 			</p:splitter>

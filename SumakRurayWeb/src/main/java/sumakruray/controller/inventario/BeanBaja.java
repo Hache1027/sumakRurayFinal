@@ -72,6 +72,9 @@ public class BeanBaja implements Serializable {
 	private BodegaEquipo bodegaEquipoSeleccionado;
 //Varios
 	private String estado;
+	// DE daja
+	private AccesorioBaja accesorioBaja;
+	private EquipoBaja equipoBaja;
 
 	public BeanBaja() {
 		// TODO Auto-generated constructor stub
@@ -97,6 +100,26 @@ public class BeanBaja implements Serializable {
 		SeleccionBajaAccesorio = beanAccesorio.ConsultarAccesorioAtributoEquipo(accesorio);
 		PrimeFaces current = PrimeFaces.current();
 		current.executeScript("PF('dialogoAccesorioBaja').show()");
+	}
+
+	/**
+	 * escoger Accesorio de Baja para la vista
+	 * 
+	 * @param bajaAccesorios
+	 * @throws Exception
+	 */
+	public void actionSelectionAccesoriosBajasVista(AccesorioBaja bajaAccesorio) throws Exception {
+		accesorioBaja = bajaAccesorio;
+	}
+
+	/**
+	 * escoger Equipo de Baja para la vista
+	 * 
+	 * @param bajaEquipo
+	 * @throws Exception
+	 */
+	public void actionSelectionEquiposBajasVista(EquipoBaja bajaEquipo) throws Exception {
+		equipoBaja = bajaEquipo;
 	}
 //Redireccionamiento a la pagina de baja_accesorios
 
@@ -249,5 +272,23 @@ public class BeanBaja implements Serializable {
 	public void setSeleccionBajaEquipo(Equipo seleccionBajaEquipo) {
 		SeleccionBajaEquipo = seleccionBajaEquipo;
 	}
+
+	public AccesorioBaja getAccesorioBaja() {
+		return accesorioBaja;
+	}
+
+	public void setAccesorioBaja(AccesorioBaja accesorioBaja) {
+		this.accesorioBaja = accesorioBaja;
+	}
+
+	public EquipoBaja getEquipoBaja() {
+		return equipoBaja;
+	}
+
+	public void setEquipoBaja(EquipoBaja equipoBaja) {
+		this.equipoBaja = equipoBaja;
+	}
+	
+	
 
 }

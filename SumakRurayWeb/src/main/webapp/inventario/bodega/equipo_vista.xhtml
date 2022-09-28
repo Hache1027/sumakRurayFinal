@@ -90,18 +90,17 @@
 								value="#{beanEquipo.vistaEquipo.marca.marDescripcion}" />
 						</p:panelGrid>
 						<p>
-						<b><h:outputText value="IP ASIGNADO" /></b>
-					</p>
-					<p:panelGrid columns="6" id="informacionIp">
-						<h:outputText value="IP" />
-						<h:outputText value="#{beanEquipo.ipEquipo.ipsIp}" />
-						<h:outputText value="PUERTA DE ENLACE" />
-						<h:outputText value="#{beanEquipo.ipEquipo.ipsPuertaEnlace}" />
-						<h:outputText value="MAC ADRESS" />
-						
-					</p:panelGrid>
-					<br />
-					<br />
+							<b><h:outputText value="IP ASIGNADO" /></b>
+						</p>
+						<p:panelGrid columns="6" id="informacionIp">
+							<h:outputText value="IP" />
+							<h:outputText value="#{beanEquipo.ipEquipo.ipsIp}" />
+							<h:outputText value="PUERTA DE ENLACE" />
+							<h:outputText value="#{beanEquipo.ipEquipo.ipsPuertaEnlace}" />
+							<h:outputText value="MAC ADRESS" />
+
+						</p:panelGrid>
+						<br /> <br />
 
 					</div>
 				</p:splitterPanel>
@@ -112,7 +111,7 @@
 					<p>
 						<b><h:outputText value="ACCESORIOS" /></b>
 					</p>
-					<p:dataTable value="#{beanEquipo.listaAccesoriosEquipo}"
+					<p:dataTable value="#{beanEquipo.vistaEquipo.equipoAccesorios}"
 						var="EquipoAccesorios" style="width:350px" scrollable="true"
 						scrollHeight="240">
 						<p:column headerText="NRO. SERIE" style="width:50px">
@@ -132,7 +131,7 @@
 					<p>
 						<b><h:outputText value="CARACTERISTICAS" /></b>
 					</p>
-					<p:dataTable value="#{beanEquipo.listaAtributosEquipo}"
+					<p:dataTable value="#{beanEquipo.vistaEquipo.equipoAtributos}"
 						var="EquipoAtributos" style="width:300px" scrollable="true"
 						scrollHeight="240">
 						<p:column headerText="NOMBRE" style="width:50px">

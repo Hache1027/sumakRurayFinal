@@ -177,21 +177,15 @@ public class BeanBodega implements Serializable {
 	// /Llenar los datos para el nuevo registro de BodegaAccesorio
 	public void actionListenerInsertarNuevoAccesorioABodega(Accesorio accesorio) {
 		try {
-
-			System.out.println("uuuuuuuuuuuu");
 			nuevoBodegaAccesorio = new BodegaAccesorio();
 			nuevoBodegaAccesorio.setBodFechaCreacion(tiempo);
 			int id_user = beanSegLogin.getLoginDTO().getIdSegUsuario();
 			SegUsuario persona = managerSeguridades.findByIdSegUsuario(id_user);
-
 			nuevoBodegaAccesorio.setBodUsuarioCrea(persona.getNombres() + " " + persona.getApellidos());
 			nuevoBodegaAccesorio.setAccesorio(accesorio);
-			System.out.println("pppppppppppppppppp");
-			System.out.println("mmmmmmmmmmmmmmmmmmmmmm");
 			managerBodega.insertarAccesorioBodega(nuevoBodegaAccesorio);
 			listaAccesorioBodegas = managerAccesorio.findWhereByAcceEstado("Inactivo");
 			nuevoBodegaAccesorio = new BodegaAccesorio();
-			System.out.println("ooooooooooooooo");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();

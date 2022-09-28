@@ -22,9 +22,9 @@
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Menú" icon="pi pi-home"
-				action="/menu?faces-redirect=true" />
+				action="#{beanEquipo.actionRegresar ('/menu?faces-redirect=true')}" />
 			<p:menuitem value="Regresar" icon="pi pi-arrow-circle-left"
-				action="menu" />
+				action="#{beanEquipo.actionRegresar ('menu')}" />
 			<p:menuitem value="Responsable" icon="pi pi-plus"
 				title="Nuevo Responsable"
 				action="#{beanResponsable.actionNuevoResponsable()}"
@@ -66,7 +66,9 @@
 		<div align="center">
 			<p:splitter style="height: auto; width:auto" styleClass="mb-5">
 
-				<p:splitterPanel>
+				<p:splitterPanel
+					styleClass="flex align-items-center justify-content-center"
+					size="200">
 					<!-- ________________________splitter 1 _______________________________________ -->
 					<p>
 						<b><h:outputText value="INFORMACIÓN DEL  EQUIPO" /></b>
@@ -75,11 +77,15 @@
 						<p:commandButton value="GUARDAR" icon="pi pi-save"
 							styleClass="rounded-button ui-button-help"
 							action="#{beanEquipo.actionListenerInsertarNuevoEquipo()}"
-							update="@form" />
+							update="@form">
+							<p:confirm header="Confirmación"
+								message="¿Esta seguro de Crear este Equipo?"
+								icon="pi pi-info-circle" />
+						</p:commandButton>
 					</p>
 
 					<p:panelGrid columns="4" id="datosEquipo">
-						<h:outputText value="TIPO EQUIPO" />
+						<p:outputLabel for="@next" value="TIPO EQUIPO" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.tipEquiIdSeleccionado}" required="true"
 							requiredMessage="Ingrese un tipo de Equipo" id="listaTipoEquipo">
@@ -89,32 +95,33 @@
 								itemLabel=" #{u.tipEquiNombre}" itemValue="#{u.tipEquiId}">
 							</f:selectItems>
 						</p:selectOneMenu>
-						<h:outputText value="NOMBRE:" />
+						<p:outputLabel for="@next" value="NOMBRE:" />
 						<p:inputText value="#{beanEquipo.nuevoEquipo.equiNombre}"
-							required="true" requiredMessage="Ingrese la cedula" />
-						<h:outputText value="NRO. SERIE:" />
+							required="true" requiredMessage="Ingrese el nombre" />
+						<p:outputLabel for="@next" value="NRO. SERIE:" />
 						<p:inputText value="#{beanEquipo.nuevoEquipo.equiNroSerie}"
-							required="true" requiredMessage="Ingrese los apellidos" />
-						<h:outputText value="COD: BODEGA:" />
+							required="true" requiredMessage="Ingrese el Nro de Serie" />
+						<p:outputLabel for="@next" value="COD: BODEGA:" />
 						<p:inputText value="#{beanEquipo.nuevoEquipo.equiCodBodega}"
 							required="true" requiredMessage="Ingrese el cod: Bodega" />
-						<h:outputText value="PRECIO:" />
+						<p:outputLabel for="@next" value="PRECIO:" />
 						<p:spinner value="#{beanEquipo.nuevoEquipo.equiValor}"
-							stepFactor="0.01" required="true"
+							stepFactor="0.01" required="true" min="1" style=" width:150px"
 							requiredMessage="Ingrese el Precio" />
 
-						<h:outputText value="GARANTIA:" />
+						<h:outputText value="GARANTIA (años):" />
 
 						<p:spinner value="#{beanEquipo.nuevoEquipo.equiGarantia}"
-							stepFactor="1" />
+							required="true" requiredMessage="Ingrese la Garantia"
+							style=" width:150px" min="0" stepFactor="1" />
 
-						<h:outputText value="AÑOS UTIL :" />
+						<p:outputLabel for="@next" value="AÑOS UTIL :" />
 
 						<p:spinner value="#{beanEquipo.nuevoEquipo.equiAnioVidaUtil}"
 							required="true" requiredMessage="Ingrese el anio util"
-							style=" width:100px" />
+							style=" width:150px" stepFactor="1" min="1" />
 
-						<h:outputText value="PROVEEDOR" />
+						<p:outputLabel for="@next" value="PROVEEDOR" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.proIdSeleccionado}" id="listaProveedor"
 							required="true" requiredMessage="Ingrese un Proveedor">
@@ -123,7 +130,7 @@
 							<f:selectItems value="#{beanProveedor.listaProveedors}" var="u"
 								itemLabel=" #{u.proEmpresa}" itemValue="#{u.proId}"></f:selectItems>
 						</p:selectOneMenu>
-						<h:outputText value="MARCA" />
+						<p:outputLabel for="@next" value="MARCA" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.marIdSeleccionado}" id="listaMarca"
 							required="true" requiredMessage="Ingrese una marca">
@@ -132,7 +139,7 @@
 							<f:selectItems value="#{beanMarca.listaMarcas}" var="u"
 								itemLabel=" #{u.marDescripcion}" itemValue="#{u.marId}"></f:selectItems>
 						</p:selectOneMenu>
-						<h:outputText value="DEPENDENCIA" />
+						<p:outputLabel for="@next" value="DEPENDENCIA" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.idSegDependenciaSeleccionado}"
 							required="true" requiredMessage="Ingrese una Dependencia"
@@ -144,7 +151,7 @@
 								itemValue="#{u.idSegDependencia}">
 							</f:selectItems>
 						</p:selectOneMenu>
-						<h:outputText value="RESPONSABLE" />
+						<p:outputLabel for="@next" value="RESPONSABLE" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.respIdSeleccionado}" id="listaResponsable"
 							required="true" requiredMessage="Ingrese un Responsable">
@@ -184,7 +191,7 @@
 					<p:menubar>
 						<p:menuitem value="Accesorio" icon="pi pi-plus"
 							styleClass="ui-button-warning" title="Nuevo Accesorio"
-							actionListener="#{beanEquipo.actionListenerAdicionarAccesorioAtributo('')}"
+							actionListener="#{beanEquipo.actionListenerAdicionarAccesorioAtributo('CrearAccesorio')}"
 							action="#{beanAccesorio.actionNuevoAccesorio()}" update=":lista2" />
 
 					</p:menubar>
@@ -234,7 +241,7 @@
 							oncomplete="PF('dialogoCrearAtributo').show()" />
 					</p:menubar>
 					<p:panelGrid columns="2">
-						<h:outputText value="Atributo" />
+						<h:outputText value="Caracteristica" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanEquipo.atriIdSeleccionado}" id="listaAtributo"
 							style="width:250px">
@@ -278,6 +285,7 @@
 					action="tipoAccesorio" />
 				<p:menuitem value="Tipo Accesorio" icon="pi pi-plus"
 					title="Nuevo Tipo Accesorio"
+					action="#{beanTipoAccesorio.actionNuevoTipoAccesorio()}"
 					oncomplete="PF('dialogoCrearTipoAccesorio').show()" />
 				<p:menuitem value="Atributos" icon="pi pi-plus"
 					title="Nuevo Atributo"
@@ -306,7 +314,7 @@
 						<!-- ________________________splitter 1 Accesorio_________________________ -->
 
 						<p:panelGrid columns="4">
-							<h:outputText value="TIPO DE ACCESORIO" />
+							<p:outputLabel for="@next" value="TIPO DE ACCESORIO" />
 							<p:selectOneMenu filterMatchMode="contains" filter="true"
 								value="#{beanAccesorio.tipAccIdSeleccionado}"
 								id="listaTipoAccesorio" required="true"
@@ -317,22 +325,31 @@
 									value="#{beanTipoAccesorio.actionTipoAccesorios()}" var="u"
 									itemLabel=" #{u.tipAccNombre}" itemValue="#{u.tipAccId}"></f:selectItems>
 							</p:selectOneMenu>
-							<h:outputText value="NOMBRE:" />
+							<p:outputLabel for="@next" value="NOMBRE:" />
 							<p:inputText value="#{beanAccesorio.nuevoAccesorio.acceNombre}"
 								required="true" requiredMessage="Ingrese un Nombre" />
-							<h:outputText value="NRO. SERIE:" />
+							<p:outputLabel for="@next" value="NRO. SERIE:" />
 							<p:inputText value="#{beanAccesorio.nuevoAccesorio.acceNroSerie}"
 								required="true" requiredMessage="Ingrese el Nro Serie" />
-							<h:outputText value="COD: BODEGA:" />
+							<p:outputLabel for="@next" value="COD: BODEGA:" />
 							<p:inputText
 								value="#{beanAccesorio.nuevoAccesorio.acceCodBodega}"
 								required="true" requiredMessage="Ingrese el cod: Bodega" />
-							<h:outputText value="PRECIO:" />
+							<p:outputLabel for="@next" value="PRECIO:" />
 							<p:spinner value="#{beanAccesorio.nuevoAccesorio.accPrecio}"
-								stepFactor="0.01" required="true" />
+								stepFactor="0.01" required="true" min="1"
+								requiredMessage="Ingrese el Precio" style=" width:150px" />
+							<h:outputText value="GARANTIA (años):" />
+							<p:spinner value="#{beanAccesorio.nuevoAccesorio.acceGarantia}"
+								required="true" requiredMessage="Ingrese la Garantia"
+								style=" width:150px" min="0" stepFactor="1" />
+							<p:outputLabel for="@next" value="AÑOS UTIL :" />
+							<p:spinner
+								value="#{beanAccesorio.nuevoAccesorio.acceAnioVidaUtil}"
+								required="true" requiredMessage="Ingrese el anio util" min="1"
+								stepFactor="1" style=" width:150px" />
 
-
-							<h:outputText value="PROVEEDOR" />
+							<p:outputLabel for="@next" value="PROVEEDOR" />
 							<p:selectOneMenu filterMatchMode="contains" filter="true"
 								value="#{beanAccesorio.proIdSeleccionado}" id="listaProveedor2">
 								<f:selectItem
@@ -341,7 +358,7 @@
 								<f:selectItems value="#{beanProveedor.listaProveedors}" var="u"
 									itemLabel=" #{u.proEmpresa}" itemValue="#{u.proId}"></f:selectItems>
 							</p:selectOneMenu>
-							<h:outputText value="MARCA" />
+							<p:outputLabel for="@next" value="MARCA" />
 							<p:selectOneMenu filterMatchMode="contains" filter="true"
 								value="#{beanAccesorio.marIdSeleccionado}" id="listaMarca2">
 								<f:selectItem
@@ -350,10 +367,10 @@
 								<f:selectItems value="#{beanMarca.listaMarcas}" var="u"
 									itemLabel=" #{u.marDescripcion}" itemValue="#{u.marId}"></f:selectItems>
 							</p:selectOneMenu>
-							<h:outputText value="RESPONSABLE" />
+							<p:outputLabel for="@next" value="RESPONSABLE" />
 							<h:outputText
 								value="#{beanAccesorio.nuevoAccesorio.responsable.respNombres} #{beanAccesorio.nuevoAccesorio.responsable.respApellidos}" />
-							<h:outputText value="DEPENDENCIA" />
+							<p:outputLabel for="@next" value="DEPENDENCIA" />
 							<h:outputText
 								value="#{beanAccesorio.nuevoAccesorio.segDependencia.depDescripcion}" />
 						</p:panelGrid>
@@ -386,6 +403,9 @@
 								styleClass="rounded-button ui-button-help"
 								actionListener="#{beanAccesorio.actionListenerInsertarNuevoAccesorio()}"
 								action="#{beanEquipo.actionListenerAdicionarAccesorioAtributo('Accesorio')}">
+								<p:confirm header="Confirmación"
+									message="¿Esta seguro de crear este Accesorio?"
+									icon="pi pi-info-circle" />
 							</p:commandButton>
 						</p:panelGrid>
 						<p:dataTable value="#{beanAccesorio.cabecera.accesorioAtributos}"
@@ -650,6 +670,13 @@
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
+	<p:confirmDialog global="true" hideEffect="fade" responsive="true"
+		width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
 
 
 </body>

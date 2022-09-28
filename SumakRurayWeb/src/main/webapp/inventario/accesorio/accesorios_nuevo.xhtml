@@ -70,7 +70,11 @@
 						<p:commandButton value="GUARDAR" icon="pi pi-save"
 							styleClass="rounded-button ui-button-help"
 							action="#{beanAccesorio.actionListenerInsertarNuevoAccesorio()}"
-							update="@form" />
+							update="@form">
+							<p:confirm header="Confirmación"
+								message="¿Esta seguro de crear este Accesorio?"
+								icon="pi pi-info-circle" />
+						</p:commandButton>
 					</p>
 					<p:panelGrid columns="6">
 						<p:outputLabel for="@next" value="TIPO ACCESORIO" />
@@ -101,12 +105,13 @@
 							requiredMessage="Ingrese el Precio" style=" width:150px" />
 						<h:outputText value="GARANTIA (años):" />
 						<p:spinner value="#{beanAccesorio.nuevoAccesorio.acceGarantia}"
-							style=" width:100px" min="0" stepFactor="1" />
+							required="true" requiredMessage="Ingrese la Garantia"
+							style=" width:150px" min="0" stepFactor="1" />
 						<p:outputLabel for="@next" value="AÑOS UTIL :" />
 						<p:spinner
 							value="#{beanAccesorio.nuevoAccesorio.acceAnioVidaUtil}"
 							required="true" requiredMessage="Ingrese el anio util" min="1"
-							style=" width:100px" />
+							stepFactor="1" style=" width:150px" />
 
 
 						<p:outputLabel for="@next" value="PROVEEDOR" />
@@ -136,9 +141,11 @@
 					<p>
 						<p:panelGrid columns="5" id="EquipoQuePertenece">
 							<h:outputText value="NOMBRE" />
-							<h:outputText value="#{beanEquipo.equipoDevuelto.equiNombre}   " />
+							<h:outputText
+								value="#{beanAccesorio.equipoDevuelto.equiNombre}   " />
 							<h:outputText value="NRO. SERIE " />
-							<h:outputText value=" #{beanEquipo.equipoDevuelto.equiNroSerie} " />
+							<h:outputText
+								value=" #{beanAccesorio.equipoDevuelto.equiNroSerie} " />
 							<p:commandButton value="AIGNAR A UN  EQUIPO"
 								icon="pi pi-download" update="@form"
 								styleClass=" ui-button-help "
@@ -192,7 +199,7 @@
 							oncomplete="PF('dialogoCrearAtributo').show()" />
 					</p:menubar>
 					<p:panelGrid columns="2">
-						<h:outputText value="Atributo" />
+						<h:outputText value="Caracteristica" />
 						<p:selectOneMenu filterMatchMode="contains" filter="true"
 							value="#{beanAccesorio.atriIdSeleccionado}" id="listaAtributos"
 							style="width:300px">
@@ -211,7 +218,7 @@
 					</p:panelGrid>
 					<p:dataTable value="#{beanAccesorio.cabecera.accesorioAtributos}"
 						var="atributos" style="width:auto">
-						<p:column headerText="ATRIBUTO" style="width:10px">
+						<p:column headerText="CARACTERISTICAS" style="width:10px">
 							<h:outputText value="#{atributos.atributo.atriNombre}" />
 						</p:column>
 						<p:column headerText="VALOR" style="width:50px">
@@ -386,7 +393,8 @@
 								</p:selectOneMenu>
 								<p:commandButton title="Buscar Equipo" icon="pi pi-search"
 									actionListener="#{beanEquipo.actionfindEquipo(beanEquipo.equiIdSeleccionado)}"
-									update="@form" styleClass="rounded-button ui-button-help" />
+									update="@form,:lista3:listaDependencia,:lista3:listaResponsable,:lista3:EquipoQuePertenece"
+									styleClass="rounded-button ui-button-help" />
 
 								<p:commandButton value="COLOCAR" icon="pi pi-download"
 									actionListener="#{beanEquipo.ActionAccesorioColocarAEquipoTemporal(beanAccesorio.cabecera,beanEquipo.equipoDevuelto)}"
@@ -463,6 +471,13 @@
 		</h:form>
 
 	</p:dialog>
+	<p:confirmDialog global="true" hideEffect="fade" responsive="true"
+		width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
 
 </body>
 </html>

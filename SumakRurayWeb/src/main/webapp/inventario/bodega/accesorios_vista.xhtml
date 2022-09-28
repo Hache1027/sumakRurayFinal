@@ -73,16 +73,28 @@
 							value="#{beanAccesorio.vistaAccesorio.segDependencia.depDescripcion} " />
 
 					</p:panelGrid>
+					<br />
+					<p:splitterPanel>
+						<p:panelGrid columns="4">
+
+							<h:outputText value="VIDA UTIL" />
+							<h:outputText value="#{beanAccesorio.vidaUtil}" />
+							<h:outputText value="VALOR DEPRECIADO" />
+							<h:outputText value="#{beanAccesorio.valorDepreciado}" />
+
+						</p:panelGrid>
+						<br />
+					</p:splitterPanel>
 					<p>
 						<b><h:outputText value="EQUIPO QUE PERTENECE" /></b>
 					</p>
 					<p:panelGrid columns="4">
 						<h:outputText value="NOMBRE" />
 						<h:outputText
-							value="#{beanAccesorio.equipoDevuelto.equipo.equiNombre}   " />
+							value="#{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNombre}   " />
 						<h:outputText value="NRO. SERIE " />
 						<h:outputText
-							value=" #{beanAccesorio.equipoDevuelto.equipo.equiNroSerie} " />
+							value=" #{beanAccesorio.equipoAccesorioDevuelto.equipo.equiNroSerie} " />
 					</p:panelGrid>
 
 
